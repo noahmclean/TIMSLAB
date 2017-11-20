@@ -78,7 +78,7 @@ cycleTime = cumulativeCycleTime(end);
 % Dodson BI time for each ratio (average of all four ion beam times: a1, a2, b1, b2 -> a/b)
 ratioTimes = (2*massTimes(massTable(:,1)) + 2*massTimes(massTable(:,2)) + 2*cycleTime)/4;
 
-% Ludwig's f-values - column1 for numerator, column2 for d
+% Ludwig's f-values - column1 for numerator, column2 for denominator
 fValues = [ratioTimes-massTimes(massTable(:,1)) ...
                                 ratioTimes-massTimes(massTable(:,2))]/cycleTime;
 

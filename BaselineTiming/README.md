@@ -1,0 +1,4 @@
+# Baseline Timing: 
+## How long should I measure baselines for a Faraday analysis?
+
+Faraday analyses on TIMS and ICPMS consist of a baseline and an on-peak measurement, where the ion beam intensity of interest is the on-peak intensity minus the baseline.  The baselines are often measured between the mass spectrum peaks while a finite-sized sample is ionizing.  How long the baseline and on-peak portions of the analysis are measured is specified by the user.  What is the best ratio of baseline to on-peak measurement time?  The answer depends on the size of the ion beam and the size of the resistors in the Faraday amplifiers.
