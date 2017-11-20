@@ -1,7 +1,9 @@
 function ratiosBI = QuadDriftCorr_v1(dataRaw, MSmethod)
 %QUADDRIFCORR_v1 performs quadratic drift correction as outlined in Thermo Triton manual
-%   ratiosBI is a matrix of requested beam-interpolated ratios
+%
 %   dataRaw is a matrix of non-BI intensities with columns for masses measMasses
+%
+%   MSmethod is a structure with the following mass spectrometer method information:
 %   MSmethod.BItimes is a vector of times in seconds for each measured mass, with settle times
 %       as [peak1 settle peak2 settle peak3 settle ...]
 %   MSmethod.measMasses is cell array of strings with the masses measured: {'204', '205', ...}

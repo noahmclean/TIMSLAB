@@ -4,7 +4,7 @@
 % That folder should be inside the folder containing this script.
 % The name of each .xlsx data file should start with NBS981 or NBS982.
 
-dataFileFolder = 'PhoenixPbStandardData/'; % note, make sure to end string with /
+dataFileFolder = '/Users/noahmc/Documents/KU/IGL/PhoenixData/PhoenixPbStandardData/'; % note, make sure to end string with /
 BImethod = 'Dodson'; %options: 'Dodson', 'Quadrift'
 
 MSmethod.measMasses = {'204', '205', '206', '207', '208'}; 
@@ -29,3 +29,4 @@ end % for
 % Plot data and do brushing
 runs = brushPbStandardData_v1(runs, MSmethod);
 
+% brushPbStandardData will handoff to reduceBrushedPbData after UI button press

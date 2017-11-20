@@ -70,11 +70,11 @@ clear irun temp
 figure('name', 'Controls', 'WindowStyle', 'normal', 'Position', [50 50 200 200])
 uicontrol('Style', 'pushbutton', 'String', 'Reduce Data', ...
                                  'Position', [10 10 100 20], ... 
-                                 'Callback', {@reduceData_v1, runs, ics, tail, n, opz});
+                                 'Callback', {@reduceBrushedPbData_v1, runs, MSmethod});
 
 
 
-waitfor(hAv(1,1))
+waitfor(hAv(1,1)) % terminate function when data brushing plot window closes.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
