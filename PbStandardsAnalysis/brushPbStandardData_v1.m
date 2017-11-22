@@ -74,7 +74,7 @@ uicontrol('Style', 'pushbutton', 'String', 'Reduce Data', ...
 
 
 
-waitfor(hAv(1,1)) % terminate function when data brushing plot window closes.
+%waitfor(hAv(1,1)) % terminate function when data brushing plot window closes.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%

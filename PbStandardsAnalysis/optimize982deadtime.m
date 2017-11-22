@@ -30,7 +30,9 @@ for irun = 1:nruns
     end % switch beam interpolation method
     
     % eliminate skipped ratios from calculation
-    dtcorr(irun).ratiosBI = dtcorr(irun).ratiosBI(~runs(irun).skips,:);
+    if ~isempty(runs(irun).skips) % if the user brushed some data
+        dtcorr(irun).ratiosBI = dtcorr(irun).ratiosBI(~runs(irun).skips,:);
+    end
     
 end % for runi
 
@@ -44,7 +46,7 @@ for irun = 1:nruns
         
         case 'NBS982'
             
-            % exponential law fractionation correction factor
+            % exponential law fractionation correction factor using 208/206
             dtcorr(irun).beta = (log(stnd.nbs982r86)-log(dtcorr(irun).ratiosBI(:,4))) ./ ...
                                 log(stnd.massPb206/stnd.massPb208);
 
@@ -54,7 +56,7 @@ for irun = 1:nruns
             dtcorr(irun).lr76 = log(dtcorr(irun).ratiosBI(:,3)) + ...
                                 dtcorr(irun).beta * log(stnd.massPb206/stnd.massPb207);
 
-                            
+
             % simple initial distance formulation: could be improved
             
             % moving standard deviation calculation, for data weighting
@@ -74,6 +76,6 @@ for irun = 1:nruns
     end % switch
     
     
-end % for runi
+end % for irun
     
     
