@@ -3,7 +3,6 @@ function runs = brushPbStandardData_v1(runs, MSmethod)
 %  Record these in a field in the runs structure for each run, called skipv
 %  skipv = 0 for good data to use in calculations, 1 for bad data to be excluded.
 
-
 n.runs = size(runs, 1);
 
 
@@ -14,7 +13,15 @@ clear gcf
 hAv = gobjects(n.runs,8); % graphics array of axes handles
 hPv = gobjects(n.runs,8); % graphics array of plot handles
 
+figData = figure('Position', [100 100 1400 750], 'Name', 'Raw Data');
+tgroup = uitabgroup('Parent', figData);
+tab = zeros(n.runs, 1);
+
 for irun = 1:n.runs
+    
+    %figure('Name', runs(irun).name, 'WindowStyle', 'docked');
+    tab(irun) = uitab(tgroup, 'Title', runs(irun).name, 'Tag', num2str(irun));
+    axes('parent', tab(irun))
     
     % Determine when BI ratios start by enumerating the first cycle of each ratio
     
@@ -31,10 +38,6 @@ for irun = 1:n.runs
 
     runs(irun).ratioTimes = runs(irun).secs(ratioStartCycles);
     
-    runs(irun).brushGroups = {1:8}; % holds axis handle indices for brushing
-    
-    figure('Name', runs(irun).name, 'WindowStyle', 'docked');
-    
     hAv(irun,1) = subplot(4,2,1); hPv(irun,1) = plot(runs(irun).ratioTimes, runs(irun).BIdata(:,1), '.'); ylabel('204/206')
     hAv(irun,2) = subplot(4,2,3); hPv(irun,2) = plot(runs(irun).ratioTimes, runs(irun).BIdata(:,2), '.'); ylabel('205/206')
     hAv(irun,3) = subplot(4,2,5); hPv(irun,3) = plot(runs(irun).ratioTimes, runs(irun).BIdata(:,3), '.'); ylabel('207/206')
@@ -44,6 +47,8 @@ for irun = 1:n.runs
     hAv(irun,6) = subplot(4,2,4); hPv(irun,6) = plot(runs(irun).ratioTimes, runs(irun).dataRaw(ratioStartCycles,1), '.'); ylabel('204 cps')
     hAv(irun,7) = subplot(4,2,6); hPv(irun,7) = plot(runs(irun).ratioTimes, runs(irun).dataRaw(ratioStartCycles,2), '.'); ylabel('205 cps')
     hAv(irun,8) = subplot(4,2,8); hPv(irun,8) = plot(runs(irun).ratioTimes, runs(irun).dataRaw(ratioStartCycles,5), '.'); ylabel('208 cps')
+    
+    set(hPv(irun,:), 'Tag', num2str(irun));
     
     linkaxes([hAv(irun,1) hAv(irun,2) hAv(irun,3) hAv(irun,4) hAv(irun,5) hAv(irun,6) hAv(irun,7) hAv(irun,8)], 'x');
     
@@ -55,7 +60,7 @@ for irun = 1:n.runs
     temp.h = zoom;
     set(temp.h, 'Motion', 'vertical', 'Enable', 'on');
     brush('on')
-    set(brush, 'ActionPostCallback', {@uponBrushing, hAv(irun,:), runs(irun).brushGroups})
+    set(brush, 'ActionPostCallback', {@uponBrushing, hPv})
     
 end % plotting for irun = 1:nruns
 
@@ -81,22 +86,16 @@ uicontrol('Style', 'pushbutton', 'String', 'Reduce Data', ...
 %%% Callbacks %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 
-function uponBrushing(obj, event_opj, hAv, brushGroups)
+function uponBrushing(obj, event_opj, hPv)
 % obj: handle to the figure the has been clicked
 % event_obj: object conting struct of event data
 
-datapointLineObjects = findobj(hAv, 'Type', 'line');
 justBrushed = findobj(event_opj.Axes, 'Type', 'line');
 currentBrushing = get(justBrushed, 'BrushData');
-for iBrushGroup = 1:length(brushGroups)
-    if any(brushGroups{iBrushGroup} == find(datapointLineObjects == justBrushed, 1))
-        for iLineObject = brushGroups{iBrushGroup}
-        set(datapointLineObjects(iLineObject), 'BrushData', currentBrushing)
-        end
-    else % if somehow brushing off the reservation
-        % any code here for mixups?
-    end
-end  %for iBrushGroup
+brushedRun = justBrushed.Parent.Parent.Tag; % from 'Tag' for tab
+allLinesInRun = findobj(hPv, 'Tag', brushedRun);
+set(allLinesInRun, 'BrushData', currentBrushing);
+
  
 end % function: link plot data brushing callback
 
