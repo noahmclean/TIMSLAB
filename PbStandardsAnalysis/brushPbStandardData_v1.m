@@ -72,13 +72,18 @@ for irun = 1:n.runs
     runs(irun).hPv = hPv(irun,:);
 end
 
+session = [];
 close(findall(0, 'Type', 'figure', 'Name', 'Controls'))
 uiparts.ControlButton = figure('name', 'Controls', ...
                                 'WindowStyle', 'normal', 'Position', [50 50 200 200]);
 uicontrol('Style', 'pushbutton', 'String', 'Reduce Data', ...
-                                 'Position', [10 10 100 20], ... 
+                                 'Position', [10 60 100 20], ... 
                                  'Callback', {@reduceBrushedPbData_v1, runs, MSmethod});
+uicontrol('Style', 'pushbutton', 'String', 'Synoptic Plots', ...
+                                 'Position', [10 10 100 20], ...
+                                 'Callback', {@synopticPlots});
 
+                             
 % keep uiparts in base workspace for other UI functions
 assignin('base', 'uiparts', uiparts);
 
