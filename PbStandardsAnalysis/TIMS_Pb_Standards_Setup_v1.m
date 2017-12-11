@@ -10,7 +10,7 @@ MSmethod.measMasses = {'204', '205', '206', '207', '208'};
 MSmethod.outRatios = {'204/206', '206/205', '207/206', '208/206'}; 
 MSmethod.cyclesPerBlock = 12; 
 MSmethod.BItimes = [10 2 1 2 3 2 5 2 3 2];
-MSmethod.BImethod = 'Quadrift'; %options: 'Dodson', 'Quadrift'
+MSmethod.BImethod = 'Dodson'; %options: 'Dodson', 'Quadrift'
 
 
 % Parse folder of Pb standard data files

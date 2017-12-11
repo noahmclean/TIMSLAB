@@ -1,36 +1,155 @@
 function synopticPlots(obj, event_opj) %#ok<INUSD>
+
+% import data/ui structures from base workspace
 session = evalin('base', 'session');
 runs = evalin('base', 'runs');
 uiparts = evalin('base', 'uiparts');
 
 n.runs = size(runs,1);
+cmap = colormap('lines');
+lwidth = 2; % line width for uncertainty bars
 
 close(findall(0, 'type', 'figure', 'name', 'Synoptic Plots'))
-
 uiparts.synopticFigure = figure('Position', [100 100 1400 750], 'Name', 'Synoptic Plots');
 tgroup = uitabgroup('Parent', uiparts.synopticFigure);
-tab = gobjects(2, 1);
+tab = gobjects(3, 1); % 3 = ratio vs. intensity, fractionation vs. time, frac vs. temp.
 
-    tab(1) = uitab(tgroup, 'Title', 'Ratio vs. Intensity');
-    axes('parent', tab(1))
+hPm = gobjects(n.runs, 6); % six for first uitab
+hAm = gobjects(n.runs, 6); % likewise
+
+
+%% Ratio vs. intensity figure
+
+tab(1) = uitab(tgroup, 'Title', 'Ratio vs. Intensity');
+%axes('parent', tab(1)) % establishing this seems to be important
+
+% set up axes, all units relative
+axwidth = 0.35;   % width of plot
+axheight = 0.26;  % height of plot
+axsepv = 0.02;    % vertical distance between plots
+axseph = 0.05;    % horizontal distance between plots
+axleft = 0.07;    % distance to left side of figure
+axbott = 0.09;    % distance to bottom of figure
+
+hAm(1,1) = axes('NextPlot', 'add', 'Parent', tab(1), 'Position', ... % 981 204/206
+                [axleft                axbott+2*axheight+2*axsepv axwidth axheight]);
+hAm(1,3) = axes('NextPlot', 'add', 'Parent', tab(1), 'Position', ... % 981 207/206
+                [axleft                axbott+axheight+axsepv     axwidth axheight]);
+hAm(1,5) = axes('NextPlot', 'add', 'Parent', tab(1), 'Position', ... % 981 208/206
+                [axleft                axbott                     axwidth axheight]);
+hAm(1,2) = axes('NextPlot', 'add', 'Parent', tab(1), 'Position', ... % 982 204/206
+                [axleft+axwidth+axseph axbott+2*axheight+2*axsepv axwidth axheight]);
+hAm(1,4) = axes('NextPlot', 'add', 'Parent', tab(1), 'Position', ... % 982 207/206
+                [axleft+axwidth+axseph axbott+axheight+axsepv     axwidth axheight]);
+hAm(1,6) = axes('NextPlot', 'add', 'Parent', tab(1), 'Position', ... % 982 208/206
+                [axleft+axwidth+axseph axbott                     axwidth axheight]);
+
+set(hAm(1, [1 2 3 4]), 'XTickLabel', [])
+hAm(1,5).XLabel.String = 'Intensity (kcps)';
+hAm(1,6).XLabel.String = 'Intensity (kcps)';
+hAm(1,1).YLabel.String = '204/206';
+hAm(1,3).YLabel.String = '207/206';
+hAm(1,5).YLabel.String = '208/206';
+
+for iax = 1:6,   hAm(1,iax).XAxis.FontSize = 12; end
+for iax = 1:6,   hAm(1,iax).YAxis.FontSize = 12; end
+for iax = 1:2:5,   hAm(1,iax).YLabel.FontSize = 16; end
+for iax = [5 6], hAm(1,iax).XLabel.FontSize = 16; end
+
+title1 = annotation(tab(1), 'textbox'); 
+title1.Position = [axleft, axbott+3*axheight+3*axsepv, ...
+                  axwidth, (0.97-(axbott+3*axheight+3*axsepv))];
+title1.String = 'NBS981'; 
+title1.HorizontalAlignment = 'center';
+title1.VerticalAlignment = 'middle';
+title1.LineStyle = 'none';
+
+title2 = annotation(tab(1), 'textbox');
+title2.Position = [axleft+axwidth+axseph, axbott+3*axheight+3*axsepv, ...
+                   axwidth, (0.97-(axbott+3*axheight+3*axsepv))];
+title2.String = 'NBS982'; 
+title2.HorizontalAlignment = 'center';
+title2.VerticalAlignment = 'middle';
+title2.LineStyle = 'none';
+set([title1 title2], 'FontSize', 20)
+
 
 for irun = 1:n.runs
-
+    
     switch runs(irun).standard
         case 'NBS982', std = 1;
         case 'NBS981', std = 2;
     end
     
-subplot(3,2,3-std); hold on
-plot(runs(irun).dataDT0(runs(irun).ratioStartCycles,3), runs(irun).BIdata(:,1), '.')
 
-subplot(3,2,5-std); hold on
-plot(runs(irun).dataDT0(runs(irun).ratioStartCycles,3), runs(irun).BIdata(:,3), '.')
+plot(runs(irun).dataDT0(runs(irun).ratioStartCycles,5)/1e3, runs(irun).BIdata(:,1), ...
+    '.', 'Parent', hAm(1, 3-std))
 
-subplot(3,2,7-std); hold on
-plot(runs(irun).dataDT0(runs(irun).ratioStartCycles,3), runs(irun).BIdata(:,4), '.')
+plot(runs(irun).dataDT0(runs(irun).ratioStartCycles,5)/1e3, runs(irun).BIdata(:,3), ... 
+    '.', 'Parent', hAm(1, 5-std))
+
+plot(runs(irun).dataDT0(runs(irun).ratioStartCycles,5)/1e3, runs(irun).BIdata(:,4), ...
+    '.', 'Parent', hAm(1, 7-std))
 
 end
 
 
+%% Fractionation vs. temperature
+
+tab(2) = uitab(tgroup, 'Title', 'Fractionation vs. Temp');
+hAm(2,1) = axes('parent', tab(2));
+
+hold on
+for irun = 1:n.runs
+    
+    switch runs(irun).standard
+        case 'NBS981', markerstr = 's';
+        case 'NBS982', markerstr = 'o';
+    end
+    
+    hPm(2, irun) = scatter(runs(irun).temp(runs(irun).ratioStartCycles), ...
+        runs(irun).beta(:,3), 100, 'Marker', markerstr, ...
+        'MarkerFaceColor', cmap(irun,:), 'MarkerEdgeColor', 'k', ...
+        'MarkerFaceAlpha', 0.7);
+
+end
+
+xl = xlim;
+xlim([1050 xl(2)]) % 1050 is minimum realistic temperature
+xlabel('Temperature (C)', 'FontSize', 20)
+ylabel('\beta (208Pb/206Pb)', 'FontSize', 20)
+
+
+%% Fractionation vs. time
+
+    tab(3) = uitab(tgroup, 'Title', 'Fractionation vs. time');
+    hAm(3,1) = axes('parent', tab(3));
+
+for irun = 1:n.runs
+
+    switch runs(irun).standard
+        case 'NBS981', markerstr = 's';
+        case 'NBS982', markerstr = 'o';
+    end
+
+    hold on
+
+    for iratio = 1:3
+
+        line([runs(irun).time runs(irun).time], ...
+            [runs(irun).meanBeta(iratio) - 2*runs(irun).sterBeta(iratio) ...
+            runs(irun).meanBeta(iratio) + 2*runs(irun).sterBeta(iratio)], ...
+            'Color', cmap(iratio,:), 'LineWidth', lwidth);
+
+        hPm(irun, iratio) = plot(runs(irun).time, runs(irun).meanBeta(iratio), ...
+            'Marker', markerstr, 'MarkerFaceColor', cmap(iratio,:), ...
+            'MarkerEdgeColor', 'k', 'MarkerSize', 10);
+
+    end % for iratio
+
+end % for irun
+
+datetick('x', 'dd-mmm')
+ylabel('\beta', 'FontSize', 20)
+xlabel('Run date', 'FontSize', 20)
 

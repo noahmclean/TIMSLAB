@@ -35,10 +35,10 @@ for i = 1:fileN
     runs(i).dt   = xlsread( [folderstring fileStruct(i).name], 'TUNING', 'J10' );
     %timestamp, converted to MATLAB's datenum:
     [~, runs(i).time] = xlsread( [folderstring fileStruct(i).name], 'CTRL', 'D22' );
-    runs(i).time = cell2mat(runs(i).time);
+    runs(i).time = cell2mat(runs(i).time); 
     temp.spaces = strfind(runs(i).time, ' ');
     runs(i).time = runs(i).time((temp.spaces(2)+1):end);
-    runs(i).time = datenum( runs(i).time );
+    runs(i).time = datenum( runs(i).time ) - 2000; % -2000 corrects Excel output for MATLAB datestr()
     %did this run do beam interpolation?:
     runs(i).bi   = xlsread( [folderstring fileStruct(i).name], 'CTRL', 'B46' );
     runs(i).standard = fileStruct(i).name(1:6); % NBS981 or NBS982?
