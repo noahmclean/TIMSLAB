@@ -17,7 +17,7 @@ hPv = gobjects(n.runs,8); % graphics array of plot handles
 close(findall(0, 'Type', 'figure', 'Name', 'Raw Data'))
 uiparts.rawDataFigure = figure('Position', [100 100 1400 750], 'Name', 'Raw Data');
 
-tgroup = uitabgroup('Parent', uiparts.rawDataFigure);
+tgroup = uitabgroup('Parent', uiparts.rawDataFigure, 'TabLocation', 'top');
 tab = zeros(n.runs, 1);
 
 for irun = 1:n.runs
@@ -72,7 +72,6 @@ for irun = 1:n.runs
     runs(irun).hPv = hPv(irun,:);
 end
 
-session = [];
 close(findall(0, 'Type', 'figure', 'Name', 'Controls'))
 uiparts.ControlButton = figure('name', 'Controls', ...
                                 'WindowStyle', 'normal', 'Position', [50 50 200 200]);
@@ -85,6 +84,7 @@ uicontrol('Style', 'pushbutton', 'String', 'Synoptic Plots', ...
 
                              
 % keep uiparts in base workspace for other UI functions
+uiparts.rawDataTgroup = tgroup;
 assignin('base', 'uiparts', uiparts);
 
 
