@@ -4,13 +4,13 @@ function runs = reduceBrushedPbData_v1(obj, event_opj, runs, MSmethod) %#ok<INUS
 
 % standard and physical constant values:
 % from Condon/McLean spike calibration papers
-stnd.nbs981r46 = 0.0590074;
-stnd.nbs981r76 = 0.914683;
-stnd.nbs981r86 = 2.1681;
+stnd.nbs981.r46 = 0.0590074;
+stnd.nbs981.r76 = 0.914683;
+stnd.nbs981.r86 = 2.1681;
 
-stnd.nbs982r46 = 0.0272058;
-stnd.nbs982r76 = 0.466967;
-stnd.nbs982r86 = 1.000249;
+stnd.nbs982.r46 = 0.0272058;
+stnd.nbs982.r76 = 0.466967;
+stnd.nbs982.r86 = 1.000249;
 
 stnd.massPb204 = 203.9730436;
 stnd.massPb205 = 204.9744818;
@@ -67,11 +67,11 @@ for irun = 1:n.runs
     n.ratios = size(runs(irun).BIdt, 1);
     switch runs(irun).standard
         case 'NBS981'
-            stnd.ratios    = [stnd.nbs981r46 stnd.nbs981r76 stnd.nbs981r86];
-            stnd.logratios = log([stnd.nbs981r46 stnd.nbs981r76 stnd.nbs981r86]);
+            stnd.ratios    = [stnd.nbs981.r46 stnd.nbs981.r76 stnd.nbs981.r86];
+            stnd.logratios = log([stnd.nbs981.r46 stnd.nbs981.r76 stnd.nbs981.r86]);
         case 'NBS982'
-            stnd.ratios    = [stnd.nbs982r46 stnd.nbs982r76 stnd.nbs982r86];
-            stnd.logratios = log([stnd.nbs982r46 stnd.nbs982r76 stnd.nbs982r86]);
+            stnd.ratios    = [stnd.nbs982.r46 stnd.nbs982.r76 stnd.nbs982.r86];
+            stnd.logratios = log([stnd.nbs982.r46 stnd.nbs982.r76 stnd.nbs982.r86]);
     end % switch case
     
     runs(irun).alpha = repmat([-1/2 1 1/2], n.ratios, 1) .* ...

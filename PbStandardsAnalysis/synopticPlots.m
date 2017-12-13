@@ -1,7 +1,6 @@
 function synopticPlots(obj, event_opj) %#ok<INUSD>
 
 % import data/ui structures from base workspace
-session = evalin('base', 'session');
 runs = evalin('base', 'runs');
 uiparts = evalin('base', 'uiparts');
 
@@ -19,6 +18,7 @@ tab = gobjects(3, 1); % 3 = ratio vs. intensity, fractionation vs. time, frac vs
 hPm = gobjects(n.runs, 4); % six for first uitab
 hAm = gobjects(3, 6); % likewise
 hLv = gobjects(n.runs,2); % for legend
+
 
 %% Ratio vs. intensity figure
 
@@ -112,7 +112,6 @@ set(lgd1, 'Position', pos, 'Units', 'normalized', 'FontSize', 12)
 
 %% Fractionation vs. temperature
 
-
 tab(2) = uitab(tgroup, 'Title', 'Fractionation vs. Temp');
 hAm(2,1) = axes('parent', tab(2), 'Position', ...
         [axleft axbott, 2*axwidth+axseph, (1-axbott-0.01)]);
@@ -153,12 +152,13 @@ for irun = 1:n.runs
         'MarkerFaceAlpha', 0.7);
 end
 
-% make legend
+% make legend. must use 4-output version to change markersize for scatter.
 warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode'); % remove tab-related warning
 [lgd2, hobj2, ~, ~] = legend(hLv(:,2), {runs(:).name});
-set(lgd2, 'Position', [pos(1)-0.04 pos(2) 0.15 pos(4)], 'Units', 'normalized', 'FontSize', 12)
+set(lgd2, 'Position', [pos(1)-0.04 pos(2) 0.16 pos(4)], 'Units', 'normalized', 'FontSize', 12)
 set(findobj(hobj2,'type','patch'), 'MarkerSize',10, 'FaceAlpha', 0.7)
 set(findobj(hobj2,'type','Text') , 'FontSize', 12)
+
 
 %% Fractionation vs. time
 
@@ -167,6 +167,7 @@ set(findobj(hobj2,'type','Text') , 'FontSize', 12)
 
 for irun = 1:n.runs
 
+    % use a square for 981, a circle for 982
     switch runs(irun).standard
         case 'NBS981', markerstr = 's';
         case 'NBS982', markerstr = 'o';
@@ -176,11 +177,13 @@ for irun = 1:n.runs
 
     for iratio = 1:3
 
+        % plot 2-sigma uncertainty bar...
         line([runs(irun).time runs(irun).time], ...
             [runs(irun).meanBeta(iratio) - 2*runs(irun).sterBeta(iratio) ...
             runs(irun).meanBeta(iratio) + 2*runs(irun).sterBeta(iratio)], ...
             'Color', cmap(iratio,:), 'LineWidth', lwidth);
-
+        
+        % ...and a marker on top of the uncertainty bar
         hPm(irun, iratio) = plot(runs(irun).time, runs(irun).meanBeta(iratio), ...
             'Marker', markerstr, 'MarkerFaceColor', cmap(iratio,:), ...
             'MarkerEdgeColor', 'k', 'MarkerSize', 10);
@@ -189,6 +192,7 @@ for irun = 1:n.runs
 
 end % for irun
 
+% label axes
 datetick('x', 'dd-mmm')
 ylabel('\beta', 'FontSize', 20)
 xlabel('Run date', 'FontSize', 20)
