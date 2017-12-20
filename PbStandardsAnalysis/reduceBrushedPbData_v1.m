@@ -48,9 +48,16 @@ for irun = 1:n.runs
     
     runs(irun).datadt = runs(irun).dataDT0 ./ (1 - (dt.best*1e-9)*runs(irun).dataDT0);
     
+    switch runs(irun).standard
+        case 'NBS981'
+            MSmethod.BItimes = MSmethod.BItimes981;
+        case 'NBS982'
+            MSmethod.BItimes = MSmethod.BItimes982;
+    end % switch
+    
     switch MSmethod.BImethod
         case 'Dodson'
-            runs(irun).BIdt = DodsonBI_v1(runs(irun).datadt, MSmethod);
+            runs(irun).BIdt = DodsonBI(runs(irun).datadt, MSmethod);
         case 'Quadrift'
             runs(irun).BIdt = QuadDriftCorr_v1(runs(irun).datadt, MSmethod);
     end % swtich beam interpolation method
@@ -104,17 +111,17 @@ for irun = 1:n.runs
 end % for irun, fractionation calculations
 
 % calculate session weighed mean fractionation values
-session.wtdMeanAlpha   = sum(cat(1, runs.meanAlpha) ./ cat(1,runs.sterAlpha).^2) ./ ...
-                         sum(                     1 ./ cat(1,runs.sterAlpha).^2);
-session.wtdMeanAlpha1s = sqrt(1./sum(1./cat(1, runs.sterAlpha).^2));
+session.wtdMeanAlpha   = sum(cat(1, runs.meanAlpha) ./ cat(1,runs.sterAlpha).^2, 1) ./ ...
+                         sum(                     1 ./ cat(1,runs.sterAlpha).^2, 1);
+session.wtdMeanAlpha1s = sqrt(1./sum(1./cat(1, runs.sterAlpha).^2, 1));
 session.redChiSqAlpha  = sum((cat(1,runs.meanAlpha)-repmat(session.wtdMeanAlpha1s,n.runs,1)).^2 ./ ...
-                              cat(1,runs.sterAlpha).^2 ) / (n.runs - 1);
+                              cat(1,runs.sterAlpha).^2, 1) / (n.runs - 1);
 
-session.wtdMeanBeta =   sum(cat(1, runs.meanBeta)   ./ cat(1,runs.sterBeta).^2) ./ ...
-                        sum(                      1 ./ cat(1,runs.sterBeta).^2);
-session.wtdMeanBeta1s  = sqrt(1./sum(1./cat(1, runs.sterBeta).^2));
+session.wtdMeanBeta =   sum(cat(1, runs.meanBeta)   ./ cat(1,runs.sterBeta).^2, 1) ./ ...
+                        sum(                      1 ./ cat(1,runs.sterBeta).^2, 1);
+session.wtdMeanBeta1s  = sqrt(1./sum(1./cat(1, runs.sterBeta).^2, 1));
 session.redChiSqBeta  = sum((cat(1,runs.meanBeta)-repmat(session.wtdMeanBeta1s,n.runs,1)).^2 ./ ...
-                              cat(1,runs.sterBeta).^2 ) / (n.runs - 1);
+                              cat(1,runs.sterBeta).^2, 1 ) / (n.runs - 1);
 session.meanTemp = mean(cat(1, runs.meanTemp));
 
 %% 3.  Plot results

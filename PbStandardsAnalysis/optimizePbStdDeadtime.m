@@ -21,10 +21,17 @@ for irun = 1:nruns
     % dead time correction
     dtcorr(irun).data = runs(irun).dataDT0 ./ (1 - (dt*1e-9)*runs(irun).dataDT0); 
     
+    switch runs(irun).standard
+        case 'NBS981'
+            MSmethod.BItimes = MSmethod.BItimes981;
+        case 'NBS982'
+            MSmethod.BItimes = MSmethod.BItimes982;
+    end % switch
+    
     % beam interpolation
     switch MSmethod.BImethod
         case 'Dodson'
-            dtcorr(irun).ratiosBI = DodsonBI_v1(dtcorr(irun).data, MSmethod);
+            dtcorr(irun).ratiosBI = DodsonBI(dtcorr(irun).data, MSmethod);
         case 'Quadrift'
             dtcorr(irun).ratiosBI = QuadDriftCorr_v1(dtcorr(irun).data, MSmethod);
     end % switch beam interpolation method
@@ -68,7 +75,7 @@ for irun = 1:nruns
             dtcorr(irun).std76 = movstd(dtcorr(irun).lr76, MSmethod.cyclesPerBlock - 1);
             
             % reduced chi-square values for each measured, dt & fractionation corr ratio
-            dtcorr(irun).x2red_46 = (dtcorr(irun).lr46 - log(stnd.nbs982r46)).^2 ./ ...
+            dtcorr(irun).x2red_46 = (dtcorr(irun).lr46 - log(stnd.nbs982r46)).^2 ./ ... 
                                      dtcorr(irun).std46.^2;
             dtcorr(irun).x2red_76 = (dtcorr(irun).lr76 - log(stnd.nbs982r76)).^2 ./ ...
                                      dtcorr(irun).std76.^2;
