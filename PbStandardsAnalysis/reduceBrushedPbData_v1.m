@@ -55,12 +55,18 @@ for irun = 1:n.runs
             MSmethod.BItimes = MSmethod.BItimes982;
     end % switch
     
+    if runs(irun).bi % if the data has already been beam-interpolated in method
+            runs(irun).BIdata = noBI(runs(irun).datadt, MSmethod);
+    else % if beam interpolation turned off in method, perform BI here
+
     switch MSmethod.BImethod
         case 'Dodson'
             runs(irun).BIdt = DodsonBI(runs(irun).datadt, MSmethod);
         case 'Quadrift'
             runs(irun).BIdt = QuadDriftCorr_v1(runs(irun).datadt, MSmethod);
     end % swtich beam interpolation method
+    
+    end % if runs(irun).bi
     
 end % for irun, do dead time calculations
 

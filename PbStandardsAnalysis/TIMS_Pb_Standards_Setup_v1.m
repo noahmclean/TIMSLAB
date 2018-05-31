@@ -4,7 +4,7 @@
 % That folder should be dataFileFolder.
 % The name of each .xlsx data file should start with NBS981 or NBS982.
 
-dataFileFolder = '/Users/noahmc/Documents/KU/IGL/PhoenixData/PhoenixPbStandardData_SEM02/';
+dataFileFolder = '/Users/noahmc/Documents/KU/IGL/PhoenixData/PhoenixPbStandardData_Daly02/';%Testing/';
 
 MSmethod.measMasses = {'204', '205', '206', '207', '208'}; 
 MSmethod.outRatios = {'204/206', '205/206', '207/206', '208/206'}; 
@@ -29,12 +29,18 @@ for irun = 1:n.runs
             MSmethod.BItimes = MSmethod.BItimes982;
     end % switch
     
+    if runs(irun).bi % if the data has already been beam-interpolated in method
+            runs(irun).BIdata = noBI(runs(irun).dataDT0, MSmethod);
+    else % if beam interpolation turned off in method, perform BI here
+        
     switch MSmethod.BImethod
         case 'Dodson'
             runs(irun).BIdata = DodsonBI(runs(irun).dataDT0, MSmethod);
         case 'Quadrift'
             runs(irun).BIdata = QuadDriftCorr_v1(runs(irun).dataDT0, MSmethod);
     end % switch
+    
+    end % if runs(irun).bi
     
 end % for
 

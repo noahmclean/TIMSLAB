@@ -115,6 +115,8 @@ end
 
 %% Create a matrix of partial derivatives
 
+%Jri = zeros(
+
 
 %% append full blocks and partial block, convert to rows = BIcycles, columns = ratios
 ratiosBI = [reshape(blocksBI, [nRatios, (cyclesPerBlock-1)*nBlocks]) partialBlockBI]';

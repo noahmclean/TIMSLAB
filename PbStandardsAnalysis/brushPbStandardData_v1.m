@@ -32,12 +32,16 @@ for irun = 1:n.runs
     nBlocks = floor(numBlocks); % complete blocks of data
     partialBlockCycles = max(rem(size(runs(irun).dataRaw,1),MSmethod.cyclesPerBlock)-1,0);
     % 2. make a vector of the first cycle of each BI pair for full blocks
+    if runs(irun).bi %if no beam interpolation to do
+    ratioStartCycles = 1:size(runs(irun).BIdata,1);
+    else
     cycleCount = repmat(1:(MSmethod.cyclesPerBlock-1),1,nBlocks);
     blockTotal = repelem(0:MSmethod.cyclesPerBlock:(MSmethod.cyclesPerBlock*nBlocks-1), MSmethod.cyclesPerBlock - 1);
     ratioStartCycles = cycleCount + blockTotal; % cycle indices for first cycle in BI ratios
     % 3. append cycles from partial blocks to end; does nothing for partialBlockCycles = 0.
     ratioStartCycles = [ratioStartCycles  (1:partialBlockCycles) + MSmethod.cyclesPerBlock*nBlocks]; %#ok<AGROW>
-
+    end
+    
     runs(irun).ratioTimes = runs(irun).secs(ratioStartCycles);
     runs(irun).ratioStartCycles = ratioStartCycles; % record this for later, where it's useful.
     
