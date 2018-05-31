@@ -54,9 +54,12 @@ for irun = 1:n.runs
         case 'NBS982'
             MSmethod.BItimes = MSmethod.BItimes982;
     end % switch
+
+            % set cyclesPerBlock for run to value from data file
+            MSmethod.cyclesPerBlock = runs(irun).cyclesPerBlock;
     
     if runs(irun).bi % if the data has already been beam-interpolated in method
-            runs(irun).BIdata = noBI(runs(irun).datadt, MSmethod);
+            runs(irun).BIdt = noBI(runs(irun).datadt, MSmethod);
     else % if beam interpolation turned off in method, perform BI here
 
     switch MSmethod.BImethod

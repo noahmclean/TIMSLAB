@@ -8,7 +8,7 @@ dataFileFolder = '/Users/noahmc/Documents/KU/IGL/PhoenixData/PhoenixPbStandardDa
 
 MSmethod.measMasses = {'204', '205', '206', '207', '208'}; 
 MSmethod.outRatios = {'204/206', '205/206', '207/206', '208/206'}; 
-MSmethod.cyclesPerBlock = 12; 
+%MSmethod.cyclesPerBlock = 12; % move this to file-specific value read in during parsing
 MSmethod.BItimes982 = [10 2 1 2 3 2 5 2 3 2];
 MSmethod.BItimes981 = [10 2 1 2 5 2 5 2 2 2];
 MSmethod.BItimes = MSmethod.BItimes982;
@@ -22,12 +22,16 @@ n.runs = size(runs,1);
 % Do beam interpolation
 for irun = 1:n.runs
     
+    % use different integration times for NBS981 and NBS982 data
     switch runs(irun).standard
         case 'NBS981'
             MSmethod.BItimes = MSmethod.BItimes981;
         case 'NBS982'
             MSmethod.BItimes = MSmethod.BItimes982;
     end % switch
+    
+            % set cyclesPerBlock for run to value from data file
+            MSmethod.cyclesPerBlock = runs(irun).cyclesPerBlock;
     
     if runs(irun).bi % if the data has already been beam-interpolated in method
             runs(irun).BIdata = noBI(runs(irun).dataDT0, MSmethod);

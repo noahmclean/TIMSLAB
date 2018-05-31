@@ -27,6 +27,13 @@ for irun = 1:nruns
         case 'NBS982'
             MSmethod.BItimes = MSmethod.BItimes982;
     end % switch
+        
+            % set cyclesPerBlock for run to value from data file
+            MSmethod.cyclesPerBlock = runs(irun).cyclesPerBlock;
+            
+    if runs(irun).bi % if the data has already been beam-interpolated in method
+            runs(irun).BIdata = noBI(runs(irun).datadt, MSmethod);
+    else % if beam interpolation turned off in method, perform BI here
     
     % beam interpolation
     switch MSmethod.BImethod
@@ -35,6 +42,8 @@ for irun = 1:nruns
         case 'Quadrift'
             dtcorr(irun).ratiosBI = QuadDriftCorr_v1(dtcorr(irun).data, MSmethod);
     end % switch beam interpolation method
+    
+    end % if runs(irun).bi
     
     % eliminate skipped ratios from calculation
     if ~isempty(runs(irun).skips) % if the user brushed some data

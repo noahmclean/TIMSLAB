@@ -21,6 +21,14 @@ for irun = 1:nruns
     % dead time correction
     dtcorr(irun).data = runs(irun).dataDT0 ./ (1 - (dt*1e-9)*runs(irun).dataDT0); 
     
+        
+    % set cyclesPerBlock for run to value from data file
+    MSmethod.cyclesPerBlock = runs(irun).cyclesPerBlock;
+    
+    if runs(irun).bi % if the data has already been beam-interpolated in method
+            dtcorr(irun).ratiosBI = noBI(runs(irun).dataDT0, MSmethod);
+    else % if beam interpolation turned off in method, perform BI here
+    
     % beam interpolation
     switch MSmethod.BImethod
         case 'Dodson'
@@ -28,7 +36,9 @@ for irun = 1:nruns
         case 'Quadrift'
             dtcorr(irun).ratiosBI = QuadDriftCorr_v1(dtcorr(irun).data, MSmethod);
     end % switch beam interpolation method
-    
+
+    end % if runs(irun).bi
+        
     % eliminate skipped ratios from calculation
     if ~isempty(runs(irun).skips) % if the user brushed some data
         dtcorr(irun).ratiosBI = dtcorr(irun).ratiosBI(~runs(irun).skips,:);

@@ -8,7 +8,7 @@ function [ratiosBI, blockstats] = DodsonBI(dataRaw, MSmethod)
 %       as [peak1 settle peak2 settle peak3 settle ...]
 %   MSmethod.measMasses is cell array of strings with the masses measured: {'204', '205', ...}
 %   MSmethod.outRatios is a cell array of strings with the output ratios: {'204/206', '207/206', ...}
-%   MSmethod.cyclesPerBlock is the number of cycles per block of data
+%   MSmethod.cyclesPerBlock is the number of cycles per block of data 
 %
 %   Implementation using Ludwig's method: https://doi.org/10.1016/j.chemgeo.2009.07.004
 %   from Dodson: http://iopscience.iop.org/article/10.1088/0022-3735/11/4/004/meta

@@ -28,18 +28,18 @@ for irun = 1:n.runs
     % Determine when BI ratios start by enumerating the first cycle of each ratio
     
     % 1. Count blocks and cycles
-    numBlocks = size(runs(irun).dataRaw,1)/MSmethod.cyclesPerBlock; %total (plus fractional) blocks of data
+    numBlocks = size(runs(irun).dataRaw,1)/runs(irun).cyclesPerBlock; %total (plus fractional) blocks of data
     nBlocks = floor(numBlocks); % complete blocks of data
-    partialBlockCycles = max(rem(size(runs(irun).dataRaw,1),MSmethod.cyclesPerBlock)-1,0);
+    partialBlockCycles = max(rem(size(runs(irun).dataRaw,1),runs(irun).cyclesPerBlock)-1,0);
     % 2. make a vector of the first cycle of each BI pair for full blocks
     if runs(irun).bi %if no beam interpolation to do
     ratioStartCycles = 1:size(runs(irun).BIdata,1);
     else
-    cycleCount = repmat(1:(MSmethod.cyclesPerBlock-1),1,nBlocks);
-    blockTotal = repelem(0:MSmethod.cyclesPerBlock:(MSmethod.cyclesPerBlock*nBlocks-1), MSmethod.cyclesPerBlock - 1);
+    cycleCount = repmat(1:(runs(irun).cyclesPerBlock-1),1,nBlocks);
+    blockTotal = repelem(0:runs(irun).cyclesPerBlock:(runs(irun).cyclesPerBlock*nBlocks-1), runs(irun).cyclesPerBlock - 1);
     ratioStartCycles = cycleCount + blockTotal; % cycle indices for first cycle in BI ratios
     % 3. append cycles from partial blocks to end; does nothing for partialBlockCycles = 0.
-    ratioStartCycles = [ratioStartCycles  (1:partialBlockCycles) + MSmethod.cyclesPerBlock*nBlocks]; %#ok<AGROW>
+    ratioStartCycles = [ratioStartCycles  (1:partialBlockCycles) + runs(irun).cyclesPerBlock*nBlocks]; %#ok<AGROW>
     end
     
     runs(irun).ratioTimes = runs(irun).secs(ratioStartCycles);

@@ -42,6 +42,7 @@ for i = 1:fileN
     %did this run do beam interpolation?:
     runs(i).bi   = xlsread( [folderstring fileStruct(i).name], 'CTRL', 'B46' );
     runs(i).standard = fileStruct(i).name(1:6); % NBS981 or NBS982?
+    runs(i).cyclesPerBlock = xlsread( [folderstring fileStruct(i).name], 'CTRL', 'D13' );
 
 
     %% pick out the '20X' bit of the strings, match to ratios or intensities
