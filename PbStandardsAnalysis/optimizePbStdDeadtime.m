@@ -32,7 +32,7 @@ for irun = 1:nruns
             MSmethod.cyclesPerBlock = runs(irun).cyclesPerBlock;
             
     if runs(irun).bi % if the data has already been beam-interpolated in method
-            runs(irun).BIdata = noBI(runs(irun).datadt, MSmethod);
+            dtcorr(irun).ratiosBI = noBI(dtcorr(irun).data, MSmethod);
     else % if beam interpolation turned off in method, perform BI here
     
     % beam interpolation
@@ -84,9 +84,9 @@ for irun = 1:nruns
             dtcorr(irun).std76 = movstd(dtcorr(irun).lr76, MSmethod.cyclesPerBlock - 1);
             
             % reduced chi-square values for each measured, dt & fractionation corr ratio
-            dtcorr(irun).x2red_46 = (dtcorr(irun).lr46 - log(stnd.nbs982r46)).^2 ./ ... 
+            dtcorr(irun).x2red_46 = (dtcorr(irun).lr46 - log(standard.r46)).^2 ./ ... 
                                      dtcorr(irun).std46.^2;
-            dtcorr(irun).x2red_76 = (dtcorr(irun).lr76 - log(stnd.nbs982r76)).^2 ./ ...
+            dtcorr(irun).x2red_76 = (dtcorr(irun).lr76 - log(standard.r76)).^2 ./ ...
                                      dtcorr(irun).std76.^2;
                                  
             reducedChiSq = reducedChiSq + sum(dtcorr(irun).x2red_46) ...

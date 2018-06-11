@@ -39,8 +39,9 @@ end % for irun, record brushing results
 dt.init = 27.5; % nanoseconds, initial value
 options = optimset('TolX', 10^-8);
 [dt.best, dt.misfit] = fminsearch(@(dt) ...
-                        optimize982deadtime(dt, stnd, runs, MSmethod), dt.init, options);
-
+                        ...%optimize982deadtime(dt, stnd, runs, MSmethod), dt.init, options);
+                        optimizePbStdDeadtime(dt, stnd, runs, MSmethod), dt.init, options);
+                        
 disp(['best fit deadtime: ' num2str(dt.best, '%2.2f') ' ns'])
 
 % perform dead time correction with best dead time, do beam interpolation
