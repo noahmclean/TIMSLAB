@@ -32,6 +32,10 @@ for iFolder = 1:nGains
         continue % skip data compilation
     end
     
+    if size(gainsFileInfo,1) == 2 % if there's a MacOS ._ file
+        gainsFileInfo(1) = [];
+    end
+    
     disp(num2str(iFolder))
     
     gainsRawData = readmatrix([gainsFolderPath gainsFileInfo.name], ...
@@ -82,7 +86,7 @@ meanDataPPM = (meanData - mean(meanData))./mean(meanData) * 1e6;
 lsteDataPPM = lsteData * 1e6; % standard error as ppm, linearized approx
 
 
-%% Make some quick plots
+%% Make some quick plots - gain fluctuations
 
 % gains to plot: High and Low collectors (relative to Axial = 1)
 g2plot = [1:4 6:9];
@@ -138,3 +142,14 @@ for iPlot = 1:7
 end
 
 
+%% Make some quick plots - gains noise
+
+figure('Position', [monitorSize(3)/2+1 monitorSize(4)/2+1 monitorSize(3)/2 monitorSize(4)/2], ...
+       'Units', 'pixels', 'DefaultAxesFontSize', 16);
+
+noiseAx = plot(xData, lstdData(:,g2plot(end:-1:1)), '.-', 'LineWidth', 0.5, 'MarkerSize', 10);
+datetick(gca)
+ylabel('standard deviation of gains')
+
+% add legend using gainLabels from line 93
+legend(gainLabels(end:-1:1), 'Location', 'eastoutside', 'FontSize', 18)
