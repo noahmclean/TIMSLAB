@@ -2,26 +2,11 @@
 
 
 %% Set up the Import Options and import the data
-opts = delimitedTextImportOptions("NumVariables", 2);
 
-% Specify range and delimiter
-opts.DataLines = [14, Inf];
-opts.Delimiter = ",";
+filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
+data = parsePeakCenterDataFile(filename);
 
-% Specify column names and types
-opts.VariableNames = ["Mass", "Intensity"];
-opts.VariableTypes = ["double", "double"];
-
-% Specify file level properties
-opts.ExtraColumnsRule = "ignore";
-opts.EmptyLineRule = "read";
-
-% Import the data
-data = readtable("DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt", opts);
-
-% Convert to output type
-data = table2array(data);
-clear opts
+%clear filename opts
 
 
 %% plot peak shape
