@@ -166,7 +166,28 @@ plot(modelMassVec, beam)
 
 %% Give (better) Tikhonov regularization a try.
 
+% first, we need a prior.  start with the peak side derivatives.
 
+peaktopRange = measIntensityCPS > 0.8*max(measIntensityCPS);
+cumulativeSumCPS = cumsum(measIntensityCPS);
+totalMeasCPS = cumulativeSumCPS(end);
+peakCenter = interp1(cumulativeSumCPS(peaktopRange), ...
+                     magnetMassVec(peaktopRange), totalMeasCPS/2);
+[peakCenterMangetMass, peakCenterIndex] = min(abs(magnetMassVec-peakCenter));
+
+% use lower-mass side of peak scan, as beam is entering collector
+lowerPeakMass = collectorLimits(1:peakCenterIndex, 2) + ...
+                0.5*( collectorLimits(2:peakCenterIndex+1, 2) - ...
+                      collectorLimits(1:peakCenterIndex, 2) );
+lowerPeakInts = measIntensityCPS(2:peakCenterIndex+1) - ...
+                measIntensityCPS(1:peakCenterIndex);
+
+% use higher-mass side of peak scan, as beam is entering collector
+higherPeakMass = collectorLimits(peakCenterIndex:end, 1) + ...
+                0.5*( collectorLimits(peakCenterIndex-1:end-1, 1) - ...
+                      collectorLimits(peakCenterIndex:end, 1) );
+higherPeakInts = measIntensityCPS(peakCenterIndex-1:end-1) - ...
+                 measIntensityCPS(peakCenterIndex:end);
 
 
 %% do some symbolic math
