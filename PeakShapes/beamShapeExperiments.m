@@ -29,8 +29,9 @@ clear opts
 %plot(data(:,1), data(:,2), '-', 'LineWidth', 2)
 magnetMassVec = data(:,1);
 measIntensityCPS = data(:,2);
+
+
 Wdata = diag(1./max(measIntensityCPS,1));
-measIntensityAnscombe = 2*sqrt(measIntensityCPS+3/8);
 
 
 %% Input constants
@@ -105,9 +106,11 @@ collectorLimits = magnetMassVec + [-collectorWidthAMU, collectorWidthAMU]/2;
 
 %firstModelMass = magnetMassVec(1); %collectorLimits(1,1);
 %lastModelMass = magnetMassVec(end); %collectorLimits(end,2);
-firstModelMass = collectorLimits(1,1);
-lastModelMass = collectorLimits(end,2);
-nModelMasses = ceil((lastModelMass-firstModelMass)/deltaMagnetMass);
+%firstModelMass = collectorLimits(1,1);
+%lastModelMass = collectorLimits(end,2);
+firstModelMass = 204.7;
+lastModelMass = 205.3;
+nModelMasses = ceil(0.95*(lastModelMass-firstModelMass)/deltaMagnetMass);
 modelMassVec = linspace(firstModelMass, lastModelMass, nModelMasses);
 deltaModelMass = modelMassVec(2)-modelMassVec(1);
 
@@ -152,6 +155,16 @@ end
 % note: this is a nicer/more accurate trapezoidal rule G
 
 
+%% try a WLS solution
+
+centerBeam1 = (G'*Wdata*G)\(G'*Wdata*measIntensityCPS);
+plot(modelMassVec, centerBeam1, '-g', 'LineWidth', 2);
+
+hold on
+centerBeam2 = lsqnonneg(chol(Wdata)*G, chol(Wdata)*measIntensityCPS);
+plot(modelMassVec, centerBeam2, ':k', 'LineWidth', 2);
+
+
 %% another ridge regression try:
 
 
@@ -176,18 +189,24 @@ peakCenter = interp1(cumulativeSumCPS(peaktopRange), ...
 [peakCenterMangetMass, peakCenterIndex] = min(abs(magnetMassVec-peakCenter));
 
 % use lower-mass side of peak scan, as beam is entering collector
-lowerPeakMass = collectorLimits(1:peakCenterIndex, 2) + ...
+lowerPeakMass = collectorLimits(1:peakCenterIndex, 2) - ...
                 0.5*( collectorLimits(2:peakCenterIndex+1, 2) - ...
                       collectorLimits(1:peakCenterIndex, 2) );
 lowerPeakInts = measIntensityCPS(2:peakCenterIndex+1) - ...
                 measIntensityCPS(1:peakCenterIndex);
 
 % use higher-mass side of peak scan, as beam is entering collector
-higherPeakMass = collectorLimits(peakCenterIndex:end, 1) + ...
+higherPeakMass = collectorLimits(peakCenterIndex:end, 1) - ...
                 0.5*( collectorLimits(peakCenterIndex-1:end-1, 1) - ...
                       collectorLimits(peakCenterIndex:end, 1) );
 higherPeakInts = measIntensityCPS(peakCenterIndex-1:end-1) - ...
                  measIntensityCPS(peakCenterIndex:end);
+
+peakSideMult = 1/deltaMagnetMass; % correct for delta-x in integral
+plot(lowerPeakMass,  peakSideMult * lowerPeakInts,  '.r', ...
+     higherPeakMass, peakSideMult * higherPeakInts, '.b', ...
+                    'LineWidth', 2, 'MarkerSize', 20)
+
 
 
 %% do some symbolic math
