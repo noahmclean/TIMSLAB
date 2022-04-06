@@ -1,13 +1,17 @@
 %% Interpret PeakCentres for beam/peak shape
 
+% mass spectrometer properties
+collectorWidthMM = 1;
+effectiveRadiusMagnetMM = 540;
+faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
+ionCounterNames = ["PM", "SEM"];
 
 %% Set up the Import Options and import the data
 
 filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 data = parsePeakCenterDataFile(filename);
-
-%clear filename opts
-
+filenameBits = extractBetween(filename, "-", "-");
+detectorName = filenameBits(end); clear filenameBits
 
 %% plot peak shape
 
@@ -15,14 +19,14 @@ data = parsePeakCenterDataFile(filename);
 magnetMassVec = data(:,1);
 measIntensityCPS = data(:,2);
 
+if any(detectorName == faradayNames) 
 
-Wdata = diag(1./max(measIntensityCPS,1));
-
+elseif any(detectorName == ionCounterNames)
+    Wdata = diag(1./max(measIntensityCPS,1));
+end
 
 %% Input constants
 
-collectorWidthMM = 1;
-effectiveRadiusMagnetMM = 540;
 
 
 %% Calculations
