@@ -37,5 +37,8 @@ data.peakCenterMass = str2double(extractAfter(header(5), ","));
 data.integPeriodMS = str2double(extractAfter(header(11), "ms"));
 data.MassID = strtrim(extractAfter(header(3), ","));
 
+filenameBits = extractBetween(filename, "-", "-");
+data.detectorName = filenameBits(end); clear filenameBits
+
 
 end % function
