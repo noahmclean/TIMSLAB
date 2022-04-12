@@ -53,3 +53,4 @@ figure
 hold on
 plot(magnetMasses, measIntensity, '-r', 'LineWidth', 2);
 plot(magnetMasses, dataHat, ':g', 'LineWidth', 2 )
+

@@ -1,5 +1,7 @@
 function [G, modelMasses] = assembleG(magnetMasses, massSpec, modelMassRange)
 
+magnetMasses = magnetMasses(:); % force magnetMasses to be column vector
+
 minModelMass = modelMassRange(1);
 maxModelMass = modelMassRange(2);
 
@@ -14,7 +16,7 @@ collectorLimits = magnetMasses + [-collectorWidthAMU, collectorWidthAMU]/2;
 
 deltaMagnetMass = mean(magnetMasses(2:end-1)-magnetMasses(1:end-2));
 nModelMasses = ceil(0.95*(maxModelMass-minModelMass)/deltaMagnetMass);
-modelMasses = linspace(minModelMass, maxModelMass, nModelMasses);
+modelMasses = linspace(minModelMass, maxModelMass, nModelMasses)';
 deltaModelMass = modelMasses(2)-modelMasses(1);
 
 % make a new convolution matrix, now with trapezoidal rule  
@@ -53,6 +55,8 @@ for iMass = 1:nMagnetMasses % a row for each manget mass
 
     end % if firstMassIndexInside > 1 (not on back edge)
 
-end
+end % for iMass
 
 % note: this is a nicer/more accurate trapezoidal rule G
+
+end % function
