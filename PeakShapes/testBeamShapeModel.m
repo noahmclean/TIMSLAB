@@ -3,8 +3,8 @@
 
 massSpec = setupMassSpec("PhoenixKansas_1e12");
 
-magnetMasses = 204.6:0.001:205.4;
-modelMassRange = [204.7 205.3];
+magnetMasses = 204.6:0.01:205.4;
+modelMassRange = [204.9 205.1];
 
 [G, modelMasses] = assembleG(magnetMasses, massSpec, modelMassRange);
 
@@ -41,4 +41,7 @@ beamSolution2 = lsqnonneg(G,measCounts);
 meas1 = G*beamSolution1;
 meas2 = G*beamSolution2;
 
+subplot(2,1,1)
+plot(modelMasses, beamSolution0, modelMasses, beamSolution1)
+subplot(2,1,2)
 plot(modelMasses, beamSolution0, modelMasses, beamSolution2)
