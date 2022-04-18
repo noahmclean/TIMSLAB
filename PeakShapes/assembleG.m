@@ -1,4 +1,18 @@
-function [G, modelMasses] = assembleG(magnetMasses, massSpec, modelMassRange)
+function [G, modelMasses] = assembleG(magnetMasses, massSpec, modelMassRange, sampleRate)
+
+%% integrate the beam over a window defined by collector width
+%
+% Inputs: 
+% magnetMasses - the vector of masses measured in the peak center/re
+% massSpec - the structure created by setupMassSpec.m function
+% modelMassRange - start and end masses for beam function
+% sampleRate - how many modelMasses to solve for per mangetMass 
+% (<1, 0.95 to 0.8 seems ok)
+%
+% Outputs: 
+% G - matrix that integrates model beam over mass window defined by
+% collector
+% modelMasses - vector of model masses representing the columns of G
 
 magnetMasses = magnetMasses(:); % force magnetMasses to be column vector
 
@@ -15,7 +29,7 @@ nMagnetMasses = length(magnetMasses);
 collectorLimits = magnetMasses + [-collectorWidthAMU, collectorWidthAMU]/2;
 
 deltaMagnetMass = mean(magnetMasses(2:end-1)-magnetMasses(1:end-2));
-nModelMasses = ceil(0.95*(maxModelMass-minModelMass)/deltaMagnetMass);
+nModelMasses = ceil(sampleRate*(maxModelMass-minModelMass)/deltaMagnetMass);
 modelMasses = linspace(minModelMass, maxModelMass, nModelMasses)';
 deltaModelMass = modelMasses(2)-modelMasses(1);
 
