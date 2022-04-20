@@ -2,9 +2,9 @@
 
 addpath("exampleData/")
 massSpec = setupMassSpec("PhoenixKansas_1e12");
-filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
+%filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-205Pb-PM-S2B7C1.txt";
-%filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
+filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
 %filename = "6NHCl dpblank-210204A-169-PKC-208Pb-PM-S5B2C1.txt";
 %filename = "NBS987 StaticAxH1H2 Bead1Run1-393-PKC-86Sr-Ax-S1B8C1.txt";
 
@@ -67,10 +67,22 @@ G = G(hasModelBeam,:);
 magnetMasses = magnetMasses(hasModelBeam);
 measPeakIntensity = measPeakIntensity(hasModelBeam);
 
+% WLS and NNLS
 GB = G*B;
 Wdata = diag(1./max(measPeakIntensity,1));
 beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*measPeakIntensity);
 beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*measPeakIntensity);
+
+% smoothing spline
+lambda = 1e-6;
+D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
+
+%Wdata = eye(length(measPeakIntensity));
+Gaugmented = [GB; sqrt(lambda)*D];
+measAugmented = [measPeakIntensity; zeros(beamKnots+bdeg-pord,1)];
+wtsAugmented = blkdiag(Wdata, eye(beamKnots+bdeg-pord));
+beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*measAugmented);
+beamNNPSspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
 
 chi2(i) = sum( (GB*beamWNNLS - measPeakIntensity).^2 .* diag(Wdata) );
 
@@ -81,7 +93,7 @@ bestCollectorWidth = collectorWidths(minchi2indx);
 
 %% determine peak width
 
-beamShape = B*beamWNNLS;
+beamShape = B*beamNNPSspl;
 [maxBeam, maxBeamIndex] = max(beamShape);
 thesholdIntensity = 0.02 * maxBeam;
 
