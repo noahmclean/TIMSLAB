@@ -1,33 +1,25 @@
 %% solve for beam shape and collector width using (smoothing) splines
 
 addpath("exampleData/")
-massSpec = setupMassSpec("PhoenixKansas_1e12");
+massSpec = massSpecModel("PhoenixKansas_1e12");
+
 %filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-205Pb-PM-S2B7C1.txt";
 filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
 %filename = "6NHCl dpblank-210204A-169-PKC-208Pb-PM-S5B2C1.txt";
 %filename = "NBS987 StaticAxH1H2 Bead1Run1-393-PKC-86Sr-Ax-S1B8C1.txt";
+data = dataModel(filename);
 
-data = parsePeakCenterDataFile(filename);
-
-%%
+%% 
 
 theoreticalBeamWidthMM = 0.35; % mm
 %collectorWidths = 0.951422845691383; %linspace(0.9, 1.1, 500);
 
-collectorWidths = 0.95135;
+collectorWidthAMU = calcCollectorWidthAMU(massSpec, data.peakCenterMass);
+beamWidthAMU      = calcBeamWidthAMU(massSpec, data.peakCenterMass);
 
-chi2 = zeros(size(collectorWidths));
-for i = 1:length(collectorWidths)
-
-collectorWidthMM = collectorWidths(i);
-
-massAtCenterAMU = data.peakCenterMass;
-collectorWidthAMU = massAtCenterAMU / massSpec.effectiveRadiusMagnetMM * collectorWidthMM;
-beamWidthAMU      = massAtCenterAMU / massSpec.effectiveRadiusMagnetMM * theoreticalBeamWidthMM;
-
-magnetMasses = data.meas(:,1);
-measPeakIntensity = data.meas(:,2);
+magnetMasses = data.magnetMasses;
+measPeakIntensity = data.measPeakIntensity;
 
 collectorLimits = magnetMasses + [-collectorWidthAMU, collectorWidthAMU]/2;
 deltaMagnetMass = magnetMasses(2)-magnetMasses(1);
@@ -39,8 +31,8 @@ pord = 2; % order of differences
 beamKnots = ceil(beamWindow/(deltaMagnetMass)) - 2*bdeg; % 3 xtra knots for cubic spline
 nInterp = 1000; % number of interpolated segments
 
-xl = massAtCenterAMU - beamWindow/2;
-xr = massAtCenterAMU + beamWindow/2;
+xl = data.peakCenterMass - beamWindow/2;
+xr = data.peakCenterMass + beamWindow/2;
 
 beamMassInterp = linspace(xl, xr, nInterp);
 B = bbase(beamMassInterp, xl, xr, beamKnots, bdeg);
@@ -84,12 +76,6 @@ wtsAugmented = blkdiag(Wdata, eye(beamKnots+bdeg-pord));
 beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*measAugmented);
 beamNNPSspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
 
-chi2(i) = sum( (GB*beamWNNLS - measPeakIntensity).^2 .* diag(Wdata) );
-
-end % for
-
-[minchi2, minchi2indx] = min(chi2);
-bestCollectorWidth = collectorWidths(minchi2indx);
 
 %% determine peak width
 
@@ -108,7 +94,7 @@ rightThesholdChange = rightAboveThreshold(1:end-1)-rightAboveThreshold(2:end);
 rightBoundary = find(rightThesholdChange, 1, 'first') + maxBeamIndex - 1;
 
 measBeamWidthAMU = beamMassInterp(rightBoundary) - beamMassInterp(leftBoundary);
-measBeamWidthMM = measBeamWidthAMU * massSpec.effectiveRadiusMagnetMM/massAtCenterAMU;
+measBeamWidthMM = measBeamWidthAMU * massSpec.effectiveRadiusMagnetMM/data.peakCenterMass;
 
 
 %%
