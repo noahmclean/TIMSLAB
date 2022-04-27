@@ -49,24 +49,7 @@ classdef massSpecModel
         
         end % constructor function
         
-        function collectorWidthAMU = calcCollectorWidthAMU(massSpec, massAtCenterAMU)
-            %CALCCOLLECTORWIDTHAMU Collector width in AMU
-            %   Calculate collector aperture width in AMU at measured mass
-            %   massAtCenterAMU is average/peak mass of the scan, in amu
-            
-            collectorWidthAMU = massAtCenterAMU / ...
-                massSpec.effectiveRadiusMagnetMM * massSpec.collectorWidthMM;
 
-        end % calcCollectorWidthAMU
-
-        function beamWidthAMU = calcBeamWidthAMU(massSpec, massAtCenterAMU)
-            %CALCBEAMWIDTHAMU Beam width in AMU
-            %   Calculate beam width in AMU at measured mass
-            %   massAtCenterAMU is average/peak mass of the scan, in amu
-
-            beamWidthAMU = massAtCenterAMU / ...
-                massSpec.effectiveRadiusMagnetMM * massSpec.theoreticalBeamWidthMM;
-        end % calcBeamWidthAMU
 
     end % methods
 

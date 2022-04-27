@@ -5,26 +5,24 @@ massSpec = massSpecModel("PhoenixKansas_1e12");
 
 %filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-205Pb-PM-S2B7C1.txt";
-filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
+%filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
 %filename = "6NHCl dpblank-210204A-169-PKC-208Pb-PM-S5B2C1.txt";
 %filename = "NBS987 StaticAxH1H2 Bead1Run1-393-PKC-86Sr-Ax-S1B8C1.txt";
+filename = "Ryan-PKC-270UO-PM-Peak.TXT";
 data = dataModel(filename);
 
 %% 
 
-theoreticalBeamWidthMM = 0.35; % mm
-%collectorWidths = 0.951422845691383; %linspace(0.9, 1.1, 500);
-
-collectorWidthAMU = calcCollectorWidthAMU(massSpec, data.peakCenterMass);
-beamWidthAMU      = calcBeamWidthAMU(massSpec, data.peakCenterMass);
+data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
+data.beamWidthAMU      = calcBeamWidthAMU(data, massSpec);
 
 magnetMasses = data.magnetMasses;
 measPeakIntensity = data.measPeakIntensity;
 
-collectorLimits = magnetMasses + [-collectorWidthAMU, collectorWidthAMU]/2;
-deltaMagnetMass = magnetMasses(2)-magnetMasses(1);
+collectorLimits = data.magnetMasses + [-data.collectorWidthAMU, data.collectorWidthAMU]/2;
+deltaMagnetMass = data.magnetMasses(2)-data.magnetMasses(1);
 
-beamWindow = beamWidthAMU*2;
+beamWindow = data.beamWidthAMU*2;
 
 bdeg = 3; % order of spline (= order of polynomial pieces)
 pord = 2; % order of differences 
@@ -38,7 +36,7 @@ beamMassInterp = linspace(xl, xr, nInterp);
 B = bbase(beamMassInterp, xl, xr, beamKnots, bdeg);
 deltabeamMassInterp = beamMassInterp(2)-beamMassInterp(1);
 
-nMagnetMasses = length(magnetMasses);
+nMagnetMasses = length(data.magnetMasses);
 G = zeros(nMagnetMasses, nInterp);
 for iMass = 1:nMagnetMasses % a row for each manget mass
 
@@ -66,7 +64,7 @@ beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*measPeakIntensity);
 beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*measPeakIntensity);
 
 % smoothing spline
-lambda = 1e-6;
+lambda = 1e-11;
 D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
 
 %Wdata = eye(length(measPeakIntensity));
@@ -79,9 +77,9 @@ beamNNPSspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAug
 
 %% determine peak width
 
-beamShape = B*beamNNPSspl;
+beamShape = B*beamWNNLS;
 [maxBeam, maxBeamIndex] = max(beamShape);
-thesholdIntensity = 0.02 * maxBeam;
+thesholdIntensity = 0.01 * maxBeam;
 
 peakLeft = beamShape(1:maxBeamIndex);
 leftAboveTheshold = peakLeft > thesholdIntensity;
@@ -110,5 +108,5 @@ line([beamMassInterp(leftBoundary) beamMassInterp(rightBoundary)], ...
 set(gca, "PlotBoxAspectRatio", [1 1 1])
 subplot(1,2,2); hold on
 plot(magnetMasses, measPeakIntensity, '-b', 'LineWidth', 2)
-plot(magnetMasses, GB*beamWNNLS, ':r', 'LineWidth', 2)
+plot(magnetMasses, G*beamShape, ':r', 'LineWidth', 2)
 set(gca, "PlotBoxAspectRatio", [1 1 1])
