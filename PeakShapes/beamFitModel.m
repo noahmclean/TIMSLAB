@@ -4,7 +4,7 @@ classdef beamFitModel
     
     properties
         G (:,:) double
-
+        
     end
     
     methods
@@ -12,7 +12,7 @@ classdef beamFitModel
             %FITSMODEL Construct an instance of this class
             %   Detailed explanation goes here
             
-        
+            
 
         end
         

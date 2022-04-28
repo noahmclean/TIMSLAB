@@ -13,6 +13,8 @@ data = dataModel(filename);
 
 %% 
 
+% calculations about the setup, depend on data and mass spec
+
 data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
 data.beamWidthAMU      = calcBeamWidthAMU(data, massSpec);
 
@@ -23,6 +25,8 @@ collectorLimits = data.magnetMasses + [-data.collectorWidthAMU, data.collectorWi
 deltaMagnetMass = data.magnetMasses(2)-data.magnetMasses(1);
 
 beamWindow = data.beamWidthAMU*2;
+
+% spline basis B
 
 bdeg = 3; % order of spline (= order of polynomial pieces)
 pord = 2; % order of differences 
@@ -35,6 +39,8 @@ xr = data.peakCenterMass + beamWindow/2;
 beamMassInterp = linspace(xl, xr, nInterp);
 B = bbase(beamMassInterp, xl, xr, beamKnots, bdeg);
 deltabeamMassInterp = beamMassInterp(2)-beamMassInterp(1);
+
+% calculate integration matrix G, depends on B, data
 
 nMagnetMasses = length(data.magnetMasses);
 G = zeros(nMagnetMasses, nInterp);

@@ -22,28 +22,10 @@ classdef dataModel
             %   Detailed explanation goes here
 
             arguments 
-                filename (1,1) string = ""
+                filename (1,1) string
             end 
 
-            % 1. parse data table of masses and intensities
-
-            % set options, parse data file
-            opts = delimitedTextImportOptions("NumVariables", 2);
-
-            % Specify range and delimiter
-            opts.DataLines = [14, Inf];
-            opts.Delimiter = ",";
-
-            % Specify column names and types
-            opts.VariableNames = ["Mass", "Intensity"];
-            opts.VariableTypes = ["double", "double"];
-
-            % Specify file level properties
-            opts.ExtraColumnsRule = "ignore";
-            opts.EmptyLineRule = "read";
-
-            % Import the data
-            dataTable = readtable(filename, opts);
+            dataTable = parseDataFromTextFile(filename);
             data.magnetMasses = dataTable.Mass;
             data.measPeakIntensity = dataTable.Intensity;
 
@@ -88,3 +70,26 @@ classdef dataModel
 
 end % classdef
 
+
+function dataTable = parseDataFromTextFile(filename)
+% PARSEDATAFROMTEXTFILE Parse text file and return only data table
+
+% set options, parse data file
+opts = delimitedTextImportOptions("NumVariables", 2);
+
+% Specify range and delimiter
+opts.DataLines = [14, Inf];
+opts.Delimiter = ",";
+
+% Specify column names and types
+opts.VariableNames = ["Mass", "Intensity"];
+opts.VariableTypes = ["double", "double"];
+
+% Specify file level properties
+opts.ExtraColumnsRule = "ignore";
+opts.EmptyLineRule = "read";
+
+% Import the data
+dataTable = readtable(filename, opts);
+
+end % parse text file and
