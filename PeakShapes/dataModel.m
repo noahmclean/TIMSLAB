@@ -4,15 +4,15 @@ classdef dataModel
     %   created by Noah McLean 25 April 2022
     %   for Peak Center/Beam Shape project
     
-    properties
-        magnetMasses      % vector of masses for intensity measurements
-        measPeakIntensity % vector of corresponding peak intensities
-        peakCenterMass    % mass at center of peak from header
-        integPeriodMS     % integration period of measurements in ms
-        MassID            % name of peak getting centered e.g. "205Pb"
-        detectorName      % name of detector as string e.g. "L2"
-        collectorWidthAMU % width of collector aperture in AMU at center mass
-        beamWidthAMU      % width of beam in AMU at center mass
+    properties 
+        magnetMasses            % vector of masses for intensity measurements
+        measPeakIntensity       % vector of corresponding peak intensities
+        peakCenterMass          % mass at center of peak from header
+        integPeriodMS           % integration period of measurements in ms
+        MassID                  % name of peak getting centered e.g. "205Pb"
+        detectorName            % name of detector as string e.g. "L2"
+        collectorWidthAMU       % width of collector aperture in AMU at center mass
+        theoreticalBeamWidthAMU % width of beam in AMU at center mass
 
     end
     
@@ -24,28 +24,21 @@ classdef dataModel
             arguments 
                 filename (1,1) string
             end 
-
+            
+            % 1. parse numerical data
             dataTable = parseDataFromTextFile(filename);
             data.magnetMasses = dataTable.Mass;
             data.measPeakIntensity = dataTable.Intensity;
 
-            % 2. parse header and filename
-            
-            % read header as string array
+            % 2. parse header with metadata
             fileAsStrings = readlines(filename, 'EmptyLineRule', 'skip');
             header = fileAsStrings(1:11); % just the header
-            
-            % extract useful parts of header
             data.peakCenterMass = str2double(extractAfter(header(5), ","));
             data.integPeriodMS = str2double(extractAfter(header(11), "ms"));
             data.MassID = strtrim(extractAfter(header(3), ","));
-            
-            % read detector name from filename, could do from header too?
-            pat = regexpPattern('\w*'); % regular expression for 'words'
-            filenameBits = extract(filename, pat); % etract words from pattern
-            data.detectorName = filenameBits(end-2); % second to last word
+            data.detectorName = strtrim(extractAfter(header(2), ","));
 
-        end % cunstructor function
+        end % constructor function
 
         function collectorWidthAMU = calcCollectorWidthAMU(data, massSpec)
             %CALCCOLLECTORWIDTHAMU Collector width in AMU
@@ -57,12 +50,12 @@ classdef dataModel
 
         end % calcCollectorWidthAMU
 
-        function beamWidthAMU = calcBeamWidthAMU(data, massSpec)
+        function theoreticalbeamWidthAMU = calcBeamWidthAMU(data, massSpec)
             %CALCBEAMWIDTHAMU Beam width in AMU
             %   Calculate beam width in AMU at measured mass
             %   massAtCenterAMU is average/peak mass of the scan, in amu
 
-            beamWidthAMU = data.peakCenterMass / ...
+            theoreticalbeamWidthAMU = data.peakCenterMass / ...
                 massSpec.effectiveRadiusMagnetMM * massSpec.theoreticalBeamWidthMM;
         end % calcBeamWidthAMU
         

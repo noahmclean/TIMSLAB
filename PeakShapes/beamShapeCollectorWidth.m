@@ -16,7 +16,7 @@ data = dataModel(filename);
 % calculations about the setup, depend on data and mass spec
 
 data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
-data.beamWidthAMU      = calcBeamWidthAMU(data, massSpec);
+data.theoreticalBeamWidthAMU = calcBeamWidthAMU(data, massSpec);
 
 magnetMasses = data.magnetMasses;
 measPeakIntensity = data.measPeakIntensity;
@@ -24,7 +24,7 @@ measPeakIntensity = data.measPeakIntensity;
 collectorLimits = data.magnetMasses + [-data.collectorWidthAMU, data.collectorWidthAMU]/2;
 deltaMagnetMass = data.magnetMasses(2)-data.magnetMasses(1);
 
-beamWindow = data.beamWidthAMU*2;
+beamWindow = data.theoreticalBeamWidthAMU*2;
 
 % spline basis B
 
@@ -78,7 +78,7 @@ Gaugmented = [GB; sqrt(lambda)*D];
 measAugmented = [measPeakIntensity; zeros(beamKnots+bdeg-pord,1)];
 wtsAugmented = blkdiag(Wdata, eye(beamKnots+bdeg-pord));
 beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*measAugmented);
-beamNNPSspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
+beamNNPspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
 
 
 %% determine peak width

@@ -2,7 +2,7 @@ classdef massSpecModel
     %MASSSPEC Mass Spectrometer Setup Class
     %   Properties of mass spectrometer used
     
-    properties
+    properties 
 
         collectorWidthMM        % collector aperture width (mm)
         theoreticalBeamWidthMM  % a priori estimate of beam width (mm)
@@ -30,7 +30,7 @@ classdef massSpecModel
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
                 massSpec.ionCounterNames = ["PM", "SEM"];
-                massSpec.amplifierResistance = 1e12;
+                massSpec.amplifierResistance = 1e12*ones(1,9);
 
                 case "PhoenixKansas_1e11"
                 massSpec.collectorWidthMM = 0.95135;
@@ -38,7 +38,7 @@ classdef massSpecModel
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
                 massSpec.ionCounterNames = ["PM", "SEM"];
-                massSpec.amplifierResistance = 1e11;
+                massSpec.amplifierResistance = 1e11*ones(1,9);
 
                 case ""
                 disp(" ")
