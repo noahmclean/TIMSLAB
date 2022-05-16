@@ -17,24 +17,17 @@ data = dataModel(filename);
 
 data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
 data.theoreticalBeamWidthAMU = calcBeamWidthAMU(data, massSpec);
-
-magnetMasses = data.magnetMasses;
-measPeakIntensity = data.measPeakIntensity;
-
-collectorLimits = data.magnetMasses + [-data.collectorWidthAMU, data.collectorWidthAMU]/2;
-deltaMagnetMass = data.magnetMasses(2)-data.magnetMasses(1);
-
-beamWindow = data.theoreticalBeamWidthAMU*2;
+peakMeas = peakMeasProperties(data, massSpec);
 
 % spline basis B
 
 bdeg = 3; % order of spline (= order of polynomial pieces)
 pord = 2; % order of differences 
-beamKnots = ceil(beamWindow/(deltaMagnetMass)) - 2*bdeg; % 3 xtra knots for cubic spline
+beamKnots = ceil(peakMeas.beamWindow/(peakMeas.deltaMagnetMass)) - 2*bdeg; % 3 xtra knots for cubic spline
 nInterp = 1000; % number of interpolated segments
 
-xl = data.peakCenterMass - beamWindow/2;
-xr = data.peakCenterMass + beamWindow/2;
+xl = data.peakCenterMass - peakMeas.beamWindow/2;
+xr = data.peakCenterMass + peakMeas.beamWindow/2;
 
 beamMassInterp = linspace(xl, xr, nInterp);
 B = bbase(beamMassInterp, xl, xr, beamKnots, bdeg);
@@ -47,8 +40,8 @@ G = zeros(nMagnetMasses, nInterp);
 for iMass = 1:nMagnetMasses % a row for each manget mass
 
     % massesInCollector are *model* masses
-    massesInCollector = collectorLimits(iMass,1) <= beamMassInterp & ...
-                        beamMassInterp <= collectorLimits(iMass,2);
+    massesInCollector = peakMeas.collectorLimits(iMass,1) <= beamMassInterp & ...
+                        beamMassInterp <= peakMeas.collectorLimits(iMass,2);
     
     firstMassIndexInside = find(massesInCollector,1,'first');
     lastMassIndexInside  = find(massesInCollector,1,'last');
@@ -60,14 +53,14 @@ end
 % trim data
 hasModelBeam = any(G,2); % magnet masses with beam model mass in collector
 G = G(hasModelBeam,:);
-magnetMasses = magnetMasses(hasModelBeam);
-measPeakIntensity = measPeakIntensity(hasModelBeam);
+data.magnetMasses = data.magnetMasses(hasModelBeam);
+data.measPeakIntensity = data.measPeakIntensity(hasModelBeam);
 
 % WLS and NNLS
 GB = G*B;
-Wdata = diag(1./max(measPeakIntensity,1));
-beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*measPeakIntensity);
-beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*measPeakIntensity);
+Wdata = diag(1./max(data.measPeakIntensity,1));
+beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*data.measPeakIntensity);
+beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*data.measPeakIntensity);
 
 % smoothing spline
 lambda = 1e-11;
@@ -75,7 +68,7 @@ D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
 
 %Wdata = eye(length(measPeakIntensity));
 Gaugmented = [GB; sqrt(lambda)*D];
-measAugmented = [measPeakIntensity; zeros(beamKnots+bdeg-pord,1)];
+measAugmented = [data.measPeakIntensity; zeros(beamKnots+bdeg-pord,1)];
 wtsAugmented = blkdiag(Wdata, eye(beamKnots+bdeg-pord));
 beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*measAugmented);
 beamNNPspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
@@ -113,6 +106,6 @@ line([beamMassInterp(leftBoundary) beamMassInterp(rightBoundary)], ...
 
 set(gca, "PlotBoxAspectRatio", [1 1 1])
 subplot(1,2,2); hold on
-plot(magnetMasses, measPeakIntensity, '-b', 'LineWidth', 2)
-plot(magnetMasses, G*beamShape, ':r', 'LineWidth', 2)
+plot(data.magnetMasses, data.measPeakIntensity, '-b', 'LineWidth', 2)
+plot(data.magnetMasses, G*beamShape, ':r', 'LineWidth', 2)
 set(gca, "PlotBoxAspectRatio", [1 1 1])

@@ -7,6 +7,9 @@ classdef splineBasisModel
         x    % vector of x values at which to evaluate spline
         bdeg % degree of basis function (1 is linear, 2 is quadratic, 3 is cubic)
         nseg % number of equally spaced segments on which to fit x variable
+    end
+
+    properties (SetAccess = protected)
         B    % B-spline basis matrix, with length(x) rows, nseg+bdeg columns
     end
     
