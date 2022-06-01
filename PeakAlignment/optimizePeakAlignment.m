@@ -8,16 +8,17 @@
 %          0 0 0 1 2    4 5 0 0;...
 %          0 0 1 2 3    5 0 0 0;...
 %          0 1 2 3 4    0 0 0 0];
-%
+
 % KU dynamic Sr
 Iso_Name = ["Sr84", "Rb85", "Sr86", "Sr87", "Sr88"];
 Col_Name = ["L2", "L1", "H1", "H2"];
 Iso_In_Axial = false;
-F_ind = [1 2 3 4;
-         0 3 4 5;
-         0 4 5 0];
+F_massIndex = [1 2 3 4;
+               0 3 4 5;
+               0 4 5 0];
 F_stationary = [false false true false];
-Ax_Masses = [85.4; 86.4; 87.4];
+massOffsetFromStationary = [-2 -1 0 1]; % can compute from F_ind if not lazy
+input_AxMasses = [85.4; 86.4; 87.4];
 Reff = 540;
 
 % % Two-sequence dynamic Sr
@@ -35,73 +36,97 @@ Reff = 540;
 %% set up problem
 
 nIsotopes = length(Iso_Name); % # of isotopes measured
-nCollectors = sum(any(F_ind)); % # of columns containing nonzero indices
-nSequences = size(F_ind,1);
+nCollectors = sum(any(F_massIndex)); % # of columns containing nonzero indices
+nSequences = size(F_massIndex,1);
 
 % temporary (?) assumption: all Iso_Name isotopes and collector (columns) 
 % are used -- no unused isotopes or unused collectors.  also, one and only
-% one stationary or declared-stationary Faraday.
-
+% one stationary or declared-stationary Faraday. Positions solved relative
+% to this stationary location
 
 nPositions = nCollectors - 1; % see assumptions. # of unknowns
 
 
-%% determine number of equations
+%% if no isotope in axial collector, sort out position of stationary one
 
-Unk_ind = zeros(size(F_ind));
-nEquations = 0;
-for iSeq = 1:nSequences
-    for jCol = 1:nCollectors
-
-    if F_ind(iSeq,jCol) > 0 && ~F_stationary(jCol)
-        nEquations = nEquations + 1;
-        Unk_ind(iSeq,jCol) = nEquations;
-
-    end % if
-
-    end
-end
-
-%% if no isotope in axial collector, position stationary collector 
+if ~Iso_In_Axial
 
 % first, find a sequence that includes the stationary collector
-seqWithStationary = find(F_ind(:,F_stationary) ~= 0, 1);
-massOnStationary = mass.(Iso_Name(F_ind(seqWithStationary,F_stationary)));
+seqWithStationary = find(F_massIndex(:,F_stationary) ~= 0, 1);
+massOnStationary = mass.(Iso_Name(F_massIndex(seqWithStationary,F_stationary)));
 
 % how far away is the stationary collector from the axial position?
-massInAxial = Ax_Masses(seqWithStationary);
+massInAxial = input_AxMasses(seqWithStationary);
 massDifferenceStationaryAxial = massOnStationary - massInAxial;
 
 % define the position of the stationary collector to reflext the mass
 % difference
 colPosStationary = massDifferenceStationaryAxial * ...
-                                          Reff/Ax_Masses(seqWithStationary);
+                   Reff / input_AxMasses(seqWithStationary);
+
+else
+    colPosStationary = 0; % Axial collector is at position 0
+end % if ~Iso_In_Axial
 
 
-% adjust the axial masses for other sequences to reflect cent 
+%% set up optimization - new
+% optimize for axial masses and collector positions together
+
+nPeaks = sum(sum(F_massIndex > 0)); % number of equations/discrepancies to minimize
+nVariables = nPositions + nSequences; % number of variables to solve for
+
+% initialize positions of collectors
+positionIndex = cumsum(~F_stationary).*~F_stationary;
+pos0 = Reff/mean(input_AxMasses)*massOffsetFromStationary + colPosStationary;
+pos0 = pos0(~F_stationary);
+
+unk0 = [pos0'; input_AxMasses]; % initial guess
+options = optimset('fminunc');
+options.TolFun = 1e-10;
+options.TolX = 1e-10;
+options.MaxIter = 1e4;
+%options.Display = 'iter';
+%options.PlotFcns = @optimplotfval;
+
+[soln, fval] = fminunc(@(unk) peakAlignmentPenalty(unk, nPositions, ... 
+                nPeaks, F_massIndex, F_stationary, colPosStationary, ...
+                Iso_Name, Reff), unk0, options);
 
 
-%% set up optimization
+%% visualize results
 
-% b is the (amu) distance between axial and measured masses
-b = zeros(nEquations,1);
-% A relates position of the cup (in mm) to peak center for a given mass
-A = zeros(nEquations, nCollectors);
-% colPos = A*b, where colPos is distances from axial for each cup
-for iEqn = 1:nEquations
 
-    [iSeq, jCol] = find(Unk_ind == iEqn);
-    iso_index = F_ind(iSeq, jCol);
+
+
+%% objective function
+
+function sse = peakAlignmentPenalty(unk, nPositions, nPeaks, ...
+                   F_massIndex, F_stationary, colPosStationary, ...
+                   Iso_Name, Reff)
+
+% parcel out unknowns in position and axial mass variables
+unkPositions = unk(1:nPositions);
+axMasses = unk(nPositions+1:end);
+positions = 1:size(F_massIndex,2);
+positions(F_stationary) = colPosStationary;
+positions(~F_stationary) = unkPositions;
+
+F_peakIndex = zeros(size(F_massIndex));
+F_peakIndex(F_massIndex > 0) = 1:nPeaks; % index peaks in seq table
+
+sse = 0;
+for iPeak = 1:nPeaks
+
+    [iSeq, jCol] = find(F_peakIndex == iPeak);
+    iso_index = F_massIndex(iSeq, jCol);
     iMass = mass.(Iso_Name(iso_index));
-    AxMass = Ax_Masses(iSeq);
-    b(iEqn) = iMass - AxMass;
-    A(iEqn, jCol) = AxMass/Reff;
+    axMass = axMasses(iSeq);
+    position = positions(jCol);
+    discrep = (iMass - axMass) - position*axMass/Reff;
 
-end % for iEqn
-
-% clear column of A assigned to stationary detector
-A = A(:, ~F_stationary);
-colPos = A\b; % collector positions, in mm from axial position
+    sse = sse + discrep^2;
 
 
-function 
+end % for iPeak
+
+end % function sse
