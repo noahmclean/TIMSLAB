@@ -81,6 +81,7 @@ pos0 = Reff/mean(input_AxMasses)*massOffsetFromStationary + colPosStationary;
 pos0 = pos0(~F_stationary);
 
 unk0 = [pos0'; input_AxMasses]; % initial guess
+% unk0 = unk0 + random('normal', 0, 0.05, [6 1]); % perturb.  passed test.
 options = optimset('fminunc');
 options.TolFun = 1e-10;
 options.TolX = 1e-10;
@@ -92,21 +93,24 @@ options.MaxIter = 1e4;
                 nPeaks, F_massIndex, F_stationary, colPosStationary, ...
                 Iso_Name, Reff), unk0, options);
 
+discrepVec = calcDiscrep(soln, nPositions, nPeaks, ...
+                   F_massIndex, F_stationary, colPosStationary, ...
+                   Iso_Name, Reff);
+
 
 %% visualize results
 
 
 
-
 %% objective function
 
-function sse = peakAlignmentPenalty(unk, nPositions, nPeaks, ...
+function discrepVec = calcDiscrep(posMass, nPositions, nPeaks, ...
                    F_massIndex, F_stationary, colPosStationary, ...
                    Iso_Name, Reff)
 
 % parcel out unknowns in position and axial mass variables
-unkPositions = unk(1:nPositions);
-axMasses = unk(nPositions+1:end);
+unkPositions = posMass(1:nPositions);
+axMasses = posMass(nPositions+1:end);
 positions = 1:size(F_massIndex,2);
 positions(F_stationary) = colPosStationary;
 positions(~F_stationary) = unkPositions;
@@ -114,7 +118,7 @@ positions(~F_stationary) = unkPositions;
 F_peakIndex = zeros(size(F_massIndex));
 F_peakIndex(F_massIndex > 0) = 1:nPeaks; % index peaks in seq table
 
-sse = 0;
+discrepVec = zeros(nPeaks,1);
 for iPeak = 1:nPeaks
 
     [iSeq, jCol] = find(F_peakIndex == iPeak);
@@ -122,11 +126,21 @@ for iPeak = 1:nPeaks
     iMass = mass.(Iso_Name(iso_index));
     axMass = axMasses(iSeq);
     position = positions(jCol);
-    discrep = (iMass - axMass) - position*axMass/Reff;
-
-    sse = sse + discrep^2;
-
+    discrepVec(iPeak) = (iMass - axMass) - position*axMass/Reff;
 
 end % for iPeak
+
+end % calcDiscrep
+
+%
+function sse = peakAlignmentPenalty(posMass, nPositions, nPeaks, ...
+                   F_massIndex, F_stationary, colPosStationary, ...
+                   Iso_Name, Reff)
+
+discrepVec = calcDiscrep(posMass, nPositions, nPeaks, ...
+                   F_massIndex, F_stationary, colPosStationary, ...
+                   Iso_Name, Reff);
+
+sse = sum(discrepVec.^2);
 
 end % function sse
