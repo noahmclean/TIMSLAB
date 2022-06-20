@@ -1,0 +1,290 @@
+
+28/04/2021 16:06:23, 13, METHOD, ====== METHOD HAS STARTED - Bead: 13 ======, STARTED
+28/04/2021 16:06:23, 13, SPM Method , Sm149int3V-AF.TIMSPM, Info
+28/04/2021 16:06:23, 13, Instrument, Ion energy readback is 7953v and LOS valve is reporting 'Open'., Info
+28/04/2021 16:06:23, 13, FILAMENTS, Filaments are currently ON!., Info
+28/04/2021 16:06:23, 13, TURRET, Turret reporting to be at BEAD 13 [725 steps], Info
+28/04/2021 16:06:23, 13, TURRET, BEAD 13 is already in position., Info
+28/04/2021 16:06:23, 13, Analysis START, Requesting analysis is started..., Analysis
+28/04/2021 16:08:45, 13, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+28/04/2021 16:08:46, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 16:08:46, 13, SetIntensity, Analysis: Block 1, Cycle 1., Analysis
+28/04/2021 16:08:46, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 16:08:46, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 16:08:46, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 16:08:46, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 16:09:09, 13, SetIntensity, Settling upon major peak Sm149 (148.9885), intensity of 4.211, Info
+28/04/2021 16:09:09, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 16:09:09, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 16:09:09, 13, SetIntensity, 'Sm149' @ 148.9885 (PKC) BL -0.0278, Intensity 4.2109, Info
+28/04/2021 16:09:10, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 16:09:11, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.830]A, Info
+28/04/2021 16:10:01, 13, SetIntensity, Auto focussing upon Sm149 (148.9885)... Initial intensity 2.9900, Info
+28/04/2021 16:11:31, 13, SetIntensity, Auto focussing completed with intensity 3.0105, Info
+28/04/2021 16:11:31, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.788]A, Info
+28/04/2021 16:11:39, 13, SetIntensity, Auto focussing upon Sm149 (148.9885)... Initial intensity 3.0097, Info
+28/04/2021 16:13:42, 13, SetIntensity, Auto focussing completed with intensity 3.0550, Info
+28/04/2021 16:13:43, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 16:13:43, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.788]A, Info
+28/04/2021 16:14:12, 13, SetIntensity, Growth rate is 0.163% - Within limits, Info
+28/04/2021 16:14:12, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 16:14:12, 13, SetIntensity, 'Sm149' @ 148.9885 (PKC) BL -0.0278, Intensity 3.0571, Info
+28/04/2021 16:14:12, 13, SetIntensity, Timetaken: 0h 5m 27s,   CENTRE: 2.788 [2.830]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 16:14:12, 13, SetIntensity, Beam growth rate: 0.1628% over 10s - (OK) at intensity 3.0571, Report
+28/04/2021 16:14:12, 13, SetIntensity, Completed, Info
+28/04/2021 16:14:12, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 16:29:04, 13, InterBlock, Analysis INTERBLOCK at Block 2, Cycle 1 ..., Info
+28/04/2021 16:29:05, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 16:29:05, 13, SetIntensity, Analysis: Block 2, Cycle 1., Analysis
+28/04/2021 16:29:05, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 16:29:05, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 16:29:05, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 16:29:05, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 16:29:28, 13, SetIntensity, Settling upon major peak Sm149 (148.9962), intensity of 3.406, Info
+28/04/2021 16:29:28, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 16:29:28, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 16:29:28, 13, SetIntensity, 'Sm149' @ 148.9962 (PKC) BL -0.0273, Intensity 3.4059, Info
+28/04/2021 16:29:29, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 16:29:30, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.788]A, Info
+28/04/2021 16:29:51, 13, SetIntensity, Auto focussing upon Sm149 (148.9962)... Initial intensity 2.9417, Info
+28/04/2021 16:31:10, 13, SetIntensity, Auto focussing completed with intensity 2.9572, Info
+28/04/2021 16:31:10, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.774]A, Info
+28/04/2021 16:31:19, 13, SetIntensity, Auto focussing upon Sm149 (148.9962)... Initial intensity 2.9564, Info
+28/04/2021 16:32:55, 13, SetIntensity, Auto focussing completed with intensity 2.9937, Info
+28/04/2021 16:32:56, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 16:32:56, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.774]A, Info
+28/04/2021 16:33:25, 13, SetIntensity, Growth rate is 0.138% - Within limits, Info
+28/04/2021 16:33:26, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 16:33:26, 13, SetIntensity, 'Sm149' @ 148.9962 (PKC) BL -0.0273, Intensity 2.9964, Info
+28/04/2021 16:33:26, 13, SetIntensity, Timetaken: 0h 4m 21s,   CENTRE: 2.774 [2.788]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 16:33:26, 13, SetIntensity, Beam growth rate: 0.1379% over 10s - (OK) at intensity 2.9964, Report
+28/04/2021 16:33:26, 13, SetIntensity, Completed, Info
+28/04/2021 16:33:26, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 16:50:37, 13, InterBlock, Analysis INTERBLOCK at Block 3, Cycle 1 ..., Info
+28/04/2021 16:50:38, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 16:50:38, 13, SetIntensity, Analysis: Block 3, Cycle 1., Analysis
+28/04/2021 16:50:38, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 16:50:38, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 16:50:38, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 16:50:38, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 16:51:01, 13, SetIntensity, Settling upon major peak Sm149 (148.9860), intensity of 3.320, Info
+28/04/2021 16:51:01, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 16:51:01, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 16:51:01, 13, SetIntensity, 'Sm149' @ 148.9860 (PKC) BL -0.0272, Intensity 3.3198, Info
+28/04/2021 16:51:02, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 16:51:03, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.774]A, Info
+28/04/2021 16:51:20, 13, SetIntensity, Auto focussing upon Sm149 (148.9860)... Initial intensity 2.9783, Info
+28/04/2021 16:52:33, 13, SetIntensity, Auto focussing completed with intensity 3.0057, Info
+28/04/2021 16:52:33, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.764]A, Info
+28/04/2021 16:52:41, 13, SetIntensity, Auto focussing upon Sm149 (148.9860)... Initial intensity 3.0087, Info
+28/04/2021 16:54:34, 13, SetIntensity, Auto focussing completed with intensity 3.0513, Info
+28/04/2021 16:54:35, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 16:54:35, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.764]A, Info
+28/04/2021 16:55:04, 13, SetIntensity, Growth rate is 0.081% - Within limits, Info
+28/04/2021 16:55:04, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 16:55:04, 13, SetIntensity, 'Sm149' @ 148.9860 (PKC) BL -0.0272, Intensity 3.0564, Info
+28/04/2021 16:55:04, 13, SetIntensity, Timetaken: 0h 4m 27s,   CENTRE: 2.764 [2.774]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 16:55:04, 13, SetIntensity, Beam growth rate: 0.0812% over 10s - (OK) at intensity 3.0564, Report
+28/04/2021 16:55:04, 13, SetIntensity, Completed, Info
+28/04/2021 16:55:04, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 17:12:16, 13, InterBlock, Analysis INTERBLOCK at Block 4, Cycle 1 ..., Info
+28/04/2021 17:12:17, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 17:12:17, 13, SetIntensity, Analysis: Block 4, Cycle 1., Analysis
+28/04/2021 17:12:17, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 17:12:17, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 17:12:17, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 17:12:17, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 17:12:40, 13, SetIntensity, Settling upon major peak Sm149 (148.9818), intensity of 3.388, Info
+28/04/2021 17:12:40, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 17:12:40, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 17:12:40, 13, SetIntensity, 'Sm149' @ 148.9818 (PKC) BL -0.0272, Intensity 3.3877, Info
+28/04/2021 17:12:41, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 17:12:42, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.764]A, Info
+28/04/2021 17:13:01, 13, SetIntensity, Auto focussing upon Sm149 (148.9818)... Initial intensity 2.9863, Info
+28/04/2021 17:14:25, 13, SetIntensity, Auto focussing completed with intensity 2.9999, Info
+28/04/2021 17:14:25, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.752]A, Info
+28/04/2021 17:14:33, 13, SetIntensity, Auto focussing upon Sm149 (148.9818)... Initial intensity 3.0012, Info
+28/04/2021 17:16:36, 13, SetIntensity, Auto focussing completed with intensity 3.0384, Info
+28/04/2021 17:16:37, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 17:16:37, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.752]A, Info
+28/04/2021 17:17:07, 13, SetIntensity, Growth rate is 0.139% - Within limits, Info
+28/04/2021 17:17:07, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 17:17:07, 13, SetIntensity, 'Sm149' @ 148.9818 (PKC) BL -0.0272, Intensity 3.0381, Info
+28/04/2021 17:17:07, 13, SetIntensity, Timetaken: 0h 4m 51s,   CENTRE: 2.752 [2.764]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 17:17:07, 13, SetIntensity, Beam growth rate: 0.1386% over 10s - (OK) at intensity 3.0381, Report
+28/04/2021 17:17:07, 13, SetIntensity, Completed, Info
+28/04/2021 17:17:07, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 17:34:19, 13, InterBlock, Analysis INTERBLOCK at Block 5, Cycle 1 ..., Info
+28/04/2021 17:34:20, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 17:34:20, 13, SetIntensity, Analysis: Block 5, Cycle 1., Analysis
+28/04/2021 17:34:20, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 17:34:20, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 17:34:20, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 17:34:20, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 17:34:43, 13, SetIntensity, Settling upon major peak Sm149 (148.9803), intensity of 3.368, Info
+28/04/2021 17:34:43, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 17:34:43, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 17:34:43, 13, SetIntensity, 'Sm149' @ 148.9803 (PKC) BL -0.0272, Intensity 3.3685, Info
+28/04/2021 17:34:44, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 17:34:45, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.752]A, Info
+28/04/2021 17:35:04, 13, SetIntensity, Auto focussing upon Sm149 (148.9803)... Initial intensity 2.9639, Info
+28/04/2021 17:36:36, 13, SetIntensity, Auto focussing completed with intensity 2.9828, Info
+28/04/2021 17:36:36, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.740]A, Info
+28/04/2021 17:36:44, 13, SetIntensity, Auto focussing upon Sm149 (148.9803)... Initial intensity 2.9804, Info
+28/04/2021 17:38:38, 13, SetIntensity, Auto focussing completed with intensity 3.0428, Info
+28/04/2021 17:38:39, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 17:38:39, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.740]A, Info
+28/04/2021 17:39:08, 13, SetIntensity, Growth rate is 0.107% - Within limits, Info
+28/04/2021 17:39:08, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 17:39:08, 13, SetIntensity, 'Sm149' @ 148.9803 (PKC) BL -0.0272, Intensity 3.0042, Info
+28/04/2021 17:39:08, 13, SetIntensity, Timetaken: 0h 4m 49s,   CENTRE: 2.740 [2.752]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 17:39:08, 13, SetIntensity, Beam growth rate: 0.1070% over 10s - (OK) at intensity 3.0042, Report
+28/04/2021 17:39:08, 13, SetIntensity, Completed, Info
+28/04/2021 17:39:08, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 17:56:19, 13, InterBlock, Analysis INTERBLOCK at Block 6, Cycle 1 ..., Info
+28/04/2021 17:56:20, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 17:56:20, 13, SetIntensity, Analysis: Block 6, Cycle 1., Analysis
+28/04/2021 17:56:20, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 17:56:20, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 17:56:20, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 17:56:20, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 17:56:44, 13, SetIntensity, Settling upon major peak Sm149 (148.9789), intensity of 3.264, Info
+28/04/2021 17:56:44, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 17:56:44, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 17:56:44, 13, SetIntensity, 'Sm149' @ 148.9789 (PKC) BL -0.0272, Intensity 3.2641, Info
+28/04/2021 17:56:45, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 17:56:46, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.740]A, Info
+28/04/2021 17:57:00, 13, SetIntensity, Auto focussing upon Sm149 (148.9789)... Initial intensity 2.9878, Info
+28/04/2021 17:58:17, 13, SetIntensity, Auto focussing completed with intensity 3.0019, Info
+28/04/2021 17:58:17, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.732]A, Info
+28/04/2021 17:58:25, 13, SetIntensity, Auto focussing upon Sm149 (148.9789)... Initial intensity 2.9995, Info
+28/04/2021 18:00:10, 13, SetIntensity, Auto focussing completed with intensity 3.0223, Info
+28/04/2021 18:00:11, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 18:00:11, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.732]A, Info
+28/04/2021 18:00:40, 13, SetIntensity, Growth rate is 0.078% - Within limits, Info
+28/04/2021 18:00:40, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 18:00:40, 13, SetIntensity, 'Sm149' @ 148.9789 (PKC) BL -0.0272, Intensity 3.0239, Info
+28/04/2021 18:00:40, 13, SetIntensity, Timetaken: 0h 4m 21s,   CENTRE: 2.732 [2.740]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 18:00:40, 13, SetIntensity, Beam growth rate: 0.0779% over 10s - (OK) at intensity 3.0239, Report
+28/04/2021 18:00:40, 13, SetIntensity, Completed, Info
+28/04/2021 18:00:40, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 18:17:52, 13, InterBlock, Analysis INTERBLOCK at Block 7, Cycle 1 ..., Info
+28/04/2021 18:17:53, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 18:17:53, 13, SetIntensity, Analysis: Block 7, Cycle 1., Analysis
+28/04/2021 18:17:53, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 18:17:53, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 18:17:53, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 18:17:53, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 18:18:16, 13, SetIntensity, Settling upon major peak Sm149 (148.9788), intensity of 3.249, Info
+28/04/2021 18:18:16, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 18:18:16, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 18:18:16, 13, SetIntensity, 'Sm149' @ 148.9788 (PKC) BL -0.0270, Intensity 3.2488, Info
+28/04/2021 18:18:17, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 18:18:18, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.732]A, Info
+28/04/2021 18:18:33, 13, SetIntensity, Auto focussing upon Sm149 (148.9788)... Initial intensity 2.9747, Info
+28/04/2021 18:20:01, 13, SetIntensity, Auto focussing completed with intensity 2.9449, Info
+28/04/2021 18:20:01, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.724]A, Info
+28/04/2021 18:20:09, 13, SetIntensity, Auto focussing upon Sm149 (148.9788)... Initial intensity 2.9877, Info
+28/04/2021 18:22:35, 13, SetIntensity, Auto focussing completed with intensity 3.0247, Info
+28/04/2021 18:22:36, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 18:22:36, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.724]A, Info
+28/04/2021 18:23:05, 13, SetIntensity, Growth rate is 0.169% - Within limits, Info
+28/04/2021 18:23:05, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 18:23:05, 13, SetIntensity, 'Sm149' @ 148.9788 (PKC) BL -0.0270, Intensity 3.0284, Info
+28/04/2021 18:23:05, 13, SetIntensity, Timetaken: 0h 5m 13s,   CENTRE: 2.724 [2.732]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 18:23:05, 13, SetIntensity, Beam growth rate: 0.1693% over 10s - (OK) at intensity 3.0284, Report
+28/04/2021 18:23:05, 13, SetIntensity, Completed, Info
+28/04/2021 18:23:05, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 18:40:29, 13, InterBlock, Analysis INTERBLOCK at Block 8, Cycle 1 ..., Info
+28/04/2021 18:40:30, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 18:40:30, 13, SetIntensity, Analysis: Block 8, Cycle 1., Analysis
+28/04/2021 18:40:30, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 18:40:30, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 18:40:30, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 18:40:30, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 18:40:53, 13, SetIntensity, Settling upon major peak Sm149 (148.9777), intensity of 3.266, Info
+28/04/2021 18:40:53, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 18:40:53, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 18:40:53, 13, SetIntensity, 'Sm149' @ 148.9777 (PKC) BL -0.0271, Intensity 3.2656, Info
+28/04/2021 18:40:54, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 18:40:55, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.724]A, Info
+28/04/2021 18:41:16, 13, SetIntensity, Auto focussing upon Sm149 (148.9777)... Initial intensity 2.8821, Info
+28/04/2021 18:42:39, 13, SetIntensity, Auto focussing completed with intensity 2.8182, Info
+28/04/2021 18:42:39, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.710]A, Info
+28/04/2021 18:42:49, 13, SetIntensity, Auto focussing upon Sm149 (148.9777)... Initial intensity 2.8565, Info
+28/04/2021 18:44:34, 13, SetIntensity, Auto focussing completed with intensity 2.8657, Info
+28/04/2021 18:44:35, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 18:44:35, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.711]A, Info
+28/04/2021 18:45:04, 13, SetIntensity, Growth rate is 0.109% - Within limits, Info
+28/04/2021 18:45:05, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 18:45:05, 13, SetIntensity, 'Sm149' @ 148.9777 (PKC) BL -0.0271, Intensity 2.8661, Info
+28/04/2021 18:45:05, 13, SetIntensity, Timetaken: 0h 4m 36s,   CENTRE: 2.711 [2.724]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 18:45:05, 13, SetIntensity, Beam growth rate: 0.1092% over 10s - (OK) at intensity 2.8661, Report
+28/04/2021 18:45:05, 13, SetIntensity, Completed, Info
+28/04/2021 18:45:05, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 19:02:16, 13, InterBlock, Analysis INTERBLOCK at Block 9, Cycle 1 ..., Info
+28/04/2021 19:02:17, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 19:02:17, 13, SetIntensity, Analysis: Block 9, Cycle 1., Analysis
+28/04/2021 19:02:17, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 19:02:17, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 19:02:17, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 19:02:17, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 19:02:41, 13, SetIntensity, Settling upon major peak Sm149 (148.9752), intensity of 3.048, Info
+28/04/2021 19:02:41, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 19:02:41, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 19:02:41, 13, SetIntensity, 'Sm149' @ 148.9752 (PKC) BL -0.0269, Intensity 3.0477, Info
+28/04/2021 19:02:41, 13, SetIntensity, Auto focussing upon Sm149 (148.9752)... Initial intensity 3.0477, Info
+28/04/2021 19:04:31, 13, SetIntensity, Auto focussing completed with intensity 3.0445, Info
+28/04/2021 19:04:31, 13, SetIntensity, Disabled scanning of SOURCE plate during Auto Focus., Info
+28/04/2021 19:04:32, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 19:04:33, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.711]A, Info
+28/04/2021 19:04:41, 13, SetIntensity, Auto focussing upon Sm149 (148.9752)... Initial intensity 3.0445, Info
+28/04/2021 19:06:01, 13, SetIntensity, Auto focussing completed with intensity 3.0574, Info
+28/04/2021 19:06:02, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 19:06:02, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.711]A, Info
+28/04/2021 19:06:31, 13, SetIntensity, Growth rate is 0.168% - Within limits, Info
+28/04/2021 19:06:31, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 19:06:31, 13, SetIntensity, 'Sm149' @ 148.9752 (PKC) BL -0.0269, Intensity 3.0579, Info
+28/04/2021 19:06:31, 13, SetIntensity, Timetaken: 0h 4m 15s,   CENTRE: 2.711 [2.711]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 19:06:31, 13, SetIntensity, Beam growth rate: 0.1680% over 10s - (OK) at intensity 3.0579, Report
+28/04/2021 19:06:31, 13, SetIntensity, Completed, Info
+28/04/2021 19:06:31, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 19:23:43, 13, InterBlock, Analysis INTERBLOCK at Block 10, Cycle 1 ..., Info
+28/04/2021 19:23:44, 13, SetIntensity, --- SET INTENSITY ---------------------------, 
+28/04/2021 19:23:44, 13, SetIntensity, Analysis: Block 10, Cycle 1., Analysis
+28/04/2021 19:23:44, 13, SetIntensity, Using AI of 3.00 @ 5.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+28/04/2021 19:23:44, 13, SetIntensity, Using RampRate 2 mA, 4.00A maximum, AF+SO Scan., Settings
+28/04/2021 19:23:44, 13, SetIntensity, Terminate if intensity <= 0.30 with > 4.00A on CENTRE filament., Settings
+28/04/2021 19:23:44, 13, SetIntensity, Searching for specified peaks..., Info
+28/04/2021 19:24:07, 13, SetIntensity, Settling upon major peak Sm149 (148.9766), intensity of 3.239, Info
+28/04/2021 19:24:07, 13, SetIntensity, Scanning for specified masses has COMPLETED., Info
+28/04/2021 19:24:07, 13, SetIntensity, Peaks located so far:, Info
+28/04/2021 19:24:07, 13, SetIntensity, 'Sm149' @ 148.9766 (PKC) BL -0.0270, Intensity 3.2393, Info
+28/04/2021 19:24:08, 13, SetIntensity, Targeting 100% of specified intensity (3.00000) at 25% tolerance..., Info
+28/04/2021 19:24:09, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.711]A, Info
+28/04/2021 19:24:24, 13, SetIntensity, Auto focussing upon Sm149 (148.9766)... Initial intensity 2.9667, Info
+28/04/2021 19:25:36, 13, SetIntensity, Auto focussing completed with intensity 2.9794, Info
+28/04/2021 19:25:36, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.703]A, Info
+28/04/2021 19:25:45, 13, SetIntensity, Auto focussing upon Sm149 (148.9766)... Initial intensity 2.9779, Info
+28/04/2021 19:27:08, 13, SetIntensity, Auto focussing completed with intensity 2.9867, Info
+28/04/2021 19:27:09, 13, SetIntensity, Targeting 100% of specified intensity (3.00000)... 2nd stage, Info
+28/04/2021 19:27:09, 13, SetIntensity, Adjusting filament to aim for 3.00 using CENTRE... [2.703]A, Info
+28/04/2021 19:27:38, 13, SetIntensity, Growth rate is -0.032% - Within limits, Info
+28/04/2021 19:27:39, 13, SetIntensity, Completing with the following peaks located:, Report
+28/04/2021 19:27:39, 13, SetIntensity, 'Sm149' @ 148.9766 (PKC) BL -0.0270, Intensity 2.9887, Info
+28/04/2021 19:27:39, 13, SetIntensity, Timetaken: 0h 3m 55s,   CENTRE: 2.703 [2.711]A,   SIDE: 0.000 [0.000]A, Report
+28/04/2021 19:27:39, 13, SetIntensity, Beam growth rate: -0.0324% over 10s - (OK) at intensity 2.9887, Report
+28/04/2021 19:27:39, 13, SetIntensity, Completed, Info
+28/04/2021 19:27:39, 13, SetIntensity, SetIntensity has completed, INFO
+28/04/2021 19:44:52, 13, Filament Ramping, --- Filament Ramping ---------------------------, 
+28/04/2021 19:44:52, 13, Filament Ramping, Ramp MAIN CENTRE filament to 0.000A over a period of 0m 30s., Settings
+28/04/2021 19:44:52, 13, Filament Ramping, No SIDE filament changes., Settings
+28/04/2021 19:44:52, 13, Filament Ramping, Starting with CENTRE at 2.703A and SIDE at 0.000A..., INFO
+28/04/2021 19:45:46, 13, Filament Ramping, Completed with CENTRE at 0.000[2.703]A and SIDE at 0.000[0.000]A., INFO
+28/04/2021 19:45:46, 13, Filament Ramping, Completed with READBACKS indicating CENTRE at 0.000A and SIDE at 0.000A., INFO
+28/04/2021 19:45:46, 13, FilamentRamping, Filament Ramping has completed, INFO
+28/04/2021 19:45:46, 13, IsolationValve, The ISOLATION valve will be set CLOSED., Info
+28/04/2021 19:45:49, 13, IsolationValve , Isolation valve is now CLOSED., Info
+28/04/2021 19:45:50, 13, IsolationValve, Task has completed, INFO
+28/04/2021 19:45:50, 13, Instrument, Ion energy readback is 7953v and LOS valve is reporting 'Closed'., Info
+28/04/2021 19:45:50, 13, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 13, COMPLETED
