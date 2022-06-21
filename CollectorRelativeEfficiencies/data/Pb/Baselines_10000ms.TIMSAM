@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="yes"?>
+<ANALYSIS_METHOD>
+  <HEADER>
+    <Filename>Baselines_10000ms.TIMSAM</Filename>
+    <DateModified>07/12/2020 10:43:24</DateModified>
+    <DateCreated>07/12/2020 10:43:24</DateCreated>
+    <CreatedBy>User1</CreatedBy>
+    <ModifiedBy>User2</ModifiedBy>
+  </HEADER>
+  <SETTINGS>
+    <IntersperseBaselines>False</IntersperseBaselines>
+    <BaselineFrequency>Never</BaselineFrequency>
+    <PKCCycleInterval>0</PKCCycleInterval>
+    <TotalBlocks>1</TotalBlocks>
+    <TotalCycles>360</TotalCycles>
+    <CalculateRatios>True</CalculateRatios>
+    <InitialBLMagnetDelay>3000</InitialBLMagnetDelay>
+    <DeflectBeamProtection>False</DeflectBeamProtection>
+    <PerformBeamInterpCycles>False</PerformBeamInterpCycles>
+    <PerformInterBlocks>False</PerformInterBlocks>
+    <AxialColl>PhotoMultiplier</AxialColl>
+    <ActiveSEMCollectors />
+    <MagnetFlybackSettleTime>0</MagnetFlybackSettleTime>
+    <CorrectForBaselines>False</CorrectForBaselines>
+    <CorrectForDeadtimes>True</CorrectForDeadtimes>
+    <IsoWorks_Method>Baselines_Output</IsoWorks_Method>
+    <Rejection_Sigma>99</Rejection_Sigma>
+    <Rejection_Percentage>0</Rejection_Percentage>
+    <ActiveSubChannel>SecondaryB</ActiveSubChannel>
+    <ProcessingUnits>CPS</ProcessingUnits>
+    <TFE_Enabled>False</TFE_Enabled>
+    <TFE_MonitorPeak />
+    <TFE_IntensityThreshold>0.1</TFE_IntensityThreshold>
+    <TFE_IntervalPeakCentring>False</TFE_IntervalPeakCentring>
+    <TFE_PeakCentringInterval>01:00</TFE_PeakCentringInterval>
+    <TFE_PeakCentringMonitorThreshold>0.5</TFE_PeakCentringMonitorThreshold>
+    <Export_IsotopePoints>True</Export_IsotopePoints>
+    <Export_ASCFile>None</Export_ASCFile>
+    <Export_ASCOptions>SingleCollector</Export_ASCOptions>
+    <Export_ASCActiveColl>Axial</Export_ASCActiveColl>
+    <Export_TXTEveryCYCLE>False</Export_TXTEveryCYCLE>
+    <Export_TripoliLiveData>False</Export_TripoliLiveData>
+  </SETTINGS>
+  <ONPEAK>
+    <Sequence>1</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>AxP</MassID>
+    <MassIDCollector>PhotoMultiplier</MassIDCollector>
+    <AxMass>88.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>False</PeakCentre>
+    <PKCCollector>PhotoMultiplier</PKCCollector>
+    <PKCMethod>None</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>L5Peak:L5S1,L4Peak:L4S1,L3Peak:L3S1,L2Peak:L2S1,AxF:AxS1,H1Peak:H1S1,H2Peak:H2S1,H3Peak:H3S1,H4Peak:H4S1,AxP:PMS1</CollectorArray>
+    <MagnetSettleTime>0</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Purple</TraceColour>
+  </ONPEAK>
+  <EQUILIBRATION>
+    <Enabled>False</Enabled>
+    <Collector>Axial</Collector>
+    <AxMass>40.000</AxMass>
+    <MassID>Ar40</MassID>
+    <Duration>30</Duration>
+    <IntegPeriod>ms1000</IntegPeriod>
+    <StoreToDB>False</StoreToDB>
+  </EQUILIBRATION>
+</ANALYSIS_METHOD>

@@ -10,7 +10,8 @@ addpath(genpath("../data"))
 %% grab the corresponding methods file, make a run table for OP and BL
 
 %method = parseTIMSAM('Sm147to150_S6.TIMSAM');
-method = parseTIMSAM('Pb cup efficiency.TIMSAM');
+%method = parseTIMSAM('Pb cup efficiency.TIMSAM');
+method = parseTIMSAM('PbFaraday_Pbc3Line.TIMSAM');
 
 FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
 nSeq = size(method.onpeaks, 2);
@@ -47,35 +48,57 @@ for iSeq = 1:nSeq
         OPMasses.(activeCollectors(iMass))(seqName) = string(masses(iMass));
     end % for iMass
     
-    
 end % for iOP
 
-% calculate mass differences
-OPMasses = double(table2array(OPMasses));
-OPMassDifTable = zeros(size(OPMasses) - [0 1]);
-for iSeq = 1:nSeq
-    seqMass = OPMasses(iSeq,:);
-    massPresent = seqMass > 0;
-    massDifPlace = massPresent(2:end) & massPresent(1:end-1);
-    massVec = seqMass(massPresent);
-    massDifs = massVec(2:end)-massVec(1:end-1);
-    OPMassDifTable(iSeq, massDifPlace) = massDifs;
-end % for iMass
+OPMasses = convertvars(OPMasses, FaraNames, 'double'); % conver to double
 
-OPMassDif = zeros(1, nFara-1);
-for iFara = 1:nFara-1
+% % NOTE: need to calculate mass differences in a different way for 
+% non-consecutive masses.  Maybe make a distance/mileage chart between all
+% collector pairs?
+% % calculate mass differences
+% OPMasses = double(table2array(OPMasses));
+% OPMassDifTable = zeros(size(OPMasses) - [0 1]);
+% for iSeq = 1:nSeq
+%     seqMass = OPMasses(iSeq,:);
+%     massPresent = seqMass > 0;
+%     massDifPlace = massPresent(2:end) & massPresent(1:end-1);
+%     massVec = seqMass(massPresent);
+%     massDifs = massVec(2:end)-massVec(1:end-1);
+%     OPMassDifTable(iSeq, massDifPlace) = massDifs;
+% end % for iMass
+% 
+% OPMassDif = zeros(1, nFara-1);
+% for iFara = 1:nFara-1
+% 
+%     massDifFara = OPMassDifTable(:,iFara);
+%     massDifFara = massDifFara(massDifFara > 0);
+%     if ~all(massDifFara == massDifFara(1))
+%         disp('problem with OPMassDifTable')
+%     else 
+%         OPMassDif(iFara) = massDifFara(1);
+%     end
+% 
+% end % for iFara
 
-    massDifFara = OPMassDifTable(:,iFara);
-    massDifFara = massDifFara(massDifFara > 0);
-    if ~all(massDifFara == massDifFara(1))
-        disp('problem with OPMassDifTable')
-    else 
-        OPMassDif(iFara) = massDifFara(1);
-    end
+% create a F_ind matrix for further data reduction
+% first, find unique MassIDs (stings, label for unique isotopes)
+OPTableStack = stack(OPTable, FaraNames);
+MassIDs = table2array(unique(OPTableStack(:,2)));
+MassIDs(MassIDs == "") = []; % delete blanks
+% next, create F_ind with indexes to those MassIDs
+F_ind = zeros(nSeq, nFara);
+for iFara = 1:nFara
+    FaraColumn = OPTable.(FaraNames(iFara));
 
-end % for iFara
+    for iMassID = 1:length(MassIDs)
 
-% handle baselines
+        F_ind(:,iFara) = F_ind(:,iFara) + (FaraColumn == MassIDs(iMassID)) * iMassID;
+
+    end % for iMassID
+
+end % for iMassID
+
+% handle baselines if present
 if isfield(method, 'baselines') % if baselines present
 
     nBL = size(method.baselines, 2);
@@ -88,4 +111,7 @@ if isfield(method, 'baselines') % if baselines present
 
 end
 
+
 %% 
+
+

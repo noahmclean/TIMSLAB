@@ -1,0 +1,177 @@
+
+2021-12-30 1:16:21 PM, 16, METHOD, ====== METHOD HAS STARTED - Bead: 10 ======, STARTED
+2021-12-30 1:16:21 PM, 16, SPM Method , PbFaraday_98X.TIMSPM, Info
+2021-12-30 1:16:21 PM, 16, Instrument, Ion energy readback is 7969v and LOS valve is reporting 'Closed'., Info
+2021-12-30 1:16:21 PM, 16, FILAMENTS, Filaments are currently OFF., Info
+2021-12-30 1:16:21 PM, 16, TURRET, Turret reporting to be at BEAD 16 [886 steps], Info
+2021-12-30 1:16:21 PM, 16, FILAMENTS, Zeroing any filament outputs..., Info
+2021-12-30 1:16:21 PM, 16, TURRET, Moving turret to BEAD: 10..., Info
+2021-12-30 1:16:46 PM, 10, TURRET, Turret position changed to BEAD: 10..., Info
+2021-12-30 1:16:46 PM, 10, WaitFor, Waiting for a minimum pressure of 1.00e-007 mBar..., Settings
+2021-12-30 1:16:46 PM, 10, WaitFor, Target vacuum of 1.00e-007 obtained in the Source. (Currently 2.21e-008), INFO
+2021-12-30 1:16:48 PM, 10, SetMass, Current mass of 204.000 was WITHIN acceptable range - no settling neccessary., INFO
+2021-12-30 1:16:49 PM, 10, Filament Ramping, --- Filament Ramping ---------------------------, 
+2021-12-30 1:16:49 PM, 10, Filament Ramping, Ramp MAIN CENTRE filament to 1.800A over a period of 5m 00s., Settings
+2021-12-30 1:16:49 PM, 10, Filament Ramping, Ramp MAIN SIDE filament to 4.200A over a period of 5m 00s, Settings
+2021-12-30 1:16:49 PM, 10, Filament Ramping, Starting with CENTRE at 0.000A and SIDE at 0.000A..., INFO
+2021-12-30 1:21:50 PM, 10, Filament Ramping, Completed with CENTRE at 1.800[0.000]A and SIDE at 4.200[0.000]A., INFO
+2021-12-30 1:21:50 PM, 10, Filament Ramping, Completed with READBACKS indicating CENTRE at 1.803A and SIDE at 4.189A., INFO
+2021-12-30 1:21:50 PM, 10, FilamentRamping, Filament Ramping has completed, INFO
+2021-12-30 1:21:50 PM, 10, WaitFor, Waiting for 15m 00s..., Settings
+2021-12-30 1:36:50 PM, 10, WaitFor, Delayed for 15m 00s., INFO
+2021-12-30 1:36:51 PM, 10, Filament Ramping, --- Filament Ramping ---------------------------, 
+2021-12-30 1:36:51 PM, 10, Filament Ramping, No CENTRE filament changes., Settings
+2021-12-30 1:36:51 PM, 10, Filament Ramping, Ramp MAIN SIDE filament to 0.000A over a period of 1m 30s, Settings
+2021-12-30 1:36:51 PM, 10, Filament Ramping, Starting with CENTRE at 0.000A and SIDE at 4.200A..., INFO
+2021-12-30 1:38:20 PM, 10, Filament Ramping, Completed with CENTRE at 1.800[0.000]A and SIDE at 0.000[4.200]A., INFO
+2021-12-30 1:38:20 PM, 10, Filament Ramping, Completed with READBACKS indicating CENTRE at 1.804A and SIDE at 0.018A., INFO
+2021-12-30 1:38:20 PM, 10, FilamentRamping, Filament Ramping has completed, INFO
+2021-12-30 1:38:21 PM, 10, Filament Ramping, --- Filament Ramping ---------------------------, 
+2021-12-30 1:38:21 PM, 10, Filament Ramping, Ramp CENTRE filament to 1100ºC using 2mA/s until 2.70A is reached.
+Abort if 850ºC is not obtained upon reaching 2.00A., Settings
+2021-12-30 1:38:21 PM, 10, Filament Ramping, No SIDE filament changes., Settings
+2021-12-30 1:38:21 PM, 10, Filament Ramping, Starting with CENTRE at 1.800A and SIDE at 4.200A..., INFO
+2021-12-30 1:40:35 PM, 10, Filament Ramping, Completed with CENTRE at 2.067[1.800]A and SIDE at 0.000[4.200]A., INFO
+2021-12-30 1:40:35 PM, 10, Filament Ramping, Completed with READBACKS indicating CENTRE at 2.070A and SIDE at 0.000A., INFO
+2021-12-30 1:40:35 PM, 10, Filament Ramping, Completed with PYROMETER at 1100[993]ºC., INFO
+2021-12-30 1:40:35 PM, 10, FilamentRamping, Filament Ramping has completed, INFO
+2021-12-30 1:40:35 PM, 10, IsolationValve, The ISOLATION valve will be set OPEN., Info
+2021-12-30 1:40:36 PM, 10, IsolationValve, Minimum pressure of 3.00e-007 mBar has been obtained., Info
+2021-12-30 1:40:38 PM, 10, IsolationValve , Isolation valve is now OPEN., Info
+2021-12-30 1:40:39 PM, 10, IsolationValve, Task has completed, INFO
+2021-12-30 1:40:40 PM, 10, AutoFocus, Peak centering at 204.000 on the High4 before Auto Focusing..., Info
+2021-12-30 1:40:59 PM, 10, AutoFocus, Auto Focusing at 204.021 on the High4 until a maximum of 50 is reached..., Info
+2021-12-30 1:45:53 PM, 10, AutoFocus, Focussing completed with an intensity of 1.237., Info
+2021-12-30 1:45:54 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 1:45:55 PM, 10, WaitFor, Waiting for user input..., Settings
+2021-12-30 1:46:38 PM, 10, WaitFor, WaitFor prompt completed by the operator., INFO
+2021-12-30 1:46:38 PM, 10, Analysis START, Requesting analysis is started..., Analysis
+2021-12-30 1:47:38 PM, 10, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+2021-12-30 1:47:39 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 1:47:58 PM, 10, AutoFocus, Auto Focusing at 206.032 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 1:48:59 PM, 10, AutoFocus, Focussing completed with an intensity of 6.974., Info
+2021-12-30 1:49:00 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 1:56:18 PM, 10, InterBlock, Analysis INTERBLOCK at Block 2, Cycle 1 ..., Info
+2021-12-30 1:56:19 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 1:56:39 PM, 10, AutoFocus, Auto Focusing at 206.024 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 1:57:46 PM, 10, AutoFocus, Focussing completed with an intensity of 8.603., Info
+2021-12-30 1:57:47 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 2:06:04 PM, 10, InterBlock, Analysis INTERBLOCK at Block 3, Cycle 1 ..., Info
+2021-12-30 2:06:05 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 2:06:24 PM, 10, AutoFocus, Auto Focusing at 206.033 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 2:07:36 PM, 10, AutoFocus, Focussing completed with an intensity of 10.246., Info
+2021-12-30 2:07:37 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 2:15:54 PM, 10, InterBlock, Analysis INTERBLOCK at Block 4, Cycle 1 ..., Info
+2021-12-30 2:15:55 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 2:16:14 PM, 10, AutoFocus, Auto Focusing at 206.035 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 2:17:31 PM, 10, AutoFocus, Focussing completed with an intensity of 11.008., Info
+2021-12-30 2:17:32 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 2:25:49 PM, 10, InterBlock, Analysis INTERBLOCK at Block 5, Cycle 1 ..., Info
+2021-12-30 2:25:50 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 2:26:09 PM, 10, AutoFocus, Auto Focusing at 206.035 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 2:27:22 PM, 10, AutoFocus, Focussing completed with an intensity of 11.275., Info
+2021-12-30 2:27:23 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 2:35:40 PM, 10, InterBlock, Analysis INTERBLOCK at Block 6, Cycle 1 ..., Info
+2021-12-30 2:35:41 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 2:36:00 PM, 10, AutoFocus, Auto Focusing at 206.034 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 2:37:14 PM, 10, AutoFocus, Focussing completed with an intensity of 11.303., Info
+2021-12-30 2:37:15 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 2:45:32 PM, 10, InterBlock, Analysis INTERBLOCK at Block 7, Cycle 1 ..., Info
+2021-12-30 2:45:33 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 2:45:52 PM, 10, AutoFocus, Auto Focusing at 206.037 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 2:47:13 PM, 10, AutoFocus, Focussing completed with an intensity of 10.953., Info
+2021-12-30 2:47:14 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 2:55:31 PM, 10, InterBlock, Analysis INTERBLOCK at Block 8, Cycle 1 ..., Info
+2021-12-30 2:55:32 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 2:55:51 PM, 10, AutoFocus, Auto Focusing at 206.039 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 2:57:04 PM, 10, AutoFocus, Focussing completed with an intensity of 11.507., Info
+2021-12-30 2:57:05 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 3:05:22 PM, 10, InterBlock, Analysis INTERBLOCK at Block 9, Cycle 1 ..., Info
+2021-12-30 3:05:23 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 3:05:43 PM, 10, AutoFocus, Auto Focusing at 206.041 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 3:06:56 PM, 10, AutoFocus, Focussing completed with an intensity of 12.093., Info
+2021-12-30 3:06:57 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 3:15:14 PM, 10, InterBlock, Analysis INTERBLOCK at Block 10, Cycle 1 ..., Info
+2021-12-30 3:15:15 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 3:15:34 PM, 10, AutoFocus, Auto Focusing at 206.041 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 3:16:40 PM, 10, AutoFocus, Focussing completed with an intensity of 8.719., Info
+2021-12-30 3:16:42 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 3:24:58 PM, 10, InterBlock, Analysis INTERBLOCK at Block 11, Cycle 1 ..., Info
+2021-12-30 3:24:59 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 3:25:19 PM, 10, AutoFocus, Auto Focusing at 206.041 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 3:26:34 PM, 10, AutoFocus, Focussing completed with an intensity of 3.382., Info
+2021-12-30 3:26:35 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 3:34:51 PM, 10, InterBlock, Analysis INTERBLOCK at Block 12, Cycle 1 ..., Info
+2021-12-30 3:34:52 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 3:35:12 PM, 10, AutoFocus, Auto Focusing at 206.041 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 3:36:25 PM, 10, AutoFocus, Focussing completed with an intensity of 0.928., Info
+2021-12-30 3:36:26 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 3:44:42 PM, 10, InterBlock, Analysis INTERBLOCK at Block 13, Cycle 1 ..., Info
+2021-12-30 3:44:43 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 3:45:03 PM, 10, AutoFocus, Auto Focusing at 206.041 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 3:46:31 PM, 10, AutoFocus, Focussing completed with an intensity of 0.352., Info
+2021-12-30 3:46:32 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 3:54:49 PM, 10, InterBlock, Analysis INTERBLOCK at Block 14, Cycle 1 ..., Info
+2021-12-30 3:54:50 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 3:55:11 PM, 10, AutoFocus, Auto Focusing at 206.034 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 3:56:33 PM, 10, AutoFocus, Focussing completed with an intensity of 0.142., Info
+2021-12-30 3:56:34 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 4:04:55 PM, 10, InterBlock, Analysis INTERBLOCK at Block 15, Cycle 1 ..., Info
+2021-12-30 4:04:56 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 4:05:16 PM, 10, AutoFocus, Auto Focusing at 206.029 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 4:06:41 PM, 10, AutoFocus, Focussing completed with an intensity of 0.056., Info
+2021-12-30 4:06:42 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 4:15:03 PM, 10, InterBlock, Analysis INTERBLOCK at Block 16, Cycle 1 ..., Info
+2021-12-30 4:15:04 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 4:15:24 PM, 10, AutoFocus, Auto Focusing at 206.030 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 4:16:45 PM, 10, AutoFocus, Focussing completed with an intensity of 0.015., Info
+2021-12-30 4:16:45 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 4:25:06 PM, 10, InterBlock, Analysis INTERBLOCK at Block 17, Cycle 1 ..., Info
+2021-12-30 4:25:07 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 4:25:28 PM, 10, AutoFocus, Auto Focusing at 206.032 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 4:26:56 PM, 10, AutoFocus, Focussing completed with an intensity of 0.002., Info
+2021-12-30 4:26:57 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 4:35:18 PM, 10, InterBlock, Analysis INTERBLOCK at Block 18, Cycle 1 ..., Info
+2021-12-30 4:35:19 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 4:35:39 PM, 10, AutoFocus, Auto Focusing at 205.884 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 4:37:00 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 4:37:01 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 4:45:22 PM, 10, InterBlock, Analysis INTERBLOCK at Block 19, Cycle 1 ..., Info
+2021-12-30 4:45:23 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 4:45:44 PM, 10, AutoFocus, Auto Focusing at 206.000 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 4:47:10 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 4:47:11 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 4:55:32 PM, 10, InterBlock, Analysis INTERBLOCK at Block 20, Cycle 1 ..., Info
+2021-12-30 4:55:33 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 4:55:53 PM, 10, AutoFocus, Auto Focusing at 206.000 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 4:57:22 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 4:57:23 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 5:05:43 PM, 10, InterBlock, Analysis INTERBLOCK at Block 21, Cycle 1 ..., Info
+2021-12-30 5:05:44 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 5:06:05 PM, 10, AutoFocus, Auto Focusing at 206.000 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 5:07:44 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 5:07:45 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 5:16:06 PM, 10, InterBlock, Analysis INTERBLOCK at Block 22, Cycle 1 ..., Info
+2021-12-30 5:16:07 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 5:16:27 PM, 10, AutoFocus, Auto Focusing at 205.462 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 5:18:00 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 5:18:01 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 5:26:21 PM, 10, InterBlock, Analysis INTERBLOCK at Block 23, Cycle 1 ..., Info
+2021-12-30 5:26:22 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 5:26:43 PM, 10, AutoFocus, Auto Focusing at 206.000 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 5:28:07 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 5:28:08 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 5:36:29 PM, 10, InterBlock, Analysis INTERBLOCK at Block 24, Cycle 1 ..., Info
+2021-12-30 5:36:30 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 5:36:50 PM, 10, AutoFocus, Auto Focusing at 205.568 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 5:38:21 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 5:38:22 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 5:46:42 PM, 10, InterBlock, Analysis INTERBLOCK at Block 25, Cycle 1 ..., Info
+2021-12-30 5:46:43 PM, 10, AutoFocus, Peak centering at 206.000 on the Axial before Auto Focusing..., Info
+2021-12-30 5:47:03 PM, 10, AutoFocus, Auto Focusing at 206.000 on the Axial until a maximum of 100 is reached..., Info
+2021-12-30 5:48:28 PM, 10, AutoFocus, Focussing completed with an intensity of 0.000., Info
+2021-12-30 5:48:29 PM, 10, AutoFocus, Auto Focus has completed, INFO
+2021-12-30 5:54:18 PM, 10, Instrument, Ion energy readback is 7968v and LOS valve is reporting 'Open'., Info
+2021-12-30 5:54:18 PM, 10, Run ABORTED, Method has been ABORTED., ABORTED
+2021-12-30 5:54:18 PM, 10, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 10, COMPLETED
+2021-12-30 5:54:31 PM, 10, Loaded SPM Method , CoolDown.TIMSPM, Info
