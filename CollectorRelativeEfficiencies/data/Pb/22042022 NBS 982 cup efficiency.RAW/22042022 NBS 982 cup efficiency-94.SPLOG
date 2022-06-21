@@ -1,0 +1,82 @@
+
+22/04/2022 11:03:06, 18, METHOD, ====== METHOD HAS STARTED - Bead: 18 ======, STARTED
+22/04/2022 11:03:06, 18, SPM Method , Pb 0.050V Pb206.TIMSPM, Info
+22/04/2022 11:03:06, 18, Instrument, Ion energy readback is 7969v and LOS valve is reporting 'Open'., Info
+22/04/2022 11:03:06, 18, FILAMENTS, Filaments are currently ON!., Info
+22/04/2022 11:03:06, 18, TURRET, Turret reporting to be at BEAD 18 [3130 steps], Info
+22/04/2022 11:03:06, 18, TURRET, BEAD 18 is already in position., Info
+22/04/2022 11:03:06, 18, Analysis START, Requesting analysis is started..., Analysis
+22/04/2022 11:05:48, 18, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+22/04/2022 11:05:49, 18, SetIntensity, --- SET INTENSITY ---------------------------, 
+22/04/2022 11:05:49, 18, SetIntensity, Analysis: Block 1, Cycle 1., Analysis
+22/04/2022 11:05:49, 18, SetIntensity, Using AI of 0.05 @ 10.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+22/04/2022 11:05:49, 18, SetIntensity, Using RampRate 2 mA, 2.50A maximum, AF+SO Scan, Skip >AimW,., Settings
+22/04/2022 11:05:49, 18, SetIntensity, Terminate if intensity <= 0.001 with > 3.00A on CENTRE filament., Settings
+22/04/2022 11:05:49, 18, SetIntensity, Searching for specified peaks..., Info
+22/04/2022 11:06:10, 18, SetIntensity, Settling upon major peak Pb206 (203.9993), intensity of 0.029, Info
+22/04/2022 11:06:10, 18, SetIntensity, Scanning for specified masses has COMPLETED., Info
+22/04/2022 11:06:10, 18, SetIntensity, Peaks located so far:, Info
+22/04/2022 11:06:10, 18, SetIntensity,      'Pb206' @ 203.9993 (PKC) BL -0.0004, Intensity 0.0291, Peaks
+22/04/2022 11:06:10, 18, SetIntensity, Auto focussing upon Pb206 (203.9993)... Initial intensity 0.0291, Info
+22/04/2022 11:06:10, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:07:45, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:07:46, 18, SetIntensity, Targeting 100% of specified intensity (0.05000) at 25% tolerance..., Info
+22/04/2022 11:07:47, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.355]A ..., Info
+22/04/2022 11:08:22, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.383]A ..., Info
+22/04/2022 11:08:54, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.406]A ..., Info
+22/04/2022 11:09:22, 18, SetIntensity, Auto focussing upon Pb206 (203.9993)... Initial intensity 0.0451, Info
+22/04/2022 11:09:22, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:10:53, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:10:54, 18, SetIntensity, Targeting 100% of specified intensity (0.05000)... 2nd stage, Info
+22/04/2022 11:10:54, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.422]A ..., Info
+22/04/2022 11:11:38, 18, SetIntensity, Growth rate is -1.290% - OUTSIDE limits., Info
+22/04/2022 11:11:38, 18, SetIntensity, Searching for specified peaks..., Info
+22/04/2022 11:11:59, 18, SetIntensity, Settling upon major peak Pb206 (204.0001), intensity of 0.045, Info
+22/04/2022 11:11:59, 18, SetIntensity, Scanning for specified masses has COMPLETED., Info
+22/04/2022 11:11:59, 18, SetIntensity, Peaks located so far:, Info
+22/04/2022 11:11:59, 18, SetIntensity,      'Pb206' @ 204.0001 (PKC) BL -0.0003, Intensity 0.0447, Peaks
+22/04/2022 11:11:59, 18, SetIntensity, Auto focussing upon Pb206 (204.0001)... Initial intensity 0.0447, Info
+22/04/2022 11:11:59, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:13:34, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:13:35, 18, SetIntensity, Targeting 100% of specified intensity (0.05000) at 25% tolerance..., Info
+22/04/2022 11:13:36, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.434]A ..., Info
+22/04/2022 11:14:07, 18, SetIntensity, Auto focussing upon Pb206 (204.0001)... Initial intensity 0.0451, Info
+22/04/2022 11:14:07, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:15:40, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:15:41, 18, SetIntensity, Targeting 100% of specified intensity (0.05000)... 2nd stage, Info
+22/04/2022 11:15:41, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.453]A ..., Info
+22/04/2022 11:16:27, 18, SetIntensity, Growth rate is -1.058% - OUTSIDE limits., Info
+22/04/2022 11:16:27, 18, SetIntensity, Searching for specified peaks..., Info
+22/04/2022 11:16:48, 18, SetIntensity, Settling upon major peak Pb206 (204.0008), intensity of 0.045, Info
+22/04/2022 11:16:48, 18, SetIntensity, Scanning for specified masses has COMPLETED., Info
+22/04/2022 11:16:48, 18, SetIntensity, Peaks located so far:, Info
+22/04/2022 11:16:48, 18, SetIntensity,      'Pb206' @ 204.0008 (PKC) BL -0.0005, Intensity 0.0451, Peaks
+22/04/2022 11:16:48, 18, SetIntensity, Auto focussing upon Pb206 (204.0008)... Initial intensity 0.0451, Info
+22/04/2022 11:16:48, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:18:18, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:18:19, 18, SetIntensity, Targeting 100% of specified intensity (0.05000) at 25% tolerance..., Info
+22/04/2022 11:18:20, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.466]A ..., Info
+22/04/2022 11:18:49, 18, SetIntensity, Auto focussing upon Pb206 (204.0008)... Initial intensity 0.0452, Info
+22/04/2022 11:18:49, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:20:23, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:20:24, 18, SetIntensity, Targeting 100% of specified intensity (0.05000)... 2nd stage, Info
+22/04/2022 11:20:24, 18, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.483]A ..., Info
+22/04/2022 11:20:53, 18, SetIntensity, Growth rate is -1.532% - OUTSIDE limits., Info
+22/04/2022 11:20:54, 18, SetIntensity, Searching for specified peaks..., Info
+22/04/2022 11:21:14, 18, SetIntensity, Settling upon major peak Pb206 (204.0125), intensity of 0.049, Info
+22/04/2022 11:21:14, 18, SetIntensity, Scanning for specified masses has COMPLETED., Info
+22/04/2022 11:21:14, 18, SetIntensity, Peaks located so far:, Info
+22/04/2022 11:21:14, 18, SetIntensity,      'Pb206' @ 204.0125 (PKC) BL -0.0004, Intensity 0.0494, Peaks
+22/04/2022 11:21:14, 18, SetIntensity, Auto focussing upon Pb206 (204.0125)... Initial intensity 0.0494, Info
+22/04/2022 11:21:14, 18, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+22/04/2022 11:22:44, 18, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+22/04/2022 11:22:44, 18, SetIntensity, Completing with the following peaks located:, Report
+22/04/2022 11:22:44, 18, SetIntensity,      'Pb206' @ 204.0125 (PKC) BL -0.0004, Intensity 0.0564, Peaks
+22/04/2022 11:22:44, 18, SetIntensity, Timetaken: 0h 16m 55s,   CENTRE: 2.483 [2.355]A,   SIDE: 0.000 [0.000]A, Report
+22/04/2022 11:22:44, 18, SetIntensity, Beam growth rate: -1.5317% over 10s - (Outside limits!) at intensity 0.0564, Report
+22/04/2022 11:22:44, 18, SetIntensity, Major peak Pb206 of 0.056 is ABOVE aiming window - EXITING early as requested., WARNING
+22/04/2022 11:22:44, 18, SetIntensity, SetIntensity has completed, Info
+22/04/2022 13:47:59, 18, Instrument, Ion energy readback is 7968v and LOS valve is reporting 'Open'., Info
+22/04/2022 13:47:59, 18, Run ABORTED, Method has been ABORTED., ABORTED
+22/04/2022 13:47:59, 18, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 18, COMPLETED
+28/04/2022 09:57:25, 19, Loaded SPM Method , Pb 0.050V Pb206.TIMSPM, Info

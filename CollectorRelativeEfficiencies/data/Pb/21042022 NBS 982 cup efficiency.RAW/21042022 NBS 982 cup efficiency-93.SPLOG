@@ -1,0 +1,65 @@
+
+21/04/2022 19:14:27, 17, METHOD, ====== METHOD HAS STARTED - Bead: 17 ======, STARTED
+21/04/2022 19:14:27, 17, SPM Method , Pb 0.050V Pb206.TIMSPM, Info
+21/04/2022 19:14:27, 17, Instrument, Ion energy readback is 7966v and LOS valve is reporting 'Open'., Info
+21/04/2022 19:14:27, 17, FILAMENTS, Filaments are currently ON!., Info
+21/04/2022 19:14:27, 17, TURRET, Turret reporting to be at BEAD 17 [2010 steps], Info
+21/04/2022 19:14:27, 17, TURRET, BEAD 17 is already in position., Info
+21/04/2022 19:14:27, 17, Analysis START, Requesting analysis is started..., Analysis
+21/04/2022 19:17:09, 17, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+21/04/2022 19:17:10, 17, SetIntensity, --- SET INTENSITY ---------------------------, 
+21/04/2022 19:17:10, 17, SetIntensity, Analysis: Block 1, Cycle 1., Analysis
+21/04/2022 19:17:10, 17, SetIntensity, Using AI of 0.05 @ 10.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+21/04/2022 19:17:10, 17, SetIntensity, Using RampRate 2 mA, 2.50A maximum, AF+SO Scan, Skip >AimW,., Settings
+21/04/2022 19:17:10, 17, SetIntensity, Terminate if intensity <= 0.001 with > 3.00A on CENTRE filament., Settings
+21/04/2022 19:17:10, 17, SetIntensity, Searching for specified peaks..., Info
+21/04/2022 19:17:30, 17, SetIntensity, Settling upon major peak Pb206 (204.0110), intensity of 0.033, Info
+21/04/2022 19:17:30, 17, SetIntensity, Scanning for specified masses has COMPLETED., Info
+21/04/2022 19:17:30, 17, SetIntensity, Peaks located so far:, Info
+21/04/2022 19:17:30, 17, SetIntensity,      'Pb206' @ 204.0110 (PKC) BL -0.0005, Intensity 0.0326, Peaks
+21/04/2022 19:17:30, 17, SetIntensity, Auto focussing upon Pb206 (204.0110)... Initial intensity 0.0326, Info
+21/04/2022 19:17:30, 17, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+21/04/2022 19:19:08, 17, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+21/04/2022 19:19:09, 17, SetIntensity, Targeting 100% of specified intensity (0.05000) at 25% tolerance..., Info
+21/04/2022 19:19:10, 17, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.400]A ..., Info
+21/04/2022 19:19:42, 17, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.421]A ..., Info
+21/04/2022 19:19:51, 17, SetIntensity, Auto focussing upon Pb206 (204.0110)... Initial intensity 0.0453, Info
+21/04/2022 19:19:51, 17, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+21/04/2022 19:21:28, 17, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+21/04/2022 19:21:29, 17, SetIntensity, Targeting 100% of specified intensity (0.05000)... 2nd stage, Info
+21/04/2022 19:21:29, 17, SetIntensity, Adjusting filament to aim for 0.05 using CENTRE [2.422]A ..., Info
+21/04/2022 19:21:59, 17, SetIntensity, Growth rate is -0.519% - Within limits., Info
+21/04/2022 19:22:00, 17, SetIntensity, Completing with the following peaks located:, Report
+21/04/2022 19:22:00, 17, SetIntensity,      'Pb206' @ 204.0110 (PKC) BL -0.0005, Intensity 0.0453, Peaks
+21/04/2022 19:22:00, 17, SetIntensity, Timetaken: 0h 4m 51s,   CENTRE: 2.424 [2.400]A,   SIDE: 0.000 [0.000]A, Report
+21/04/2022 19:22:00, 17, SetIntensity, Beam growth rate: -0.5187% over 10s - (OK) at intensity 0.0453, Report
+21/04/2022 19:22:00, 17, SetIntensity, SetIntensity has completed, Info
+21/04/2022 22:14:18, 17, InterBlock, Analysis INTERBLOCK at Block 2, Cycle 1 ..., Info
+21/04/2022 22:14:19, 17, SetIntensity, --- SET INTENSITY ---------------------------, 
+21/04/2022 22:14:19, 17, SetIntensity, Analysis: Block 2, Cycle 1., Analysis
+21/04/2022 22:14:19, 17, SetIntensity, Using AI of 0.05 @ 10.00% Tol, Growth rate of 1.000% on CENTRE filament., Settings
+21/04/2022 22:14:19, 17, SetIntensity, Using RampRate 2 mA, 2.50A maximum, AF+SO Scan, Skip >AimW,., Settings
+21/04/2022 22:14:19, 17, SetIntensity, Terminate if intensity <= 0.001 with > 3.00A on CENTRE filament., Settings
+21/04/2022 22:14:19, 17, SetIntensity, Searching for specified peaks..., Info
+21/04/2022 22:14:40, 17, SetIntensity, Settling upon major peak Pb206 (204.0015), intensity of 0.008, Info
+21/04/2022 22:14:40, 17, SetIntensity, Scanning for specified masses has COMPLETED., Info
+21/04/2022 22:14:40, 17, SetIntensity, Peaks located so far:, Info
+21/04/2022 22:14:40, 17, SetIntensity,      'Pb206' @ 204.0015 (PKC) BL -0.0005, Intensity 0.0084, Peaks
+21/04/2022 22:14:40, 17, SetIntensity, Auto focussing upon Pb206 (204.0015)... Initial intensity 0.0084, Info
+21/04/2022 22:14:40, 17, SetIntensity, Auto focussing sequence: ZF, ZB, DF, DB, SL, EX, SO, Info
+21/04/2022 22:16:08, 17, SetIntensity, Auto focussing finished with an intensity at 0V., Info
+21/04/2022 22:16:09, 17, SetIntensity, Targeting 50% of specified intensity (0.02500) at 25% tolerance..., Info
+21/04/2022 22:16:10, 17, SetIntensity, Adjusting filament to aim for 0.03 using CENTRE [2.424]A ..., Info
+21/04/2022 22:16:50, 17, SetIntensity, Adjusting filament to aim for 0.03 using CENTRE [2.462]A ..., Info
+21/04/2022 22:17:24, 17, SetIntensity, Adjusting filament to aim for 0.03 using CENTRE [2.489]A ..., Info
+21/04/2022 22:17:41, 17, SetIntensity, Completing with the following peaks located:, Report
+21/04/2022 22:17:41, 17, SetIntensity,      'Pb206' @ 204.0015 (PKC) BL -0.0005, Intensity 0.0202, Peaks
+21/04/2022 22:17:41, 17, SetIntensity, Timetaken: 0h 3m 23s,   CENTRE: 2.501 [2.424]A,   SIDE: 0.000 [0.000]A, Report
+21/04/2022 22:17:41, 17, SetIntensity, ABORTED:    ** Maximum CENTRE filament current of 2.500A reached!, CONTINUE
+21/04/2022 22:17:41, 17, POST, ========= Switching to POST ANALYSIS mode..., Info
+21/04/2022 22:17:42, 17, IsolationValve, The ISOLATION valve will be set CLOSED., Info
+21/04/2022 22:17:45, 17, IsolationValve , Isolation valve is now CLOSED., Info
+21/04/2022 22:17:46, 17, IsolationValve, Task has completed, Info
+21/04/2022 22:17:46, 17, Instrument, Ion energy readback is 7968v and LOS valve is reporting 'Closed'., Info
+21/04/2022 22:17:46, 17, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 17, COMPLETED
+22/04/2022 11:03:06, 18, Loaded SPM Method , Pb 0.050V Pb206.TIMSPM, Info

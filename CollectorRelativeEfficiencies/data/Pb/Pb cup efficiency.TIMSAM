@@ -1,0 +1,206 @@
+<?xml version="1.0" standalone="yes"?>
+<ANALYSIS_METHOD>
+  <HEADER>
+    <Filename>Pb cup efficiency.TIMSAM</Filename>
+    <DateModified>28/04/2022 09:56:36</DateModified>
+    <DateCreated>28/04/2022 09:56:36</DateCreated>
+    <CreatedBy>User1</CreatedBy>
+    <ModifiedBy>User2</ModifiedBy>
+  </HEADER>
+  <SETTINGS>
+    <IntersperseBaselines>False</IntersperseBaselines>
+    <BaselineFrequency>Never</BaselineFrequency>
+    <PKCCycleInterval>0</PKCCycleInterval>
+    <TotalBlocks>25</TotalBlocks>
+    <TotalCycles>30</TotalCycles>
+    <CalculateRatios>True</CalculateRatios>
+    <InitialBLMagnetDelay>3000</InitialBLMagnetDelay>
+    <DeflectBeamProtection>False</DeflectBeamProtection>
+    <PerformBeamInterpCycles>False</PerformBeamInterpCycles>
+    <PerformInterBlocks>True</PerformInterBlocks>
+    <AxialColl>Axial</AxialColl>
+    <ActiveSEMCollectors />
+    <MagnetFlybackSettleTime>2000</MagnetFlybackSettleTime>
+    <CorrectForBaselines>True</CorrectForBaselines>
+    <CorrectForDeadtimes>False</CorrectForDeadtimes>
+    <IsoWorks_Method>Pb cup efficiency</IsoWorks_Method>
+    <Rejection_Sigma>2</Rejection_Sigma>
+    <Rejection_Percentage>5</Rejection_Percentage>
+    <ActiveSubChannel>SecondaryB</ActiveSubChannel>
+    <ProcessingUnits>Volts</ProcessingUnits>
+    <TFE_Enabled>False</TFE_Enabled>
+    <TFE_MonitorPeak />
+    <TFE_IntensityThreshold>0.1</TFE_IntensityThreshold>
+    <TFE_IntervalPeakCentring>False</TFE_IntervalPeakCentring>
+    <TFE_PeakCentringInterval>01:00</TFE_PeakCentringInterval>
+    <TFE_PeakCentringMonitorThreshold>0.5</TFE_PeakCentringMonitorThreshold>
+    <Export_EXCELWorkbook>None</Export_EXCELWorkbook>
+    <Export_IsotopePoints>True</Export_IsotopePoints>
+    <Export_ASCFile>None</Export_ASCFile>
+    <Export_ASCOptions>SingleCollector</Export_ASCOptions>
+    <Export_ASCActiveColl>Axial</Export_ASCActiveColl>
+    <Export_TXTEveryCYCLE>True</Export_TXTEveryCYCLE>
+    <Export_TripoliLiveData>True</Export_TripoliLiveData>
+  </SETTINGS>
+  <ONPEAK>
+    <Sequence>1</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb204</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>204.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>High2</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb204:AxS1,Pb206:H2S1,Pb207:H3S1,Pb208:H4S1</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>SeaGreen</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>2</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb206</MassID>
+    <MassIDCollector>High1</MassIDCollector>
+    <AxMass>205.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>High1</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb204:L2S2,Pb206:H1S2,Pb207:H2S2,Pb208:H3S2</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Purple</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>3</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb206</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>206.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Axial</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb204:L3S3,Pb206:AxS3,Pb207:H1S3,Pb208:H2S3</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>RosyBrown</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>4</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb207</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>207.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Low2</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb204:L4S4,Pb206:L2S4,Pb207:AxS4,Pb208:H1S4</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>RoyalBlue</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>5</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb208</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>208.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Axial</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb204:L5S5,Pb206:L3S5,Pb207:L2S5,Pb208:AxS5</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>SeaGreen</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>6</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb208</MassID>
+    <MassIDCollector>Low2</MassIDCollector>
+    <AxMass>209.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Low2</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb206:L4S6,Pb207:L3S6,Pb208:L2S6</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Tomato</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>7</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb208</MassID>
+    <MassIDCollector>Low3</MassIDCollector>
+    <AxMass>210.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Low3</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb206:L5S7,Pb207:L4S7,Pb208:L3S7</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Violet</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>8</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb208</MassID>
+    <MassIDCollector>Low4</MassIDCollector>
+    <AxMass>211.000</AxMass>
+    <IntegPeriod>ms10000</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Low4</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences />
+    <CollectorArray>Pb207:L5S8,Pb208:L4S8</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>YellowGreen</TraceColour>
+  </ONPEAK>
+  <EQUILIBRATION>
+    <Enabled>False</Enabled>
+    <Collector>Axial</Collector>
+    <AxMass>40.000</AxMass>
+    <MassID>Ar40</MassID>
+    <Duration>30</Duration>
+    <IntegPeriod>ms1000</IntegPeriod>
+    <StoreToDB>False</StoreToDB>
+  </EQUILIBRATION>
+</ANALYSIS_METHOD>
