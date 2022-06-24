@@ -1,8 +1,27 @@
-function data = parseTXT(dataFolder, method)
+function data = parseTXT(dataFolder)
 %PARSETXT Parse Isotopx TXT file output
 %   dataFolder is .RAW folder, method struct from parseTIMSAM
 
 textFileInfo = dir("../data/" + dataFolder + "/*.TXT");
+
+%% parse header block
+
+% get method row from header, find method name
+opts = delimitedTextImportOptions('NumVariables', 2);
+opts.DataLines = [4, 11];
+methodHeader = readcell(textFileInfo.name, opts);
+
+data.header.fileName   = string(methodHeader{1,2});
+data.header.methodName = string(methodHeader{2,2});
+data.header.methodPath = string(methodHeader{3,2});
+data.header.IsoWorksMethod = string(methodHeader{4,2});
+data.header.FolderPath = string(methodHeader{5,2});
+data.header.Corrected = string(methodHeader{6,2});
+data.header.BChannels = string(methodHeader{7,2});
+data.header.TimeZero = string(methodHeader{8,2});
+
+
+%% parse data 
 
 fid=fopen(textFileInfo.name,'r');
 dtmp=textscan(fid,'%s','delimiter',',','Headerlines',12); 
@@ -21,19 +40,13 @@ collectorBlockEndPosition = min([userTablesStartPosition baselinesStartPosition 
 nCollectors = (collectorBlockEndPosition-collectorsStartPosition)/6 - 1;
 data.collectorNames = dtmp(8:6:collectorBlockEndPosition)'; % starts at 
 
-if method.settings(19).Value == "PrimaryA" % if resistor-based amplifiers, no BChannels
+if data.header.BChannels == "No" % if resistor-based amplifiers, no BChannels
     nDataColumns = 7 + nCollectors;
-elseif method.settings(19).Value == "SecondaryB"
+elseif data.header.BChannels == "Yes" % if ATONAs
     nDataColumns = 7 + 2*nCollectors;
 else
     disp('unrecognized text file column setup')
 end
-
-% get method row from header, find method name
-opts = delimitedTextImportOptions('NumVariables', nDataColumns);
-opts.DataLines = [5, 5];
-methodRow = readcell(textFileInfo.name, opts);
-data.methodName = string(methodRow{2});
 
 % range starts after header, continues to cell before next block flag
 BLrange = (baselinesStartPosition+1+nDataColumns):(onPeakStartPosition-1);
@@ -50,6 +63,8 @@ data.BLID = data.BLall(:,1); % baseline ID, eg "BL1", "BL2", etc.
 data.OPserial = double(data.OPall(:,2:4));% [block cycle integration] serially assigned counts
 data.OPmatrix = double(data.OPall(:,8:end)); % matrix of collector readings
 data.OPtime   = double(data.OPall(:,7)); % time
+
+
 
 
 end % function parseTXT
