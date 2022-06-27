@@ -1,0 +1,265 @@
+<?xml version="1.0" standalone="yes"?>
+<ANALYSIS_METHOD>
+  <HEADER>
+    <Filename>Sm147to150_S6.TIMSAM</Filename>
+    <DateModified>28/04/2021 16:06:04</DateModified>
+    <DateCreated>28/04/2021 16:06:04</DateCreated>
+    <CreatedBy>User1</CreatedBy>
+    <ModifiedBy>User2</ModifiedBy>
+  </HEADER>
+  <SETTINGS>
+    <IntersperseBaselines>False</IntersperseBaselines>
+    <BaselineFrequency>EveryBlock</BaselineFrequency>
+    <PKCCycleInterval>0</PKCCycleInterval>
+    <TotalBlocks>10</TotalBlocks>
+    <TotalCycles>10</TotalCycles>
+    <CalculateRatios>True</CalculateRatios>
+    <InitialBLMagnetDelay>3000</InitialBLMagnetDelay>
+    <DeflectBeamProtection>False</DeflectBeamProtection>
+    <PerformBeamInterpCycles>False</PerformBeamInterpCycles>
+    <PerformInterBlocks>True</PerformInterBlocks>
+    <AxialColl>Axial</AxialColl>
+    <ActiveSEMCollectors />
+    <MagnetFlybackSettleTime>1000</MagnetFlybackSettleTime>
+    <CorrectForBaselines>True</CorrectForBaselines>
+    <CorrectForDeadtimes>True</CorrectForDeadtimes>
+    <IsoWorks_Method>Sm147_150hop</IsoWorks_Method>
+    <Rejection_Sigma>10</Rejection_Sigma>
+    <Rejection_Percentage>0</Rejection_Percentage>
+    <ActiveSubChannel>PrimaryA</ActiveSubChannel>
+    <ProcessingUnits>Volts</ProcessingUnits>
+    <TFE_Enabled>False</TFE_Enabled>
+    <TFE_MonitorPeak />
+    <TFE_IntensityThreshold>0.1</TFE_IntensityThreshold>
+    <TFE_IntervalPeakCentring>False</TFE_IntervalPeakCentring>
+    <TFE_PeakCentringInterval>01:00</TFE_PeakCentringInterval>
+    <TFE_PeakCentringMonitorThreshold>0.5</TFE_PeakCentringMonitorThreshold>
+    <Export_IsotopePoints>True</Export_IsotopePoints>
+    <Export_ASCFile>None</Export_ASCFile>
+    <Export_ASCOptions>SingleCollector</Export_ASCOptions>
+    <Export_ASCActiveColl>Axial</Export_ASCActiveColl>
+    <Export_TXTEveryCYCLE>False</Export_TXTEveryCYCLE>
+    <Export_TripoliLiveData>False</Export_TripoliLiveData>
+  </SETTINGS>
+  <BASELINE>
+    <Sequence>1</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL1</MassID>
+    <AxMass>146.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Black</TraceColour>
+  </BASELINE>
+  <BASELINE>
+    <Sequence>2</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL2</MassID>
+    <AxMass>147.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>LightSeaGreen</TraceColour>
+  </BASELINE>
+  <BASELINE>
+    <Sequence>3</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL3</MassID>
+    <AxMass>148.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Chocolate</TraceColour>
+  </BASELINE>
+  <BASELINE>
+    <Sequence>4</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL4</MassID>
+    <AxMass>149.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Red</TraceColour>
+  </BASELINE>
+  <BASELINE>
+    <Sequence>5</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL5</MassID>
+    <AxMass>150.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Purple</TraceColour>
+  </BASELINE>
+  <BASELINE>
+    <Sequence>6</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL6</MassID>
+    <AxMass>151.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>RoyalBlue</TraceColour>
+  </BASELINE>
+  <BASELINE>
+    <Sequence>7</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL7</MassID>
+    <AxMass>152.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>20.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-0.5000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>SeaGreen</TraceColour>
+  </BASELINE>
+  <ONPEAK>
+    <Sequence>1</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>147Sm</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>146.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>High3</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL1, BL2</BLReferences>
+    <CollectorArray>147Sm:H1S1,148Sm:H2S1,149Sm:H3S1,150Sm:H4S1</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>-1.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>RosyBrown</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>2</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>147Sm</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>147.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>High2</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL2, BL3</BLReferences>
+    <CollectorArray>147Sm:AxS2,148Sm:H1S2,149Sm:H2S2,150Sm:H3S2</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Tomato</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>3</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>148Sm</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>148.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>High1</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL3, BL4</BLReferences>
+    <CollectorArray>147Sm:L2S3,148Sm:AxS3,149Sm:H1S3,150Sm:H2S3</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Violet</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>4</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>149Sm</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>149.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Axial</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL4, BL5</BLReferences>
+    <CollectorArray>147Sm:L3S4,148Sm:L2S4,149Sm:AxS4,150Sm:H1S4</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>YellowGreen</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>5</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>150Sm</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>150.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Low2</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL5, BL6</BLReferences>
+    <CollectorArray>147Sm:L4S5,148Sm:L3S5,149Sm:L2S5,150Sm:AxS5</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Black</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>6</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>150Sm</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>151.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>Low3</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL6, BL7</BLReferences>
+    <CollectorArray>147Sm:L5S6,148Sm:L4S6,149Sm:L3S6,150Sm:L2S6</CollectorArray>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>LightSeaGreen</TraceColour>
+  </ONPEAK>
+  <EQUILIBRATION>
+    <Enabled>False</Enabled>
+    <Collector>Axial</Collector>
+    <AxMass>40.000</AxMass>
+    <MassID>Ar40</MassID>
+    <Duration>30</Duration>
+    <IntegPeriod>ms1000</IntegPeriod>
+    <StoreToDB>False</StoreToDB>
+  </EQUILIBRATION>
+</ANALYSIS_METHOD>
