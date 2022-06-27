@@ -20,5 +20,7 @@ method = parseTIMSAM(data.header.methodName);
 FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
 method = processMethod(method, FaraNames);
 
-%% 
+%% assemble data vector and tags
 
+effRelativeTo = "Ax"; % all efficienies relative to this collector
+d = assembleDataVector(data, method);
