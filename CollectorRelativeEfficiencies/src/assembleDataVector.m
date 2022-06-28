@@ -7,10 +7,13 @@ function d = assembleDataVector(data,method)
 % determine which Faradays are used in the analysis
 FaraNamesFromMethod = string(method.OPTable.Properties.VariableNames);
 FaraNamesFromData = data.collectorNames;
-[FaraNamesUsed, FaradayIndicesInData] = intersect(FaraNamesFromMethod, FaraNamesFromData);
+[FaraNamesUsed, FaradayIndicesInData] = ...
+       intersect(FaraNamesFromData, FaraNamesFromMethod, 'stable');
 
-FarsUsed = find(sum(method.F_ind));    
-F_ind = method.F_ind(:,FarsUsed) ;
+data.OPmatrix = data.OPmatrix(:,FaradayIndicesInData');
+data.BLmatrix = data.BLmatrix(:,FaradayIndicesInData');
+
+
 
 
 
