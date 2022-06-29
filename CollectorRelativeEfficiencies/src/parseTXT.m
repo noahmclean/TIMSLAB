@@ -23,6 +23,11 @@ data.header.TimeZero = string(methodHeader{8,2});
 
 %% parse data 
 
+% future work: change to table import for ATONA data
+%opts = setvartype(opts, 'string');
+%opts.DataLines = [13 Inf];
+%dataTable = readtable(textFileInfo.name, opts);
+
 fid=fopen(textFileInfo.name,'r');
 dtmp=textscan(fid,'%s','delimiter',',','Headerlines',12); 
 dtmp = string(dtmp{1});
@@ -59,7 +64,7 @@ data.BLserial = double(data.BLall(:,2:4));% [block cycle integration] serially a
 data.BLmatrix = double(data.BLall(:,8:end)); % matrix of collector readings
 data.BLtime   = double(data.BLall(:,7)); % time
 data.BLID = data.BLall(:,1); % baseline ID, eg "BL1", "BL2", etc. 1st column in TXT data file
-data.BLSeqidx = double(extractAfter(data.BLall(:,1), "BL"));
+data.BLSeqIdx = double(extractAfter(data.BLall(:,1), "BL"));
 
 data.OPserial = double(data.OPall(:,2:4));% [block cycle integration] serially assigned counts
 data.OPmatrix = double(data.OPall(:,8:end)); % matrix of collector readings
