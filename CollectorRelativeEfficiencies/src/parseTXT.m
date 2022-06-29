@@ -59,13 +59,13 @@ data.BLserial = double(data.BLall(:,2:4));% [block cycle integration] serially a
 data.BLmatrix = double(data.BLall(:,8:end)); % matrix of collector readings
 data.BLtime   = double(data.BLall(:,7)); % time
 data.BLID = data.BLall(:,1); % baseline ID, eg "BL1", "BL2", etc. 1st column in TXT data file
-%data.BLidx = 
+data.BLSeqidx = double(extractAfter(data.BLall(:,1), "BL"));
 
 data.OPserial = double(data.OPall(:,2:4));% [block cycle integration] serially assigned counts
 data.OPmatrix = double(data.OPall(:,8:end)); % matrix of collector readings
 data.OPtime   = double(data.OPall(:,7)); % time
 data.OPID = data.OPall(:,1); % OnPeak ID, eg "OP1", "OP2", etc.  1st column in TXT data file
-
+data.OPSeqIdx = double(extractAfter(data.OPall(:,1), "OP"));
 
 
 end % function parseTXT

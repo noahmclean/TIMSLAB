@@ -98,7 +98,11 @@ if isfield(method, 'baselines') % if baselines present
         'RowNames', BLnames);
     BLTable = fillmissing(BLT, 'constant', ""); clear BLT
 
-    
+    for iBL = 1:nBL
+
+        %BLTable.("Ax")(BLnames(iBL)) = double(
+
+    end % for iBL
 
 end
 
