@@ -5,7 +5,8 @@ addpath(genpath("../data"))
 
 %% input a filename from data folder
 
-dataFolder = "Sm/SmKU1A-A2.RAW";
+%dataFolder = "Sm/SmKU1A-A2.RAW";
+dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW";
 
 %% parse the data file
 
@@ -18,7 +19,10 @@ method = parseTIMSAM(data.header.methodName);
 %method = parseTIMSAM('PbFaraday_Pbc3Line.TIMSAM');
 
 FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-method = processMethod(method, FaraNames);
+collectorDeltas = [-4 -3 -3 -1 0 1 2 3 4]; 
+method = processMethod(method, FaraNames, collectorDeltas);
+% collector mass differences (derive from OPMatrix in future)
+method.collectorDeltas = [-4 -3 -3 -1 0 1 2 3 4]; 
 
 %% assemble data vector and tags
 

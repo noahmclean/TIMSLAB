@@ -1,4 +1,4 @@
-function method = processMethod(method, FaraNames)
+function method = processMethod(method, FaraNames, collectorDeltas)
 %PROCESSMETHOD Extract useful information from parsed method structure
 %
 %   Then append the useful info to the method structure
@@ -92,15 +92,16 @@ if isfield(method, 'baselines') % if baselines present
 
     nBL = size(method.baselines, 2);
     BLnames = [method.baselines.Name]';
-    BLT = table('Size', [nBL, nFara], ...
-        'VariableTypes', repelem("string", nFara), ...
+    BLTable = table('Size', [nBL, nFara], ...
+        'VariableTypes', repelem("double", nFara), ...
         'VariableNames', FaraNames, ...
         'RowNames', BLnames);
-    BLTable = fillmissing(BLT, 'constant', ""); clear BLT
 
     for iBL = 1:nBL
 
-        %BLTable.("Ax")(BLnames(iBL)) = double(
+        AxMass = double(string(method.baselines(iBL).Info(4).Value)) + ...
+                 double(string(method.baselines(iBL).Info(10).Value));
+        BLTable{iBL,FaraNames} = AxMass + collectorDeltas;
 
     end % for iBL
 
