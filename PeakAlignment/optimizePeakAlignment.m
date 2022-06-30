@@ -10,15 +10,30 @@
 %          0 1 2 3 4    0 0 0 0];
 
 % KU dynamic Sr
-Iso_Name = ["Sr84", "Rb85", "Sr86", "Sr87", "Sr88"];
-Col_Name = ["L2", "L1", "H1", "H2"];
-Iso_In_Axial = false;
-F_massIndex = [1 2 3 4;
-               0 3 4 5;
-               0 4 5 0];
-F_stationary = [false false true false];
-massOffsetFromStationary = [-2 -1 0 1]; % can compute from F_ind if not lazy
-input_AxMasses = [85.4; 86.4; 87.4];
+% Iso_Name = ["Sr84", "Rb85", "Sr86", "Sr87", "Sr88"];
+% Col_Name = ["L2", "L1", "H1", "H2"];
+% Iso_In_Axial = false;
+% F_massIndex = [1 2 3 4;
+%                0 3 4 5;
+%                0 4 5 0];
+% F_stationary = [false false true false];
+% massOffsetFromStationary = [-2 -1 0 1]; % can compute from F_ind if not lazy
+% input_AxMasses = [85.4; 86.4; 87.4];
+% Reff = 540;
+
+% KU Sm for collector efficiencies
+Iso_Name = ["Sm147", "Sm148", "Sm149", "Sm150"];
+Col_Name = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
+Iso_In_Axial = true;
+F_massIndex = [0 0 0 0 0 1 2 3 4;
+               0 0 0 0 1 2 3 4 0;
+               0 0 0 1 2 3 4 0 0;
+               0 0 1 2 3 4 0 0 0;
+               0 1 2 3 4 0 0 0 0;
+               1 2 3 4 0 0 0 0 0];
+F_stationary = [false false false false true false false false false];
+massOffsetFromStationary = [-4 -3 -2 -1 0 1 2 3 4];
+input_AxMasses = [145.91; 146.91; 147.91; 148.92; 149.92; 150.92];
 Reff = 540;
 
 % % Two-sequence dynamic Sr
@@ -93,10 +108,16 @@ options.MaxIter = 1e4;
                 nPeaks, F_massIndex, F_stationary, colPosStationary, ...
                 Iso_Name, Reff), unk0, options);
 
+% discrepVec is in isotopic mass units, and is mass - bestPosition
+% positive discrepvec means collector is to low-mass side of peak so that
+% peak appears at higher magnet mass than its isotopic mass by discrep.
 discrepVec = calcDiscrep(soln, nPositions, nPeaks, ...
                    F_massIndex, F_stationary, colPosStationary, ...
                    Iso_Name, Reff);
-
+F_peakIndex = zeros(size(F_massIndex));
+F_peakIndex(F_massIndex > 0) = 1:nPeaks; % index peaks in seq table
+discrepMat = zeros(size(F_massIndex));
+discrepMat(F_massIndex > 0) = discrepVec;
 
 %% visualize results
 
