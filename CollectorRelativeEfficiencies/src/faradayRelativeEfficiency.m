@@ -25,14 +25,36 @@ method = processMethod(method, FaraNames, collectorDeltas);
 
 %% 4. assemble data vector and tags
 
-d = assembleDataVector(data, method);
+[d, data] = assembleDataVector(data, method);
+% also trims data matrices to collectors from method
 
-%% 6. create tail model
+%% 5. create tail model
 
 tails = initializePeakTails(method);
 
-%% 5. initialize model
+%% 5b. create spline setup
 
-m0 = inializeModel(data, method);
+% contains nseg, block start/stop times, nSeg
+spl = splineSetup(data);
 
+%% 6. initialize model
 
+m0 = initializeModel(data, d, method, spl);
+
+% %% 7. calculate uncertainty in data
+% 
+% s2 = calculateUnct(d, method);
+% 
+% %% 8. calculate best fit
+% 
+% opts = optimoptions("fminunc");
+% opts.StepTolerance = 1e-10;
+% %[mhat, chi2] = fminunc(@(m) objfunc(d, s2), m0, opts);
+% 
+% %% 9. estimate uncertainty in fit
+% 
+% G = makeG(d, mhat);
+% covx = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
+% unctx = sqrt(diag(covx));
+% 
+% %% 10. visualize results

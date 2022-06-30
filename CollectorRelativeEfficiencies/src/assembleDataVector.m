@@ -1,4 +1,4 @@
-function d = assembleDataVector(data,method)
+function [d, data] = assembleDataVector(data,method)
 %ASSEMBLEDATAVECTOR Assemble data vector in d = g(m)
 %   d is actually a struct containing the data vector and relevant
 %   vectors of tags. Based off LoadMSdata_synth.m from Scott Burdick.
@@ -77,7 +77,7 @@ end
 
 for iDet = 1:nDet 
 
-    detRefs = OPdataIsRef(:,iDet); % where is this detector refd in BL?
+    detRefs = OPdataIsRef(:,iDet); % where is this detector refd in F_ind?
     nrefs   = sum(detRefs);
     d.int   = [d.int; data.OPmatrix(detRefs, iDet)];
     d.time  = [d.time; data.OPtime(detRefs)];
