@@ -1,7 +1,13 @@
 function tails = initializePeakTails(method)
 %INITIALIZEPEAKTAILS Summary of this function goes here
 %   Taken from peakTailsVisualization_v2.m by Noah McLean for Tripoli
-%   measurement model specification
+%   measurement model specification.
+%   tails contains peak tail intensities as a proportion of the most
+%   abundant isotope measured in the input argument method
+%   tails.OP is expected on-peak tails contribution as a proportion of
+%   the major isotope from the method.  
+%   tails.halfMass is half-mass tails contributions at 0.5 amu above
+%   and below the tails.OP peaks.
 
 element = "Sm";
 isotopes = ["144Sm", "147Sm", "148Sm", "149Sm", "150Sm", "152Sm", "154Sm"];
@@ -61,11 +67,22 @@ end % for iPeak
 
 sumTails = sum([upTails downTails], 2);
 
-% get tails for the method's isotopes
+% get tails for the method's isotopes. extract method info
 massIDs = method.MassIDs';
 nMassIDs = length(massIDs);
-massIDNames = element + extractBefore(isotopes, element);
+massIDNames = element + extractBefore(massIDs, element);
 
+% determine relative abundances of method's massIDs to renormalize if needed
+methodIntensity = zeros(1,nMassIDs);
+for iMass = 1:nMassIDs
+    methodIntensity(iMass) = intensities(massNames == massIDNames(iMass));
+end % for iMass determine relative abundances
+[maxMethodIntensity, maxMethodIntensityIdx] = max(methodIntensity);
+%rescale sumTails to maxMethodIntensity, from maxIntensity for all isotopes
+sumTails = sumTails * maxIntensity/maxMethodIntensity;
+
+% interpolate sumTails at isotopic masses (OP) and half-masses
+% tails is 
 tails.OP = zeros(2,nMassIDs);
 tails.halfMass = zeros(2,nMassIDs+1);
 for iMass = 1:nMassIDs
