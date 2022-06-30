@@ -3,16 +3,16 @@
 
 addpath(genpath("../data"))
 
-%% input a filename from data folder
+%% 1. input a filename from data folder
 
 dataFolder = "Sm/SmKU1A-A2.RAW";
 %dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW"; not yet
 
-%% parse the data file
+%% 2. parse the data file
 
 data = parseTXT(dataFolder);
 
-%% grab the corresponding methods file, make run tables for OP and BL
+%% 3. grab the corresponding methods file, make run tables for OP and BL
 
 method = parseTIMSAM(data.header.methodName);
 %method = parseTIMSAM('Pb cup efficiency.TIMSAM');
@@ -23,11 +23,16 @@ collectorDeltas = [-4 -3 -3 -1 0 1 2 3 4];
 method = processMethod(method, FaraNames, collectorDeltas);
 % collector mass differences (derive from OPMatrix in future)
 
-%% assemble data vector and tags
+%% 4. assemble data vector and tags
 
 d = assembleDataVector(data, method);
 
-%% initialize model
+%% 6. create tail model
+
+tails = initializePeakTails(method);
+
+%% 5. initialize model
 
 m0 = inializeModel(data, method);
+
 
