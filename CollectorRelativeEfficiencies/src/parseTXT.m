@@ -48,7 +48,7 @@ data.collectorNames = dtmp(8:6:collectorBlockEndPosition)'; % starts at
 if data.header.BChannels == "No" % if resistor-based amplifiers, no BChannels
     nDataColumns = 7 + nCollectors;
 elseif data.header.BChannels == "Yes" % if ATONAs
-    nDataColumns = 7 + 2*nCollectors;
+    nDataColumns = 7 + 2*nCollectors - 1; % minus one because PM doesn't have BChannel
 else
     disp('unrecognized text file column setup')
 end

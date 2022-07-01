@@ -9,8 +9,17 @@ function tails = initializePeakTails(method)
 %   tails.halfMass is half-mass tails contributions at 0.5 amu above
 %   and below the tails.OP peaks.
 
-element = "Sm";
-isotopes = ["144Sm", "147Sm", "148Sm", "149Sm", "150Sm", "152Sm", "154Sm"];
+element = extract( string(method.onpeaks(1).Info(3).Value), lettersPattern);
+switch element
+    case "Sm"
+    isotopes = ["144Sm", "147Sm", "148Sm", "149Sm", "150Sm", "152Sm", "154Sm"];
+    abundances = [3.08 15 11.25 13.82 7.37 26.74 22.74];
+    case "Pb"
+    isotopes = ["204Pb", "206Pb", "207Pb", "208Pb"];
+    abundanceRatios = [0.0590075 1 0.914583 2.1681]; % Condon
+    abundances = abundanceRatios/sum(abundanceRatios)*100;
+end % switch
+
 
 % key to mass.m value class with isotopic masses
 massNames = element + extractBefore(isotopes, element);
@@ -19,7 +28,6 @@ for iPeak = 1:length(isotopes)
     peaks(iPeak) = mass.(massNames(iPeak));
 end
 
-abundances = [3.08 15 11.25 13.82 7.37 26.74 22.74];
 halfPeakWidth = 0.3;
 
 downMassTail = @(mass, peakMass, peakIntensity, a, b)  a * (peakMass-mass).^b * peakIntensity;

@@ -83,12 +83,12 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 %% initialize intensity functions - spline coeffs
 %        L5       L4      L3     L2     Ax     H1     H2     H3     H4
 %        1        2       3      4      5      6      7      8      9
-fudge = [0.0085 0.0045 -0.0045 0.0025 0.0010 0.0040 0.0003 0.0015 0.0055]';
-%fudge = zeros(9,1);
+%fudge = [0.0085 0.0045 -0.0045 0.0025 0.0010 0.0040 0.0003 0.0015 0.0055]';
+fudge = zeros(9,1);
 
 % set up initial i147 fit
-monitorIsotope = 1; % index for monitor isotope to fit
-for iBlock = 1
+monitorIsotope = 4; % index for monitor isotope to fit
+for iBlock = 15
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
     detMonitor = d.det(isMonitor); % detector index

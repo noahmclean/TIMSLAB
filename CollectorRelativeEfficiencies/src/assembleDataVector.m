@@ -6,12 +6,12 @@ function [d, data] = assembleDataVector(data,method)
 
 % determine which Faradays are used in the analysis, harmonize data/method
 % matrices and indices so that columns line up with columns
-FaraNamesFromMethod = string(method.OPTable.Properties.VariableNames);
-FaraNamesFromData = data.collectorNames;
+DetNamesFromMethod = string(method.OPTable.Properties.VariableNames);
+DetNamesFromData = data.collectorNames;
 [~, FaradayIndicesInData] = ...
-    intersect(FaraNamesFromData, FaraNamesFromMethod, 'stable');
+    intersect(DetNamesFromData, DetNamesFromMethod, 'stable');
 [FaraNamesUsed, FaradayIndicesInMethod] = ...
-    intersect(FaraNamesFromMethod, FaraNamesFromData, 'stable');
+    intersect(DetNamesFromMethod, DetNamesFromData, 'stable');
 
 BLTable = method.BLTable{:,FaradayIndicesInMethod};
 F_ind = method.F_ind(:,FaradayIndicesInMethod) ;
