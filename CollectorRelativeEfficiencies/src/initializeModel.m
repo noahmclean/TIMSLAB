@@ -87,8 +87,8 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 fudge = zeros(9,1);
 
 % set up initial i147 fit
-monitorIsotope = 4; % index for monitor isotope to fit
-for iBlock = 15
+monitorIsotope = 1; % index for monitor isotope to fit
+for iBlock = 1
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
     detMonitor = d.det(isMonitor); % detector index
@@ -109,7 +109,7 @@ for iBlock = 15
 
 end % for iBlock
 
-
+G = 
 
 
 %% assign m to output structure m0
