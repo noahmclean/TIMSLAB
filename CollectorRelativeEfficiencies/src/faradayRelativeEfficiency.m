@@ -5,7 +5,8 @@ addpath(genpath("../data"))
 
 %% 1. input a filename from data folder
 
-dataFolder = "Sm/SmKU1A-A2.RAW";
+%dataFolder = "Sm/SmKU1A-A2.RAW";
+dataFolder = "Sm/SmEfficiency_Bead3Run2.RAW";
 %dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW"; not yet
 %dataFolder = "Pb/A520_Pb.RAW";
 
@@ -40,7 +41,7 @@ spl = splineSetup(data);
 
 %% 6. initialize model
 
-m0 = initializeModel(data, d, method, spl);
+%m0 = initializeModel(data, d, method, spl);
 
 % %% 7. calculate uncertainty in data
 % 

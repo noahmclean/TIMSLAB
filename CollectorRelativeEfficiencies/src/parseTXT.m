@@ -53,6 +53,11 @@ else
     disp('unrecognized text file column setup')
 end
 
+% grab the gains
+collRange = (collectorsStartPosition+1):collectorBlockEndPosition;
+data.Collectors = reshape(dtmp(collRange), 6, [])';
+data.FaradayGains = double(data.Collectors(4:12,4));
+
 % range starts after header, continues to cell before next block flag
 BLrange = (baselinesStartPosition+1+nDataColumns):(onPeakStartPosition-1);
 OPrange = (onPeakStartPosition+1+nDataColumns):(endPosition-1);
@@ -71,6 +76,23 @@ data.OPmatrix = double(data.OPall(:,8:end)); % matrix of collector readings
 data.OPtime   = double(data.OPall(:,7)); % time
 data.OPID = data.OPall(:,1); % OnPeak ID, eg "OP1", "OP2", etc.  1st column in TXT data file
 data.OPSeqIdx = double(extractAfter(data.OPall(:,1), "OP"));
+
+
+%% correct bad 2-second relay settle time for gains on select samples
+% goodGains contains 6-second RST ccgains measured on 08-Jul-2022 (mean of 100)
+
+if any([ "SmEfficiency_Bead3Run2-1809.TXT" "SmEfficiency_Bead3Run3-1810"] ...
+               == string(methodHeader{1,2}) )
+goodGains = [0.9964579, 1.0118078, 0.9885882, 1.0086657, 1.0000000, ...
+             1.0149499, 0.9886156, 0.9841766, 0.9649764];
+
+% undo bad gains, apply good gains
+data.BLmatrix(:,3:11) = data.BLmatrix(:,3:11) ./ (data.FaradayGains');
+data.BLmatrix(:,3:11) = data.BLmatrix(:,3:11) .* goodGains;
+data.OPmatrix(:,3:11) = data.OPmatrix(:,3:11) ./ (data.FaradayGains');
+data.OPmatrix(:,3:11) = data.OPmatrix(:,3:11) .* goodGains;
+
+end % if any Sm were measured with bad 2-second RST ccgains
 
 
 end % function parseTXT

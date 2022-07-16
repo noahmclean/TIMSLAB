@@ -87,8 +87,10 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 fudge = zeros(9,1);
 
 % set up initial i147 fit
-monitorIsotope = 1; % index for monitor isotope to fit
-for iBlock = 1
+h = axes; hold on
+for monitorIsotope = [1 2 3]
+%monitorIsotope = 2; % index for monitor isotope to fit
+for iBlock = 7
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
     detMonitor = d.det(isMonitor); % detector index
@@ -98,18 +100,20 @@ for iBlock = 1
     intMonitor = intMonitor(sortIdx);
     detMonitor = detMonitor(sortIdx);
 
-    h = axes; hold on
+% do some plotting for debugging
     for iDet = 1:9
-    
+        if monitorIsotope == 3, mult = 1.075; 
+        elseif monitorIsotope == 2, mult =1.318;
+            else, mult = 1; end
         isDet = detMonitor == iDet;
-        plot(timeMonitor(isDet), intMonitor(isDet), '.')
+        plot(timeMonitor(isDet), mult*intMonitor(isDet), '.')
 
     end % for iDet
 
-
 end % for iBlock
 
-G = 
+end % for monitorIsotope
+%G = 
 
 
 %% assign m to output structure m0
