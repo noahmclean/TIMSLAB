@@ -19,7 +19,7 @@
 %
 %   m0 is a structure that contains:
 %   m0.vec - initial estimate of model vector
-%   m0.rangeRatio = indices for 'true' ratios
+%   m0.rangeRatio = indices for 'true' unknown ratios
 %   m0.rangeRefVolts = indices for reference voltages
 %   m0.rangeRelEffs = indices for relative efficiencies
 %   m0.rangeInts = matrix of spline coefficients for
@@ -39,11 +39,8 @@ nBlocks = max(data.OPserial(:,1));
 nCycles = max(data.OPserial(:,2));
 
 % scale up/down the number of spline coefficients based on cycles
-scaleInt = 2; % use scaleInt as many spline coefficients as cycles
-scaleBeta = 1; % use scaleBeta as many spline coeffs as cycles 
-
-nIntCoefs  = nBlocks*nCycles*scaleInt;
-nBetaCoefs = nBlocks*nCycles*scaleBeta;
+nIntCoefs  = nBlocks*nCycles*spl.scaleInt;
+nBetaCoefs = nBlocks*nCycles*spl.scaleBeta;
 
 % determine where categories start in m0
 startRatio     = 1;
@@ -60,8 +57,8 @@ m0.rangeRelEffs  = startRelEffs:(startIntCoefs-1);
 m0.rangeInts     = startIntCoefs:(startBetaCoefs-1);
 m0.rangeBetas    = startBetaCoefs:totalModelPars;
 % reshape rangeInts and Betas as a matrix, each column is a block
-m0.rangeInts  = reshape(m0.rangeInts, [nCycles*scaleInt, nBlocks]);
-m0.rangeBetas = reshape(m0.rangeBetas, [nCycles*scaleBeta, nBlocks]);
+m0.rangeInts  = reshape(m0.rangeInts, [nCycles*spl.scaleInt, nBlocks]);
+m0.rangeBetas = reshape(m0.rangeBetas, [nCycles*spl.scaleBeta, nBlocks]);
 
 
 %% initialize global parameters
@@ -81,39 +78,64 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 
 
 %% initialize intensity functions - spline coeffs
-%        L5       L4      L3     L2     Ax     H1     H2     H3     H4
-%        1        2       3      4      5      6      7      8      9
-%fudge = [0.0085 0.0045 -0.0045 0.0025 0.0010 0.0040 0.0003 0.0015 0.0055]';
-fudge = zeros(9,1);
 
-% set up initial i147 fit
-h = axes; hold on
-for monitorIsotope = [1 2 3]
-%monitorIsotope = 2; % index for monitor isotope to fit
-for iBlock = 7
+% set up initial i147 fit, with nSegInt knots
+monitorIsotope = 2; % index for monitor isotope to fit
+D = diff(eye(spl.nSegInt), spl.pord); % 2nd order smoothing, cubic spline;
+for iBlock = 1:nBlocks
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
     detMonitor = d.det(isMonitor); % detector index
-    intMonitor = d.int(isMonitor) - meanBL(detMonitor) + fudge(detMonitor);
+    intMonitor = d.int(isMonitor) - meanBL(detMonitor);
     timeMonitor = d.time(isMonitor);
     [timeMonitor, sortIdx] = sort(timeMonitor);
     intMonitor = intMonitor(sortIdx);
     detMonitor = detMonitor(sortIdx);
 
-% do some plotting for debugging
-    for iDet = 1:9
-        if monitorIsotope == 3, mult = 1.075; 
-        elseif monitorIsotope == 2, mult =1.318;
-            else, mult = 1; end
-        isDet = detMonitor == iDet;
-        plot(timeMonitor(isDet), mult*intMonitor(isDet), '.')
+    % set up spline basis
+    B = bbase(timeMonitor, min(timeMonitor), max(timeMonitor), ...
+              spl.nSegInt-spl.bdeg, spl.bdeg);
+    lambda = spl.IntLambdaInit;
+    Baugmented = [B; sqrt(lambda)*D];
+    yaugmented = [intMonitor; zeros(size(D,1),1)];
+    
+    % least squares fit, no weights
+    %xls = (B'*B)\(B'*intMonitor);
+    %plot(timeMonitor, intMonitor, '.'); hold on
+    %plot(timeMonitor, B*xls, '-k')
 
-    end % for iDet
+    % smoothing spline
+    xsmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
+    %plot(timeMonitor, intMonitor, '.'); hold on
+    %plot(timeMonitor, B*xsmooth, '-r')
+
+    m(m0.rangeInts(:,iBlock)) = xsmooth;
 
 end % for iBlock
 
-end % for monitorIsotope
-%G = 
+
+%% initialize spline coefficients -- betas
+
+
+numeratorIsotopeIdx = 4;
+denominatorIsotopeIdx = 1;
+for iBlock = 1
+
+    isNumerator = (d.iso == numeratorIsotopeIdx) & (d.block == iBlock);
+    isDenominator = (d.iso == denominatorIsotopeIdx) & (d.block == iBlock);
+    timeNumerator = d.time(isNumerator);
+    timeDenominator = d.time(isDenominator);
+    isMeasBoth = timeNumerator == timeDenominator;
+    numIntensity = d.int(isNumerator);
+    denIntensity = d.int(isDenominator);
+    numIntensity = numIntensity(isMeasBoth);
+    denIntensity = denIntensity(isMeasBoth);
+    timeRatio = timeNumerator(isMeasBoth);
+
+    plot(timeRatio, numIntensity./denIntensity, '.')
+
+end % for iBlock
+
 
 
 %% assign m to output structure m0

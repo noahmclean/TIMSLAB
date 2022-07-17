@@ -4,16 +4,19 @@ function spl = splineSetup(data)
 %   separate splines for 
 
 spl.bdeg = 3; % cubic splines
-scaleInt = 2; % use scaleInt as many spline coefficients as cycles
-scaleBeta = 1; % use scaleBeta as many spline coeffs as cycles 
+spl.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
+spl.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
+spl.scaleBeta = 1; % use scaleBeta as many spline coeffs as cycles 
+
+spl.IntLambdaInit = 1;
 
 %% setup
 
 nBlocks = max(data.OPserial(:,1));
 nCycles = max(data.OPserial(:,2));
 
-spl.nSegInt  = nCycles*scaleInt;
-spl.nSegBeta = nCycles*scaleBeta;
+spl.nSegInt  = nCycles*spl.scaleInt;
+spl.nSegBeta = nCycles*spl.scaleBeta;
 
 % block start and stop indices, times
 blockStartEndIdx  = zeros(2,nBlocks);
