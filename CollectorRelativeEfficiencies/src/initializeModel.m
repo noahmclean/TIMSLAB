@@ -25,7 +25,7 @@
 %   m0.rangeInts = matrix of spline coefficients for
 %     intensity functions of time, each column for a block.
 %   m0.rangeBetas = matrix of spline coefficients for
-%     beta functions of time, each column for a block
+%     beta function of time, each column for a block
 
 
 %% establish ranges for parameters
@@ -116,25 +116,26 @@ end % for iBlock
 
 %% initialize spline coefficients -- betas
 
-
+cmap = lines(9);
+cmap(8,:) = [1 1 1];
+cmap(9,:) = [1 0 0];
 numeratorIsotopeIdx = 4;
 denominatorIsotopeIdx = 1;
-for iBlock = 1
 
-    isNumerator = (d.iso == numeratorIsotopeIdx) & (d.block == iBlock);
-    isDenominator = (d.iso == denominatorIsotopeIdx) & (d.block == iBlock);
-    timeNumerator = d.time(isNumerator);
-    timeDenominator = d.time(isDenominator);
-    isMeasBoth = timeNumerator == timeDenominator;
-    numIntensity = d.int(isNumerator);
-    denIntensity = d.int(isDenominator);
-    numIntensity = numIntensity(isMeasBoth);
-    denIntensity = denIntensity(isMeasBoth);
-    timeRatio = timeNumerator(isMeasBoth);
+isNumerator = (d.iso == numeratorIsotopeIdx);
+isDenominator = (d.iso == denominatorIsotopeIdx);
+timeNumerator = d.time(isNumerator);
+timeDenominator = d.time(isDenominator);
+isMeasBoth = timeNumerator == timeDenominator;
+detNumer = d.det(isNumerator);
+detDenom = d.det(isDenominator);
+numIntensity = d.int(isNumerator) - meanBL(detNumer);
+denIntensity = d.int(isDenominator) - meanBL(detDenom);
+numIntensity = numIntensity(isMeasBoth);
+denIntensity = denIntensity(isMeasBoth);
+timeRatio = timeNumerator(isMeasBoth);
 
-    plot(timeRatio, numIntensity./denIntensity, '.')
 
-end % for iBlock
 
 
 

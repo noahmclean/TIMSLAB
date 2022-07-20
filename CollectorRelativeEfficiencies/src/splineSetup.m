@@ -6,7 +6,7 @@ function spl = splineSetup(data)
 spl.bdeg = 3; % cubic splines
 spl.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
 spl.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
-spl.scaleBeta = 1; % use scaleBeta as many spline coeffs as cycles 
+spl.scaleBeta = 0.2; % use scaleBeta as many spline coeffs as cycles 
 
 spl.IntLambdaInit = 1;
 
@@ -15,8 +15,8 @@ spl.IntLambdaInit = 1;
 nBlocks = max(data.OPserial(:,1));
 nCycles = max(data.OPserial(:,2));
 
-spl.nSegInt  = nCycles*spl.scaleInt;
-spl.nSegBeta = nCycles*spl.scaleBeta;
+spl.nSegInt  = ceil(nCycles*spl.scaleInt);
+spl.nSegBeta = ceil(nCycles*spl.scaleBeta);
 
 % block start and stop indices, times
 blockStartEndIdx  = zeros(2,nBlocks);

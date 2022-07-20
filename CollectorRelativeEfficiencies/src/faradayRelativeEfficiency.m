@@ -6,7 +6,7 @@ addpath(genpath("../data"))
 %% 1. input a filename from data folder
 
 %dataFolder = "Sm/SmKU1A-A2.RAW";
-dataFolder = "Sm/SmEfficiency_Bead3Run2.RAW";
+dataFolder = "Sm/SmEfficiency_Bead3Run3.RAW";
 %dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW"; not yet
 %dataFolder = "Pb/A520_Pb.RAW";
 
@@ -24,6 +24,8 @@ FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
 collectorDeltas = [-4 -3 -3 -1 0 1 2 3 4]; 
 method = processMethod(method, FaraNames, collectorDeltas);
 % collector mass differences (derive from OPMatrix in future)
+
+
 
 %% 4. assemble data vector and tags
 
