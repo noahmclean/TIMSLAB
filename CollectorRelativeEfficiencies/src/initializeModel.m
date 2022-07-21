@@ -1,4 +1,4 @@
-%function m0 = initializeModel(data, d, method, spl)
+%function m0 = initializeModel(data, d, method, setup)
 %INITIALIZEMODEL Initialize model vector
 %   
 %   model vector is (for now):
@@ -24,9 +24,8 @@
 %   m0.rangeRelEffs = indices for relative efficiencies
 %   m0.rangeInts = matrix of spline coefficients for
 %     intensity functions of time, each column for a block.
-%   m0.rangeBetas = matrix of spline coefficients for
-%     beta function of time, each column for a block
-
+%   m0.rangeBetas = vector of spline coefficients for
+%     beta function of time over the analysis
 
 %% establish ranges for parameters
 % count up sizes: global parameters
@@ -39,8 +38,8 @@ nBlocks = max(data.OPserial(:,1));
 nCycles = max(data.OPserial(:,2));
 
 % scale up/down the number of spline coefficients based on cycles
-nIntCoefs  = nBlocks*nCycles*spl.scaleInt;
-nBetaCoefs = nBlocks*nCycles*spl.scaleBeta;
+nIntCoefs  = nBlocks*nCycles*setup.scaleInt;
+nBetaCoefs = nBlocks*setup.scaleBeta;
 
 % determine where categories start in m0
 startRatio     = 1;
@@ -56,9 +55,9 @@ m0.rangeRefVolts = startRefVolt:(startRelEffs-1);
 m0.rangeRelEffs  = startRelEffs:(startIntCoefs-1);
 m0.rangeInts     = startIntCoefs:(startBetaCoefs-1);
 m0.rangeBetas    = startBetaCoefs:totalModelPars;
-% reshape rangeInts and Betas as a matrix, each column is a block
-m0.rangeInts  = reshape(m0.rangeInts, [nCycles*spl.scaleInt, nBlocks]);
-m0.rangeBetas = reshape(m0.rangeBetas, [nCycles*spl.scaleBeta, nBlocks]);
+% reshape rangeInts as a matrix, each column is a block
+m0.rangeInts  = reshape(m0.rangeInts, [nCycles*setup.scaleInt, nBlocks]);
+
 
 
 %% initialize global parameters
@@ -81,7 +80,7 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 
 % set up initial i147 fit, with nSegInt knots
 monitorIsotope = 2; % index for monitor isotope to fit
-D = diff(eye(spl.nSegInt), spl.pord); % 2nd order smoothing, cubic spline;
+D = diff(eye(setup.nCoeffInt), setup.pord); % 2nd order smoothing, cubic spline;
 for iBlock = 1:nBlocks
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
@@ -94,8 +93,8 @@ for iBlock = 1:nBlocks
 
     % set up spline basis
     B = bbase(timeMonitor, min(timeMonitor), max(timeMonitor), ...
-              spl.nSegInt-spl.bdeg, spl.bdeg);
-    lambda = spl.IntLambdaInit;
+              setup.nCoeffInt-setup.bdeg, setup.bdeg);
+    lambda = setup.IntLambdaInit;
     Baugmented = [B; sqrt(lambda)*D];
     yaugmented = [intMonitor; zeros(size(D,1),1)];
     
@@ -115,15 +114,14 @@ end % for iBlock
 
 
 %% initialize spline coefficients -- betas
+% fit one spline across all blocks of analysis
+% note: current code assumes num and denom always appear in same
+% sequences
 
-cmap = lines(9);
-cmap(8,:) = [1 1 1];
-cmap(9,:) = [1 0 0];
-numeratorIsotopeIdx = 4;
-denominatorIsotopeIdx = 1;
 
-isNumerator = (d.iso == numeratorIsotopeIdx);
-isDenominator = (d.iso == denominatorIsotopeIdx);
+
+isNumerator = (d.iso == setup.numeratorIsotopeIdx);
+isDenominator = (d.iso == setup.denominatorIsotopeIdx);
 timeNumerator = d.time(isNumerator);
 timeDenominator = d.time(isDenominator);
 isMeasBoth = timeNumerator == timeDenominator;
@@ -140,8 +138,6 @@ timeRatio = timeNumerator(isMeasBoth);
 
 
 %% assign m to output structure m0
-
-m0.vec = m;
 
 %end % function initializeModel
 

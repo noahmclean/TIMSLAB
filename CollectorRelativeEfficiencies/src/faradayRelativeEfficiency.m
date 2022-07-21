@@ -39,7 +39,7 @@ tails = initializePeakTails(method);
 %% 5b. create spline setup
 
 % contains nseg, block start/stop times, nSeg
-spl = splineSetup(data);
+setup = sampleSetup(data);
 
 %% 6. initialize model
 
