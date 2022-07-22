@@ -1,4 +1,4 @@
-%function m0 = initializeModel(data, d, method, setup)
+function m0 = initializeModel(data, d, method, setup)
 %INITIALIZEMODEL Initialize model vector
 %   
 %   model vector is (for now):
@@ -55,6 +55,7 @@ m0.rangeRefVolts = startRefVolt:(startRelEffs-1);
 m0.rangeRelEffs  = startRelEffs:(startIntCoefs-1);
 m0.rangeInts     = startIntCoefs:(startBetaCoefs-1);
 m0.rangeBetas    = startBetaCoefs:totalModelPars;
+
 % reshape rangeInts as a matrix, each column is a block
 m0.rangeInts  = reshape(m0.rangeInts, [nCycles*setup.scaleInt, nBlocks]);
 
@@ -80,13 +81,15 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 
 % set up initial i147 fit, with nSegInt knots
 monitorIsotope = 2; % index for monitor isotope to fit
-D = diff(eye(setup.nCoeffInt), setup.pord); % 2nd order smoothing, cubic spline;
+DInt = diff(eye(setup.nCoeffInt), setup.pord); % 2nd order smoothing, cubic spline;
 for iBlock = 1:nBlocks
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
     detMonitor = d.det(isMonitor); % detector index
     intMonitor = d.int(isMonitor) - meanBL(detMonitor);
     timeMonitor = d.time(isMonitor);
+    
+    % sort by time (originally sorted by detector)
     [timeMonitor, sortIdx] = sort(timeMonitor);
     intMonitor = intMonitor(sortIdx);
     detMonitor = detMonitor(sortIdx);
@@ -95,8 +98,8 @@ for iBlock = 1:nBlocks
     B = bbase(timeMonitor, min(timeMonitor), max(timeMonitor), ...
               setup.nCoeffInt-setup.bdeg, setup.bdeg);
     lambda = setup.IntLambdaInit;
-    Baugmented = [B; sqrt(lambda)*D];
-    yaugmented = [intMonitor; zeros(size(D,1),1)];
+    Baugmented = [B; sqrt(lambda)*DInt];
+    yaugmented = [intMonitor; zeros(size(DInt,1),1)];
     
     % least squares fit, no weights
     %xls = (B'*B)\(B'*intMonitor);
@@ -104,40 +107,66 @@ for iBlock = 1:nBlocks
     %plot(timeMonitor, B*xls, '-k')
 
     % smoothing spline
-    xsmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
+    ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
     %plot(timeMonitor, intMonitor, '.'); hold on
-    %plot(timeMonitor, B*xsmooth, '-r')
+    %plot(timeMonitor, B*ysmooth, '-r')
 
-    m(m0.rangeInts(:,iBlock)) = xsmooth;
+    m(m0.rangeInts(:,iBlock)) = ysmooth;
+    
+
 
 end % for iBlock
 
+m0.DInt = DInt;
 
 %% initialize spline coefficients -- betas
 % fit one spline across all blocks of analysis
 % note: current code assumes num and denom always appear in same
 % sequences
 
-
-
+% pick out numerator and denominator, correct for baselines
 isNumerator = (d.iso == setup.numeratorIsotopeIdx);
 isDenominator = (d.iso == setup.denominatorIsotopeIdx);
-timeNumerator = d.time(isNumerator);
-timeDenominator = d.time(isDenominator);
-isMeasBoth = timeNumerator == timeDenominator;
 detNumer = d.det(isNumerator);
 detDenom = d.det(isDenominator);
 numIntensity = d.int(isNumerator) - meanBL(detNumer);
 denIntensity = d.int(isDenominator) - meanBL(detDenom);
+
+% make sure times for numerator and denominator match
+% check this for squences without both isotopes?
+timeNumerator = d.time(isNumerator);
+timeDenominator = d.time(isDenominator);
+isMeasBoth = timeNumerator == timeDenominator;
 numIntensity = numIntensity(isMeasBoth);
 denIntensity = denIntensity(isMeasBoth);
 timeRatio = timeNumerator(isMeasBoth);
 
+% sort by time (originally sorted by detector)
+[timeRatio, sortIdx] = sort(timeRatio);
+numIntensity = numIntensity(sortIdx);
+denIntensity = denIntensity(sortIdx);
 
+% set up spline basis
+BBeta = bbase(timeRatio, min(timeRatio), max(timeRatio), ...
+    setup.nCoeffBeta-setup.bdeg, setup.bdeg);
+lambda = setup.BetaLambdaInit;
+DBeta = diff(eye(setup.nCoeffBeta), setup.pord); % 2nd order smoothing, cubic spline;
+Baugmented = [BBeta; sqrt(lambda)*DBeta];
+yaugmented = [numIntensity./denIntensity; zeros(size(DBeta,1),1)];
+ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
 
+%hax = axes(); hold on
+%plot(timeRatio, numIntensity./denIntensity, '.', 'MarkerSize', 5)
+%plot(timeRatio, B*ysmooth, '-r')
 
+m(m0.rangeBetas) = ysmooth;
+m0.tBeta = timeRatio;
+m0.BBeta = BBeta;
+m0.DBeta = DBeta;
 
 %% assign m to output structure m0
 
-%end % function initializeModel
+m0.vec = m;
+
+end % function initializeModel
 

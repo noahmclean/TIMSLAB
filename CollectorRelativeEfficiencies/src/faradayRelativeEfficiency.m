@@ -43,12 +43,12 @@ setup = sampleSetup(data);
 
 %% 6. initialize model
 
-%m0 = initializeModel(data, d, method, spl);
+m0 = initializeModel(data, d, method, setup);
 
-% %% 7. calculate uncertainty in data
-% 
-% s2 = calculateUnct(d, method);
-% 
+%% 7. calculate uncertainty in data
+
+s2 = calculateUnct(d, method);
+
 % %% 8. calculate best fit
 % 
 % opts = optimoptions("fminunc");

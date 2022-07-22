@@ -11,6 +11,7 @@ setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
 setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
 
 setup.IntLambdaInit = 1;
+setup.BetaLambdaInit = 1;
 
 %% block start/stop and parameter ranges
 
