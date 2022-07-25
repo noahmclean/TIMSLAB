@@ -71,10 +71,11 @@ end % if any Sm were measured with bad 2-second RST ccgains
 d.int   = []; % intensity
 d.time  = []; % time
 d.det   = []; % detector index
+d.seq   = []; % sequence index
 d.mass  = []; % isotope/species mass 
 d.iso   = []; % isotope index (for OP)
 d.block = []; % block index
-d.isOP  = []; % is data point on OP measurement?
+d.isOP  = false(0); % is data point on OP measurement?
 
 for iDet = 1:nDet 
 
@@ -84,6 +85,7 @@ for iDet = 1:nDet
     d.time  = [d.time; data.BLtime(detRefs)];
     d.det   = [d.det; iDet*ones(nrefs,1)];
     BLseqs  = data.BLSeqIdx(detRefs); % BL seqs referenced
+    d.seq   = [d.seq; BLseqs];
     d.mass  = [d.mass; BLTable( BLseqs, iDet )];
     d.iso   = [d.iso; zeros(nrefs,1)];
     d.block = [d.block; data.BLserial(detRefs, 1)];
@@ -102,6 +104,7 @@ for iDet = 1:nDet
     d.time  = [d.time; data.OPtime(detRefs)];
     d.det   = [d.det; iDet*ones(nrefs,1)];
     OPseqs  = data.OPSeqIdx(detRefs); % OP seqs referenced
+    d.seq   = [d.seq; OPseqs];
     d.mass  = [d.mass; method.OPMasses{ OPseqs, iDet }];
     d.iso   = [d.iso; F_ind(OPseqs,iDet)];
     d.block = [d.block; data.OPserial(detRefs, 1)];

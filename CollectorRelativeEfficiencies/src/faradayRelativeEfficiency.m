@@ -47,14 +47,14 @@ m0 = initializeModel(data, d, setup);
 
 %% 7. calculate uncertainty in data
 
-s2 = calculateUnct(d, method);
+s2 = calculateUnct(data, d, method, setup);
 
-% %% 8. calculate best fit
-% 
-% opts = optimoptions("fminunc");
-% opts.StepTolerance = 1e-10;
-% %[mhat, chi2] = fminunc(@(m) objfunc(d, s2), m0, opts);
-% 
+%% 8. calculate best fit
+
+opts = optimoptions("fminunc");
+opts.StepTolerance = 1e-10;
+[mhat, chi2] = fminunc(@(m) objfunc(d, s2, m), m0, opts);
+
 % %% 9. estimate uncertainty in fit
 % 
 % G = makeG(d, mhat);

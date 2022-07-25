@@ -41,5 +41,12 @@ setup.blockStartEndTime = blockStartEndTime;
 setup.numeratorIsotopeIdx = 4; % for Sm, 150
 setup.denominatorIsotopeIdx = 1; % for Sm, 147
 
+
+%% constants (other than isotopic mass)
+
+setup.kB = 1.38064852e-23; % Boltzmann's constant, J/K
+setup.tempInK = 290; % temperature in K (decabin cooled to ~16 C)
+setup.coulomb = 6241509074460762607.776; % 1 coulomb in elementary charges
+
 end % function
 

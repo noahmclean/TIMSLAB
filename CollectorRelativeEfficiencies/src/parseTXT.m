@@ -56,7 +56,8 @@ end
 % grab the gains
 collRange = (collectorsStartPosition+1):collectorBlockEndPosition;
 data.Collectors = reshape(dtmp(collRange), 6, [])';
-data.FaradayGains = double(data.Collectors(4:12,4));
+data.FaradayResist = double(data.Collectors(4:12,3)); % resistances (ohms)
+data.FaradayGains = double(data.Collectors(4:12,4));  % gains (relative to Axial)
 
 % range starts after header, continues to cell before next block flag
 BLrange = (baselinesStartPosition+1+nDataColumns):(onPeakStartPosition-1);
