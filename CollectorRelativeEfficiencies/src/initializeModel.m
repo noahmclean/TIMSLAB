@@ -119,7 +119,6 @@ for iBlock = 1:nBlocks
 
 end % for iBlock
 
-m0.DInt = DInt;
 
 %% initialize spline coefficients -- betas
 % fit one spline across all blocks of analysis
