@@ -22,13 +22,13 @@ setup.nCoeffInt  = ceil(nCycles*setup.scaleInt);
 setup.nCoeffBeta = ceil(nBlocks*setup.scaleBeta);
 
 % block start and stop indices, times
-blockStartEndIdx  = zeros(2,nBlocks);
-blockStartEndTime = zeros(2,nBlocks);
+blockStartEndIdx  = zeros(nBlocks,2);
+blockStartEndTime = zeros(nBlocks,2);
 for iBlock = 1:nBlocks
 
-    blockStartEndIdx(1,iBlock) = find(data.OPserial(:,1) == iBlock, 1, 'first');
-    blockStartEndIdx(2,iBlock) = find(data.OPserial(:,1) == iBlock, 1, 'last');
-    blockStartEndTime(:,iBlock)= data.OPtime(blockStartEndIdx(:,iBlock));
+    blockStartEndIdx(iBlock,1) = find(data.OPserial(:,1) == iBlock, 1, 'first');
+    blockStartEndIdx(iBlock,2) = find(data.OPserial(:,1) == iBlock, 1, 'last');
+    blockStartEndTime(iBlock,:)= data.OPtime(blockStartEndIdx(iBlock,:))';
 
 end % for iBlock
 

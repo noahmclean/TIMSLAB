@@ -43,7 +43,7 @@ setup = sampleSetup(data);
 
 %% 6. initialize model
 
-m0 = initializeModel(data, d, method, setup);
+m0 = initializeModel(data, d, setup);
 
 %% 7. calculate uncertainty in data
 

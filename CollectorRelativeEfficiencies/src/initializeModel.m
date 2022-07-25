@@ -1,4 +1,4 @@
-function m0 = initializeModel(data, d, method, setup)
+function m0 = initializeModel(data, d, setup)
 %INITIALIZEMODEL Initialize model vector
 %   
 %   model vector is (for now):
@@ -92,11 +92,14 @@ for iBlock = 1:nBlocks
     % sort by time (originally sorted by detector)
     [timeMonitor, sortIdx] = sort(timeMonitor);
     intMonitor = intMonitor(sortIdx);
-    detMonitor = detMonitor(sortIdx);
+    % detMonitor = detMonitor(sortIdx); % may need at some point?
 
     % set up spline basis
-    B = bbase(timeMonitor, min(timeMonitor), max(timeMonitor), ...
-              setup.nCoeffInt-setup.bdeg, setup.bdeg);
+    B = bbase(timeMonitor, ...
+              setup.blockStartEndTime(iBlock,1), ... 
+              setup.blockStartEndTime(iBlock,2), ...
+              setup.nCoeffInt-setup.bdeg, ...
+              setup.bdeg);
     lambda = setup.IntLambdaInit;
     Baugmented = [B; sqrt(lambda)*DInt];
     yaugmented = [intMonitor; zeros(size(DInt,1),1)];
@@ -108,11 +111,10 @@ for iBlock = 1:nBlocks
 
     % smoothing spline
     ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
-    %plot(timeMonitor, intMonitor, '.'); hold on
-    %plot(timeMonitor, B*ysmooth, '-r')
+%     plot(timeMonitor, intMonitor, '.'); hold on
+%     plot(timeMonitor, B*ysmooth, '-r')
 
-    m(m0.rangeInts(:,iBlock)) = ysmooth;
-    
+    m(m0.rangeInts(:,iBlock)) = ysmooth;    
 
 
 end % for iBlock
@@ -147,8 +149,11 @@ numIntensity = numIntensity(sortIdx);
 denIntensity = denIntensity(sortIdx);
 
 % set up spline basis
-BBeta = bbase(timeRatio, min(timeRatio), max(timeRatio), ...
-    setup.nCoeffBeta-setup.bdeg, setup.bdeg);
+BBeta = bbase(timeRatio, ...
+              setup.blockStartEndTime(1,1), ...
+              setup.blockStartEndTime(end,2), ...
+              setup.nCoeffBeta-setup.bdeg, ...
+              setup.bdeg);
 lambda = setup.BetaLambdaInit;
 DBeta = diff(eye(setup.nCoeffBeta), setup.pord); % 2nd order smoothing, cubic spline;
 Baugmented = [BBeta; sqrt(lambda)*DBeta];
@@ -160,13 +165,12 @@ ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
 %plot(timeRatio, B*ysmooth, '-r')
 
 m(m0.rangeBetas) = ysmooth;
-m0.tBeta = timeRatio;
-m0.BBeta = BBeta;
-m0.DBeta = DBeta;
+
 
 %% assign m to output structure m0
 
 m0.vec = m;
+
 
 end % function initializeModel
 
