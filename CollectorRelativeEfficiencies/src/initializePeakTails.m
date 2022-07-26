@@ -1,4 +1,4 @@
-function tails = initializePeakTails(method)
+function tails = initializePeakTails(method, dstruct)
 %INITIALIZEPEAKTAILS Summary of this function goes here
 %   Taken from peakTailsVisualization_v2.m by Noah McLean for Tripoli
 %   measurement model specification.
@@ -89,10 +89,9 @@ end % for iMass determine relative abundances
 %rescale sumTails to maxMethodIntensity, from maxIntensity for all isotopes
 sumTails = sumTails * maxIntensity/maxMethodIntensity;
 
-% interpolate sumTails at isotopic masses (OP) and half-masses
+% interpolate sumTails at isotopic masses (OP) 
 % tails is 
 tails.OP = zeros(2,nMassIDs);
-tails.halfMass = zeros(2,nMassIDs+1);
 for iMass = 1:nMassIDs
     
     thisMass = mass.(massIDNames(iMass));
@@ -101,9 +100,37 @@ for iMass = 1:nMassIDs
 
 end % for iMass
 
+% interpolate sumTails at half masses
+tails.halfMass = zeros(2,nMassIDs+1);
 halfMasses = [tails.OP(1,:)-0.5 tails.OP(1,end)+0.5]; % all the half-masses currently used
 tails.halfMass = [halfMasses; interp1(massRange, sumTails, halfMasses)];
 
-
+% save off indices to the half-mass peak tail sum for each integration in d
+tails.dvec = zeros(size(dstruct.int));
+isBL = ~dstruct.isOP;
+BLmasses = dstruct.mass(isBL);
+tailMasses = repmat(tails.halfMass(1,:),size(BLmasses,1),1);
+closestMass = abs(BLmasses - tailMasses) < 0.2;
+if any(sum(closestMass,2)<1) % check to make sure no tail misses a matching half-mass
+    disp("error matching baseline masses with half-masses in tail correction")
 end
+tailSums = repmat(tails.halfMass(2,:), size(BLmasses,1),1);
+BLtails = tailSums .* closestMass;
+BLtails = sum(BLtails,2);
+tails.dvec(isBL) = BLtails;
+
+% save off indices to the OP peak tail sum for each integration in d
+isOP = dstruct.isOP;
+OPmasses = dstruct.mass(isOP);
+tailMasses = repmat(tails.OP(1,:),size(OPmasses,1),1);
+closestMass = abs(OPmasses - tailMasses) < 0.2;
+if any(sum(closestMass,2)<1) % check to make sure no tail misses a matching half-mass
+    disp("error matching baseline masses with half-masses in tail correction")
+end
+tailSums = repmat(tails.OP(2,:), size(OPmasses,1),1);
+OPtails = tailSums .* closestMass;
+OPtails = sum(OPtails,2);
+tails.dvec(isOP) = OPtails;
+
+end % function
 

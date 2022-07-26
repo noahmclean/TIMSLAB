@@ -1,4 +1,4 @@
-function dhat = evaluateModel(d, m, m0)
+function dhat = evaluateModel(d, m, m0, tails)
 %EVALUATEMODEL Calculate dhat based on model
 %   Detailed explanation goes here
 
@@ -45,9 +45,21 @@ dhat = zeros(size(d.int));
 
 %% baseline dhats
 
-% assumption: baseline constant through analysis
-BLdetectors = d.det(~d.isOP);
-dhat(~d.isOP) = refVoltages(BLdetectors(BLdetectors>0));
+% assumption: reference voltage constant through analysis
+% assumption: peak tails for BL are relative to first intensity measured
+%             during the block (taken as first knot of each block for
+%             spline fit to major peak intensity)
+
+isBL = ~d.isOP;
+
+% get detector vector, just for BL integrations
+BLdetectors = d.det(isBL); 
+
+% reference voltages, assigned by detector, for each integration
+BLrefVolts  = refVoltages(BLdetectors(BLdetectors>0)); 
+
+% peak tails for BL integrations
+BLmasses = d.mass(isBL);
 
 
 

@@ -21,7 +21,7 @@ method = parseTIMSAM(data.header.methodName);
 %method = parseTIMSAM('PbFaraday_Pbc3Line.TIMSAM');
 
 FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-collectorDeltas = [-4 -3 -3 -1 0 1 2 3 4]; 
+collectorDeltas = [-4 -3 -2 -1 0 1 2 3 4]; 
 method = processMethod(method, FaraNames, collectorDeltas);
 % collector mass differences (derive from OPMatrix in future)
 
@@ -34,7 +34,7 @@ method = processMethod(method, FaraNames, collectorDeltas);
 
 %% 5. create tail model
 
-tails = initializePeakTails(method);
+tails = initializePeakTails(method, d);
 
 %% 5b. create spline setup
 
@@ -53,7 +53,7 @@ s2 = calculateUnct(data, d, method, setup);
 
 opts = optimoptions("fminunc");
 opts.StepTolerance = 1e-10;
-[mhat, chi2] = fminunc(@(m) objfunc(d, s2, m, m0), m0.vec, opts);
+[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails), m0.vec, opts);
 
 % %% 9. estimate uncertainty in fit
 % 
