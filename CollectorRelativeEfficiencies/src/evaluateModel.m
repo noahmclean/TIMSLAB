@@ -32,8 +32,8 @@ function dhat = evaluateModel(d, m, m0, tails)
 
 nBlocks = max(d.block);
 
-r148147true = m(1);
-r149ar7true = m(2);
+lr148147true = m(1);
+lr149ar7true = m(2);
 refVoltages = m(m0.rangeRefVolts);
 relEffs     = m(m0.rangeRelEffs);
 intensities = m(m0.rangeInts(:));
@@ -59,7 +59,28 @@ BLdetectors = d.det(isBL);
 BLrefVolts  = refVoltages(BLdetectors(BLdetectors>0)); 
 
 % peak tails for BL integrations
-BLmasses = d.mass(isBL);
+BLblocks = d.block(isBL);
+majorPeakBlockStarts = intensities(1,:);
+BLmajorPeakInt = majorPeakBlockStarts(BLblocks)';
+% peak tails scaled to major isotope intensity:
+BLpeakTailSums = tails.dvec(isBL) .* BLmajorPeakInt; 
+
+% baseline meas = ref voltage + peak tail
+dhat(isBL) = BLrefVolts + BLpeakTailSums;
+
+
+%% on-peak dhats
+
+isOP = d.isOP;
+
+% get detector vector, just for OP integrations
+OPdetectors = d.det(isOP); 
+
+% reference voltages, assigned by detector, for each integration
+OPrefVolts  = refVoltages(OPdetectors(OPdetectors>0)); 
+
+% 
+
 
 
 

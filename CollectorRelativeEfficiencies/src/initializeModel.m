@@ -69,7 +69,8 @@ m = zeros(totalModelPars,1);
 % Sm ratios to 147, assume 150/147 = 1/2.031957
 % Sm ratios are [148/147 149/147], 
 % taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
-m(m0.rangeRatio) = [1.523370/2.031957; 1.872696/2.031957];
+% all ratios are log-ratios (alr transform)
+m(m0.rangeRatio) = log([1.523370/2.031957; 1.872696/2.031957]);
 
 % reference volts from BL data, effs
 meanBL = mean(data.BLmatrix)';
@@ -80,18 +81,20 @@ m(m0.rangeRelEffs) = ones(nRelEffs,1);
 %% initialize intensity functions - spline coeffs
 
 % set up initial i147 fit, with nSegInt knots
+% note: fit is to log-intensity of major/monitor isotope
 monitorIsotope = 2; % index for monitor isotope to fit
 DInt = diff(eye(setup.nCoeffInt), setup.pord); % 2nd order smoothing, cubic spline;
 for iBlock = 1:nBlocks
     
     isMonitor = (d.iso == monitorIsotope) & (d.block == iBlock);
     detMonitor = d.det(isMonitor); % detector index
-    intMonitor = d.int(isMonitor) - meanBL(detMonitor);
+    intMonitor = d.int(isMonitor) - meanBL(detMonitor); % rough BL correction
     timeMonitor = d.time(isMonitor);
     
     % sort by time (originally sorted by detector)
     [timeMonitor, sortIdx] = sort(timeMonitor);
     intMonitor = intMonitor(sortIdx);
+    intMonitor = log(intMonitor); % fit (true) log-intensities, always
     % detMonitor = detMonitor(sortIdx); % may need at some point?
 
     % set up spline basis

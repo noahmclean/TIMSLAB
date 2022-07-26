@@ -10,7 +10,7 @@ setup.pord = 2; % order of differences (2nd order for min integral of 2nd deriva
 setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
 setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
 
-setup.IntLambdaInit = 1;
+setup.IntLambdaInit = 1e-8;
 setup.BetaLambdaInit = 1;
 
 %% block start/stop and parameter ranges

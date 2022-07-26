@@ -9,7 +9,9 @@ logStde = std(alrab)/sqrt(length(alrab));
 
 d = [a; b];
 
-m0 = [log(1/2); log(2)];
+m0 = [log(1/2); log(2)]; % [log(a/b); log(b)]
+% a = exp( log(a/b) + log(b) )
+% b = exp( log(b) )
 
 % check that model parameterization works
 dhat = evalg(a, b, m0);
