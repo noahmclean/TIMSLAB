@@ -31,7 +31,7 @@ function m0 = initializeModel(data, d, setup)
 % count up sizes: global parameters
 nRatios   = 2;             % true ratios (hard-code 2 for Sm for now)
 nRefVolts = 9;             % reference voltages on Faradays (BL)
-nRelEffs  = nRefVolts - 1; % detector relative efficiencies
+nRelEffs  = nRefVolts - 1; % detector relative efficiencies (logged)
 
 % count up sizes: blockwise parameters
 nBlocks = max(data.OPserial(:,1));
@@ -75,14 +75,16 @@ m(m0.rangeRatio) = log([1.523370/2.031957; 1.872696/2.031957]);
 % reference volts from BL data, effs
 meanBL = mean(data.BLmatrix)';
 m(m0.rangeRefVolts) = meanBL; % ignore peak tails
-m(m0.rangeRelEffs) = ones(nRelEffs,1);
+
+% assume collector relative efficiences = 1, so log(1) = 0
+m(m0.rangeRelEffs) = log(ones(nRelEffs,1));
 
 
 %% initialize intensity functions - spline coeffs
 
 % set up initial i147 fit, with nSegInt knots
 % note: fit is to log-intensity of major/monitor isotope
-monitorIsotope = 2; % index for monitor isotope to fit
+monitorIsotope = setup.denominatorIsotopeIdx; % index for monitor isotope to fit
 DInt = diff(eye(setup.nCoeffInt), setup.pord); % 2nd order smoothing, cubic spline;
 for iBlock = 1:nBlocks
     

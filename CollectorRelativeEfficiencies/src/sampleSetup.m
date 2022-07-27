@@ -7,7 +7,7 @@ function setup = sampleSetup(data)
 
 setup.bdeg = 3; % cubic splines
 setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
-setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
+setup.scaleInt = 15; % use scaleInt as many spline coefficients as cycles
 setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
 
 setup.IntLambdaInit = 1e-8;
@@ -37,6 +37,7 @@ setup.blockStartEndTime = blockStartEndTime;
 
 
 %% internal normalization
+% assume denominator isotope is major isotope
 
 setup.numeratorIsotopeIdx = 4; % for Sm, 150
 setup.denominatorIsotopeIdx = 1; % for Sm, 147

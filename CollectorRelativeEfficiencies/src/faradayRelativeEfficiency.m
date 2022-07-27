@@ -53,7 +53,7 @@ s2 = calculateUnct(data, d, method, setup);
 
 opts = optimoptions("fminunc");
 opts.StepTolerance = 1e-10;
-[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails), m0.vec, opts);
+[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup), m0.vec, opts);
 
 % %% 9. estimate uncertainty in fit
 % 
