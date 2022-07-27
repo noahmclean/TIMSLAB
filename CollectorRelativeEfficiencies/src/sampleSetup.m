@@ -41,6 +41,9 @@ setup.blockStartEndTime = blockStartEndTime;
 
 setup.numeratorIsotopeIdx = 4; % for Sm, 150
 setup.denominatorIsotopeIdx = 1; % for Sm, 147
+% taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
+% internalNormRatio = numeratorIsotopeIdx/denominatorIsotopeIdx
+setup.internalNormRatio = 1/2.031957;
 
 
 %% constants (other than isotopic mass)

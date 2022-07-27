@@ -42,6 +42,14 @@ betas       = m(m0.rangeBetas);
 
 dhat = zeros(size(d.int));
 
+% assemble isotope ratio and isotope mass ratio vectors
+% for now, hard-code Sr: [147/147, 148/147, 149/147, 150/147];
+logRatioVector = [0 lr148147true lr149ar7true log(setup.internalNormRatio)];
+
+% assemble isotope mass ratio vector needed for exponential mass
+% fractionation correction
+logMassVector = log([1 mass.Sm148/mass.Sm147 mass.Sm149/mass.Sm147 mass.Sm150/mass.Sm147]);
+
 
 %% baseline dhats
 
@@ -89,15 +97,29 @@ for iBlock = 1:nBlocks
     dInt  = d.int(inBlock);
     dIso = d.iso(inBlock);
 
-    B = bbase(dTime, ...
+    % primary beam intensity
+    Bint = bbase(dTime, ...
               setup.blockStartEndTime(iBlock,1), ... 
               setup.blockStartEndTime(iBlock,2), ...
               setup.nCoeffInt-setup.bdeg, ...
               setup.bdeg);
 
     knotsForiBlock = logIntsty(:,iBlock);
-    primaryBeam = B*knotsForiBlock;
+    primaryBeamLogInt = Bint*knotsForiBlock;
 
+    % fit for beta. note: (conventaional beta)/denominatorMass, units /amu
+    % 
+    Bbeta = bbase(dTime, ...
+              setup.blockStartEndTime(1,1), ... 
+              setup.blockStartEndTime(end,2), ...
+              setup.nCoeffBeta-setup.bdeg, ...
+              setup.bdeg);
+    betaForiBlock = Bbeta*betas;
+
+
+    
+
+    
 
 end % for iBLock
 

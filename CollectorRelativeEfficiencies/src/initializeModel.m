@@ -116,8 +116,8 @@ for iBlock = 1:nBlocks
 
     % smoothing spline
     ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
-%     plot(timeMonitor, intMonitor, '.'); hold on
-%     plot(timeMonitor, B*ysmooth, '-r')
+%     plot(timeMonitor, exp(intMonitor), '.'); hold on
+%     plot(timeMonitor, exp(B*ysmooth), '-r', 'LineWidth', 2)
 
     m(m0.rangeInts(:,iBlock)) = ysmooth;    
 
@@ -161,12 +161,22 @@ BBeta = bbase(timeRatio, ...
 lambda = setup.BetaLambdaInit;
 DBeta = diff(eye(setup.nCoeffBeta), setup.pord); % 2nd order smoothing, cubic spline;
 Baugmented = [BBeta; sqrt(lambda)*DBeta];
-yaugmented = [numIntensity./denIntensity; zeros(size(DBeta,1),1)];
+
+
+
+% calculate betas, using "fractionation per amu" version of formula
+% beta/m147 = (log(150/147)meas - log(150/147)true)/(log(M150/M147)*m147)
+% call the beta/m147 beta for simplicity
+
+beta = (log(numIntensity./denIntensity) - log(setup.internalNormRatio)) / ...
+       (log(mass.Sm150/mass.Sm147)*mass.Sm147);
+
+yaugmented = [beta; zeros(size(DBeta,1),1)];
 ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
 
-%hax = axes(); hold on
-%plot(timeRatio, numIntensity./denIntensity, '.', 'MarkerSize', 5)
-%plot(timeRatio, B*ysmooth, '-r')
+hax = axes(); hold on
+plot(timeRatio, beta, '.', 'MarkerSize', 5)
+plot(timeRatio, BBeta*ysmooth, '-r')
 
 m(m0.rangeBetas) = ysmooth;
 
