@@ -5,7 +5,14 @@ function chi2 = objfunc(d, m, s2, m0, tails, setup)
 
 dhat = evaluateModel(d, m, m0, tails, setup);
 
-chi2 = sum( (d.int - dhat)./s2 );
+r = d.int - dhat;
+rejects = abs(r) > 0.01;
+
+% remove major outliers (needs investigation)
+rClean = r(~rejects);
+s2Clean = s2(~rejects);
+
+chi2 = sum( rClean.^2 ./ s2Clean );
 
 
 end % function objfunc

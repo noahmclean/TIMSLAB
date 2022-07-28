@@ -174,9 +174,9 @@ beta = (log(numIntensity./denIntensity) - log(setup.internalNormRatio)) / ...
 yaugmented = [beta; zeros(size(DBeta,1),1)];
 ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
 
-hax = axes(); hold on
-plot(timeRatio, beta, '.', 'MarkerSize', 5)
-plot(timeRatio, BBeta*ysmooth, '-r')
+%hax = axes(); hold on
+%plot(timeRatio, beta, '.', 'MarkerSize', 5)
+%plot(timeRatio, BBeta*ysmooth, '-r')
 
 m(m0.rangeBetas) = ysmooth;
 

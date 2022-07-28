@@ -35,20 +35,26 @@ nBlocks = max(d.block);
 lr148147true = m(1);
 lr149ar7true = m(2);
 refVoltages = m(m0.rangeRefVolts);
-logRelEffs  = m(m0.rangeRelEffs);
+
+logRelEffs = m(m0.rangeRelEffs);
+logRelEffs = [logRelEffs(1:5); 0; logRelEffs(6:8)]; % add axial... fix later
+
 logIntsty = m(m0.rangeInts(:));
 logIntsty = reshape(logIntsty, size(m0.rangeInts));
-betas       = m(m0.rangeBetas);
+betas       = m(m0.rangeBetas); % in per amu units
 
 dhat = zeros(size(d.int));
 
 % assemble isotope ratio and isotope mass ratio vectors
 % for now, hard-code Sr: [147/147, 148/147, 149/147, 150/147];
-logRatioVector = [0 lr148147true lr149ar7true log(setup.internalNormRatio)];
+logRatioVector = [0 lr148147true lr149ar7true log(setup.internalNormRatio)]';
 
 % assemble isotope mass ratio vector needed for exponential mass
 % fractionation correction
-logMassVector = log([1 mass.Sm148/mass.Sm147 mass.Sm149/mass.Sm147 mass.Sm150/mass.Sm147]);
+logMassRatioVector = ...
+              log([1 mass.Sm148/mass.Sm147 mass.Sm149/mass.Sm147 mass.Sm150/mass.Sm147])';
+
+denomMass = mass.Sm147; % for exponential mass bias correction, in units /amu
 
 
 %% baseline dhats
@@ -79,13 +85,13 @@ dhat(isBL) = BLrefVolts + BLpeakTailSums;
 
 %% on-peak dhats: reference voltages
 
-isOP = d.isOP;
-
-% get detector vector, just for OP integrations
-OPdetectors = d.det(isOP); 
-
-% reference voltages, assigned by detector, for each integration
-OPrefVolts  = refVoltages(OPdetectors(OPdetectors>0)); 
+% isOP = d.isOP;
+% 
+% % get detector vector, just for OP integrations
+% OPdetectors = d.det(isOP); 
+% 
+% % reference voltages, assigned by detector, for each integration
+% OPrefVolts  = refVoltages(OPdetectors(OPdetectors>0)); 
 
 
 %% on-peak dhats: fit intensities
@@ -94,7 +100,7 @@ for iBlock = 1:nBlocks
 
     inBlock = d.block == iBlock & d.isOP;
     dTime = d.time(inBlock);
-    dInt  = d.int(inBlock);
+    dDet  = d.det(inBlock);
     dIso = d.iso(inBlock);
 
     % primary beam intensity
@@ -116,10 +122,18 @@ for iBlock = 1:nBlocks
               setup.bdeg);
     betaForiBlock = Bbeta*betas;
 
+    logIsotopeRatio = logRatioVector(dIso);
 
-    
+    logMassRatio = logMassRatioVector(dIso);
 
-    
+    refVolts = refVoltages(dDet);
+
+    tailContribution = exp(primaryBeamLogInt) .* tails.dvec(inBlock);
+
+    logEfficiencyRatio = logRelEffs(dDet);
+
+    dhat(inBlock) = ( exp(logIsotopeRatio + betaForiBlock .* logMassRatio*denomMass + ...
+        primaryBeamLogInt) + refVolts + tailContribution ) .* exp(logEfficiencyRatio);
 
 end % for iBLock
 
