@@ -37,10 +37,10 @@ lr149ar7true = m(2);
 refVoltages = m(m0.rangeRefVolts);
 
 logRelEffs = m(m0.rangeRelEffs);
-logRelEffs = [logRelEffs(1:5); 0; logRelEffs(6:8)]; % add axial... fix later
+logRelEffs = [logRelEffs(1:4); 0; logRelEffs(5:8)]; % add axial... fix later
 
-logIntsty = m(m0.rangeInts(:));
-logIntsty = reshape(logIntsty, size(m0.rangeInts));
+logIntensity = m(m0.rangeInts(:));
+logIntensity = reshape(logIntensity, size(m0.rangeInts));
 betas       = m(m0.rangeBetas); % in per amu units
 
 dhat = zeros(size(d.int));
@@ -74,7 +74,7 @@ BLrefVolts  = refVoltages(BLdetectors(BLdetectors>0));
 
 % peak tails for BL integrations
 BLblocks = d.block(isBL);
-majorPeakIntAtBlockStarts = exp(logIntsty(1,:));
+majorPeakIntAtBlockStarts = exp(logIntensity(1,:));
 BLmajorPeakInt = majorPeakIntAtBlockStarts(BLblocks)';
 % peak tails scaled to major isotope intensity:
 BLpeakTailSums = tails.dvec(isBL) .* BLmajorPeakInt; 
@@ -99,7 +99,7 @@ dhat(isBL) = BLrefVolts + BLpeakTailSums;
 for iBlock = 1:nBlocks
 
     inBlock = d.block == iBlock & d.isOP;
-    dTime = d.time(inBlock);
+    %dTime = d.time(inBlock);
     dDet  = d.det(inBlock);
     dIso = d.iso(inBlock);
 
@@ -110,7 +110,7 @@ for iBlock = 1:nBlocks
 %               setup.nCoeffInt-setup.bdeg, ...
 %               setup.bdeg);
 
-    knotsForiBlock = logIntsty(:,iBlock);
+    knotsForiBlock = logIntensity(:,iBlock);
     primaryBeamLogInt = B.Bint(:,:,iBlock)*knotsForiBlock;
 
     % fit for beta. note: (conventaional beta)/denominatorMass, units /amu

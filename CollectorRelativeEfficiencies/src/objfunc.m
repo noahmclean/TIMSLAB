@@ -6,7 +6,7 @@ function chi2 = objfunc(d, m, s2, m0, tails, setup, B)
 dhat = evaluateModel(d, m, m0, tails, setup, B);
 
 r = d.int - dhat;
-rejects = abs(r) > 0.01;
+rejects = abs(r) > 0.5;
 
 % remove major outliers (needs investigation)
 rClean = r(~rejects);
