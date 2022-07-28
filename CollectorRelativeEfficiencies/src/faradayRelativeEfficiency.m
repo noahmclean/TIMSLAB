@@ -49,18 +49,17 @@ m0 = initializeModel(data, d, setup);
 
 s2 = calculateUnct(data, d, method, setup);
 
-%% timing
+%% Make and store off some spline bases
+% slows down evaluateModel to make them on the fly
 
-tic
-chi2 = objfunc(d, m0.vec, s2, m0, tails, setup);
-toc
+B = makeSplineBases(d, setup);
 
 
 %% 8. calculate best fit
 
 opts = optimoptions("fminunc", 'Display', 'iter-detailed');
 opts.StepTolerance = 1e-6;
-[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup), m0.vec, opts);
+[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup, B), m0.vec, opts);
 
 % %% 9. estimate uncertainty in fit
 % 
