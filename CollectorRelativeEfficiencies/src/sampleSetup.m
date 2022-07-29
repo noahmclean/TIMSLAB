@@ -7,7 +7,7 @@ function setup = sampleSetup(data)
 
 setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
 setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
-setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
+setup.scaleInt = 12; % use scaleInt as many spline coefficients as cycles
 setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
 
 setup.IntLambdaInit = 1e-8;

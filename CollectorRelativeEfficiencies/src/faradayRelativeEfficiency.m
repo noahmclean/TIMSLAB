@@ -62,10 +62,11 @@ opts.MaxFunctionEvaluations = 8e4;
 [mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup, B), m0.vec, opts);
 toc
 
-% %% 9. estimate uncertainty in fit
-% 
-% G = makeG(d, mhat);
-% covx = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
-% unctx = sqrt(diag(covx));
+%% 9. estimate uncertainty in fit
+
+dhat = evaluateModel(d, mhat, m0, tails, setup, B);
+G = makeG(dhat, mhat);
+covx = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
+unctx = sqrt(diag(covx));
 % 
 % %% 10. visualize results
