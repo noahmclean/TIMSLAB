@@ -65,7 +65,7 @@ toc
 %% 9. estimate uncertainty in fit
 
 dhat = evaluateModel(d, mhat, m0, tails, setup, B);
-G = makeG(dhat, mhat);
+G = makeG(dhat, mhat, d, setup);
 covx = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
 unctx = sqrt(diag(covx));
 % 

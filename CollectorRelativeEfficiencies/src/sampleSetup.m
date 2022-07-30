@@ -46,6 +46,11 @@ setup.denominatorIsotopeIdx = 1; % for Sm, 147
 setup.internalNormRatio = 1/2.031957;
 
 
+%% first finite difference options
+
+setup.relativeStepSize = 1e-7;
+
+
 %% constants (other than isotopic mass)
 
 setup.kB = 1.38064852e-23; % Boltzmann's constant, J/K
