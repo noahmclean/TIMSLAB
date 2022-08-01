@@ -6,7 +6,7 @@ addpath(genpath("../data"))
 %% 1. input a filename from data folder
 
 %dataFolder = "Sm/SmKU1A-A2.RAW";
-dataFolder = "Sm/SmEfficiency_Bead3Run3.RAW";
+dataFolder = "Sm/SmEfficiency_Bead3Run2.RAW";
 %dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW"; not yet
 %dataFolder = "Pb/A520_Pb.RAW";
 
@@ -24,8 +24,6 @@ FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
 collectorDeltas = [-4 -3 -2 -1 0 1 2 3 4]; 
 method = processMethod(method, FaraNames, collectorDeltas);
 % collector mass differences (derive from OPMatrix in future)
-
-
 
 %% 4. assemble data vector and tags
 
@@ -47,7 +45,7 @@ m0 = initializeModel(data, d, setup);
 
 %% 7. calculate uncertainty in data
 
-s2 = calculateUnct(data, d, method, setup) * 0.7;
+s2 = calculateUnct(data, d, method, setup);
 
 %% Make and store off some spline bases
 % slows down evaluateModel to make them on the fly
@@ -58,15 +56,20 @@ B = makeSplineBases(d, setup);
 
 tic
 opts = optimoptions("fminunc", 'Display', 'iter-detailed');
-opts.MaxFunctionEvaluations = 8e4;
+opts.MaxFunctionEvaluations = 1e5;
 [mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup, B), m0.vec, opts);
 toc
 
 %% 9. estimate uncertainty in fit
 
 dhat = evaluateModel(d, mhat, m0, tails, setup, B);
-G = makeG(dhat, mhat, d, setup);
+G = makeG(d, mhat, m0, tails, setup, B, dhat);
 covx = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
 unctx = sqrt(diag(covx));
-% 
-% %% 10. visualize results
+BIC = length(mhat)*log(length(dhat)) - 2*(-1/2*(chi2 + sum(log(s2))));
+
+
+%% 10. visualize results
+
+plotFit(dhat, d, mhat, m0, tails, setup, B, covx);
+

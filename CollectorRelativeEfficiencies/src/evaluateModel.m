@@ -134,7 +134,7 @@ for iBlock = 1:nBlocks
     logEfficiencyRatio = logRelEffs(dDet);
 
     dhat(inBlock) = ( exp(logIsotopeRatio + betaForiBlock .* logMassRatio*denomMass + ...
-        primaryBeamLogInt) + refVolts + tailContribution ) .* exp(logEfficiencyRatio);
+        primaryBeamLogInt) + tailContribution ) .* exp(logEfficiencyRatio) + refVolts;
 
 end % for iBLock
 

@@ -49,7 +49,8 @@ s2 = 4 * setup.kB * setup.tempInK * dResist ./ integPeriod;
 
 %% calculate shot noise to On Peak 
 
-shotNoise = d.int .* (dResist/setup.coulomb) ./ integPeriod;
+% note: add 0.7 in as short-term fix for possible autocorrelation.
+shotNoise = d.int .* (dResist/setup.coulomb) ./ integPeriod * 0.7; 
 s2 = s2 + shotNoise .* d.isOP;
 
 end % function caculateUnct

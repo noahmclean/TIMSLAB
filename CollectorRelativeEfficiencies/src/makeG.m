@@ -18,10 +18,6 @@ for iVar = 1:nVars
 
     G(:,iVar) = (dPrime - dhat)/deltaim;
 
-    if ~rem(iVar,100)
-        disp(["iVar = " num2str(iVar)])
-    end
-
 end % for iVar
 
 end
