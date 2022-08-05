@@ -21,6 +21,45 @@ data.header.BChannels = string(methodHeader{7,2});
 data.header.TimeZero = string(methodHeader{8,2});
 
 
+%% new "parse data" required for ATONA A/B channel data
+
+opts = delimitedTextImportOptions;
+opts.VariableTypes = "string";
+opts.ExtraColumnsRule = "ignore";
+firstColumn = readmatrix(textFileInfo.name, opts);
+% note that default is to skip empty lines
+collectorsStartPosition = find(firstColumn == "#COLLECTORS");
+userTablesStartPosition = find(firstColumn == "#USERTABLES");
+baselinesStartPosition  = find(firstColumn == "#BASELINES");
+onPeakStartPosition     = find(firstColumn == "#ONPEAK");
+endPosition             = find(firstColumn == "#END");
+
+collectorsEndPosition = min([userTablesStartPosition baselinesStartPosition onPeakStartPosition]) - 1;
+nCollectors = collectorsEndPosition - collectorsStartPosition - 1;
+data.collectorNames = firstColumn(collectorsStartPosition+2:collectorsEndPosition);
+
+if data.header.BChannels == "No" % if resistor-based amplifiers, no BChannels
+    nDataColumns = 7 + nCollectors;
+elseif data.header.BChannels == "Yes" % if ATONAs
+    nDataColumns = 7 + 2*nCollectors - 1; % minus one because PM doesn't have BChannel
+else
+    disp('unrecognized text file column setup')
+end
+
+% extract collector block information
+opts.VariableNames = ["1", "2", "3", "4", "5", "6"];
+opts.VariableTypes = ["string", "string", "string", "string", "string", "string"];
+opts.DataLines = [collectorsStartPosition+2 collectorsEndPosition]; % not sure why +2
+data.Collectors = readmatrix(textFileInfo.name, opts);
+% including gains and resistances
+firstFaradayRow = find(data.Collectors(:,2) == "F", 1, "first");
+ lastFaradayRow = find(data.Collectors(:,2) == "F", 1, "last");
+ Frange = firstFaradayRow:lastFaradayRow;
+data.FaradayResist = double(data.Collectors(Frange,3)); % resistances (ohms)
+data.FaradayGains = double(data.Collectors(Frange,4));  % gains (relative to Axial)
+
+% next: line 104 (parse BL and OP data, separate out indices and data)
+
 %% parse data 
 
 % future work: change to table import for ATONA data
@@ -56,8 +95,11 @@ end
 % grab the gains
 collRange = (collectorsStartPosition+1):collectorBlockEndPosition;
 data.Collectors = reshape(dtmp(collRange), 6, [])';
-data.FaradayResist = double(data.Collectors(4:12,3)); % resistances (ohms)
-data.FaradayGains = double(data.Collectors(4:12,4));  % gains (relative to Axial)
+firstFaradayRow = find(data.Collectors(:,2) == "F", 1, "first");
+ lastFaradayRow = find(data.Collectors(:,2) == "F", 1, "last");
+ Frange = firstFaradayRow:lastFaradayRow;
+data.FaradayResist = double(data.Collectors(Frange,3)); % resistances (ohms)
+data.FaradayGains = double(data.Collectors(Frange,4));  % gains (relative to Axial)
 
 % range starts after header, continues to cell before next block flag
 BLrange = (baselinesStartPosition+1+nDataColumns):(onPeakStartPosition-1);

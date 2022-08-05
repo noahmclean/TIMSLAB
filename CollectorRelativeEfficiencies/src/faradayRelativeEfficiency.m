@@ -6,9 +6,10 @@ addpath(genpath("../data"))
 %% 1. input a filename from data folder
 
 %dataFolder = "Sm/SmKU1A-A2.RAW";
-dataFolder = "Sm/SmEfficiency_Bead3Run3.RAW";
+%dataFolder = "Sm/SmEfficiency_Bead3Run3.RAW";
 %dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW"; not yet
 %dataFolder = "Pb/A520_Pb.RAW";
+dataFolder = "Pb/B195.RAW";
 
 %% 2. parse the data file
 
@@ -64,12 +65,12 @@ toc
 
 dhat = evaluateModel(d, mhat, m0, tails, setup, B);
 G = makeG(d, mhat, m0, tails, setup, B, dhat);
-covx = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
-unctx = sqrt(diag(covx));
+covm = inv( (G.*(1./s2))' * G ); % inv(G'*W*G), where W = diag(1./s2);
+unctx = sqrt(diag(covm));
 BIC = length(mhat)*log(length(dhat)) - 2*(-1/2*(chi2 + sum(log(s2))));
 
 
 %% 10. visualize results
 
-plotFit(dhat, d, mhat, m0, tails, setup, B, covx);
+plotFit(dhat, d, mhat, m0, tails, setup, B, covm);
 

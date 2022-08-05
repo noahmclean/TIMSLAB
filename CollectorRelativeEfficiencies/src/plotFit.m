@@ -1,4 +1,4 @@
-function [] = plotFit(dhat, d, mhat, m0, tails, setup, B, covx);
+function [] = plotFit(dhat, d, mhat, m0, tails, setup, B, covx)
 %PLOTFIT Plots to assess model fit
 %   Plot 1: Baselines
 %   Plot 2: Beam interpolation on major peak
@@ -73,9 +73,12 @@ for iBlock = 1:nBlocks
     dTime = d.time(inBlock);
 
     knotsForiBlock = logIntensity(:,iBlock);
-    primaryBeamLogInt = B.Bint(:,:,iBlock)*knotsForiBlock;
+    beamUnique = B.BintUnique(:,:,iBlock)*knotsForiBlock;
+    primaryBeamLogInt = beamUnique(B.uniqueIdx(:,iBlock));
 
-    betaForiBlock = B.Bbeta(:,:,iBlock)*betas;
+
+    betaUnique = B.BbetaUnique(:,:,iBlock)*betas;
+    betaForiBlock = betaUnique(B.uniqueIdx(:,iBlock));
 
     logIsotopeRatio = logRatioVector(dIso);
 
