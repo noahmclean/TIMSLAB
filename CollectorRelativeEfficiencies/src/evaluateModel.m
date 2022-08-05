@@ -111,7 +111,10 @@ for iBlock = 1:nBlocks
 %               setup.bdeg);
 
     knotsForiBlock = logIntensity(:,iBlock);
-    primaryBeamLogInt = B.Bint(:,:,iBlock)*knotsForiBlock;
+    beamUnique = B.BintUnique(:,:,iBlock)*knotsForiBlock;
+    primaryBeamLogInt = beamUnique(B.uniqueIdx(:,iBlock));
+
+    %primaryBeamLogInt = B.Bint(:,:,iBlock)*knotsForiBlock;
 
     % fit for beta. note: (conventaional beta)/denominatorMass, units /amu
     % 
@@ -121,7 +124,9 @@ for iBlock = 1:nBlocks
 %               setup.nCoeffBeta-setup.bdeg, ...
 %               setup.bdeg);
     
-    betaForiBlock = B.Bbeta(:,:,iBlock)*betas;
+    %betaForiBlock = B.Bbeta(:,:,iBlock)*betas;
+    betaUnique = B.BbetaUnique(:,:,iBlock)*betas;
+    betaForiBlock = betaUnique(B.uniqueIdx(:,iBlock));
 
     logIsotopeRatio = logRatioVector(dIso);
 
