@@ -1,0 +1,37 @@
+
+2022-08-04 2:27:31 PM, 1, METHOD, ====== METHOD HAS STARTED - Bead: 1 ======, STARTED
+2022-08-04 2:27:31 PM, 1, SPM Method , PbFaraday_Focus208H4Only.TIMSPM, Info
+2022-08-04 2:27:31 PM, 1, Instrument, Ion energy readback is 7960v and LOS valve is reporting 'Open'., Info
+2022-08-04 2:27:31 PM, 1, FILAMENTS, Filaments are currently ON!., Info
+2022-08-04 2:27:31 PM, 1, TURRET, Turret reporting to be at BEAD 1 [84 steps], Info
+2022-08-04 2:27:31 PM, 1, TURRET, BEAD 1 is already in position., Info
+2022-08-04 2:27:31 PM, 1, Analysis START, Requesting analysis is started..., Analysis
+2022-08-04 2:29:55 PM, 1, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+2022-08-04 2:29:56 PM, 1, AutoFocus, Peak centering at 204.000 on the High4 before Auto Focusing..., Info
+2022-08-04 2:30:17 PM, 1, AutoFocus, Auto Focusing at 204.011 on the High4 until a maximum of 1010000 is reached..., Info
+2022-08-04 2:31:51 PM, 1, AutoFocus, Focussing completed with an intensity of 4.233., Info
+2022-08-04 2:31:51 PM, 1, AutoFocus, Auto Focus has completed, INFO
+2022-08-04 2:39:52 PM, 1, InterBlock, Analysis INTERBLOCK at Block 2, Cycle 1 ..., Info
+2022-08-04 2:39:53 PM, 1, AutoFocus, Peak centering at 204.000 on the High4 before Auto Focusing..., Info
+2022-08-04 2:40:14 PM, 1, AutoFocus, Auto Focusing at 203.996 on the High4 until a maximum of 1010000 is reached..., Info
+2022-08-04 2:41:43 PM, 1, AutoFocus, Focussing completed with an intensity of 4.500., Info
+2022-08-04 2:41:44 PM, 1, AutoFocus, Auto Focus has completed, INFO
+2022-08-04 2:52:08 PM, 1, InterBlock, Analysis INTERBLOCK at Block 3, Cycle 1 ..., Info
+2022-08-04 2:52:09 PM, 1, AutoFocus, Peak centering at 204.000 on the High4 before Auto Focusing..., Info
+2022-08-04 2:52:29 PM, 1, AutoFocus, Auto Focusing at 204.002 on the High4 until a maximum of 1010000 is reached..., Info
+2022-08-04 2:54:06 PM, 1, AutoFocus, Focussing completed with an intensity of 3.985., Info
+2022-08-04 2:54:07 PM, 1, AutoFocus, Auto Focus has completed, INFO
+2022-08-04 3:04:31 PM, 1, InterBlock, Analysis INTERBLOCK at Block 4, Cycle 1 ..., Info
+2022-08-04 3:04:32 PM, 1, AutoFocus, Peak centering at 204.000 on the High4 before Auto Focusing..., Info
+2022-08-04 3:04:53 PM, 1, AutoFocus, Auto Focusing at 204.001 on the High4 until a maximum of 1010000 is reached..., Info
+2022-08-04 3:06:33 PM, 1, AutoFocus, Focussing completed with an intensity of 3.286., Info
+2022-08-04 3:06:34 PM, 1, AutoFocus, Auto Focus has completed, INFO
+2022-08-04 3:16:58 PM, 1, InterBlock, Analysis INTERBLOCK at Block 5, Cycle 1 ..., Info
+2022-08-04 3:16:59 PM, 1, AutoFocus, Peak centering at 204.000 on the High4 before Auto Focusing..., Info
+2022-08-04 3:17:19 PM, 1, AutoFocus, Auto Focusing at 204.003 on the High4 until a maximum of 1010000 is reached..., Info
+2022-08-04 3:19:03 PM, 1, AutoFocus, Focussing completed with an intensity of 2.775., Info
+2022-08-04 3:19:04 PM, 1, AutoFocus, Auto Focus has completed, INFO
+2022-08-04 3:21:54 PM, 1, Instrument, Ion energy readback is 7962v and LOS valve is reporting 'Open'., Info
+2022-08-04 3:21:54 PM, 1, Run ABORTED, Method has been ABORTED., ABORTED
+2022-08-04 3:21:54 PM, 1, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 1, COMPLETED
+2022-08-04 3:23:54 PM, 1, Loaded SPM Method , PbFaraday_Focus208H4Only.TIMSPM, Info
