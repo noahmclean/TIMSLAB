@@ -104,27 +104,12 @@ for iBlock = 1:nBlocks
     dIso = d.iso(inBlock);
 
     % primary beam intensity
-%     Bint = bbase(dTime, ...
-%               setup.blockStartEndTime(iBlock,1), ... 
-%               setup.blockStartEndTime(iBlock,2), ...
-%               setup.nCoeffInt-setup.bdeg, ...
-%               setup.bdeg);
-
     knotsForiBlock = logIntensity(:,iBlock);
     beamUnique = B.BintUnique(:,:,iBlock)*knotsForiBlock;
     primaryBeamLogInt = beamUnique(B.uniqueIdx(:,iBlock));
 
-    %primaryBeamLogInt = B.Bint(:,:,iBlock)*knotsForiBlock;
 
     % fit for beta. note: (conventaional beta)/denominatorMass, units /amu
-    % 
-%     Bbeta = bbase(dTime, ...
-%               setup.blockStartEndTime(1,1), ... 
-%               setup.blockStartEndTime(end,2), ...
-%               setup.nCoeffBeta-setup.bdeg, ...
-%               setup.bdeg);
-    
-    %betaForiBlock = B.Bbeta(:,:,iBlock)*betas;
     betaUnique = B.BbetaUnique(:,:,iBlock)*betas;
     betaForiBlock = betaUnique(B.uniqueIdx(:,iBlock));
 
@@ -142,8 +127,6 @@ for iBlock = 1:nBlocks
         primaryBeamLogInt) + tailContribution ) .* exp(logEfficiencyRatio) + refVolts;
 
 end % for iBLock
-
-
 
 
 end % evaluateModel
