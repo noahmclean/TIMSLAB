@@ -14,6 +14,9 @@ dataFolder = "Pb/B195.RAW";
 %% 2. parse the data file
 
 data = parseTXT(dataFolder);
+if data.header.BChannels == "Yes" % if ATONAs
+    [data, dataB] = parseBChannels(data);
+end
 
 %% 3. grab the corresponding methods file, make run tables for OP and BL
 
@@ -35,9 +38,9 @@ method = processMethod(method, FaraNames, collectorDeltas);
 
 tails = initializePeakTails(method, d);
 
-%% 5b. create spline setup
+%% 5b. create sample setup/options
 
-% contains nseg, block start/stop times, nSeg
+% contains block start/stop times, nSeg
 setup = sampleSetup(data);
 
 %% 6. initialize model

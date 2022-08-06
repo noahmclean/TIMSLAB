@@ -87,8 +87,8 @@ data.OPall = readmatrix(textFileInfo.name, opts);
 
 data.OPserial = double(data.OPall(:,2:4));% [block cycle integration] serially assigned counts
 
-data.OPmatrix = double(data.OPall(:,8:end)); % matrix of collector readings
-if data.header.BChannels == "Yes"
+data.OPmatrix = double(data.OPall(:,8:end)); % matrix of all collector readings
+if data.header.BChannels == "Yes" % if ATONAs
     data.OPmatrixA = data.OPmatrix(:,1:nCollectors);
     data.OPmatrixB = data.OPmatrix(:,nCollectors+1:end);
 end
