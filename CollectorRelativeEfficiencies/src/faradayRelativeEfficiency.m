@@ -41,7 +41,7 @@ tails = initializePeakTails(method, d);
 %% 5b. create sample setup/options
 
 % contains block start/stop times, nSeg
-setup = sampleSetup(data);
+setup = sampleSetup(data, method);
 
 %% 6. initialize model
 

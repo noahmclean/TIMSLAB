@@ -2,8 +2,8 @@
 <ANALYSIS_METHOD>
   <HEADER>
     <Filename>Pb_Faraday_MD_981.TIMSAM</Filename>
-    <DateModified>04/08/2022 15:23:31</DateModified>
-    <DateCreated>04/08/2022 15:23:31</DateCreated>
+    <DateModified>07/08/2022 13:49:57</DateModified>
+    <DateCreated>07/08/2022 13:49:57</DateCreated>
     <CreatedBy>User1</CreatedBy>
     <ModifiedBy>User2</ModifiedBy>
   </HEADER>
@@ -46,13 +46,13 @@
     <Sequence>1</Sequence>
     <Enabled>True</Enabled>
     <MassID>BL1</MassID>
-    <AxMass>34.500</AxMass>
+    <AxMass>207.500</AxMass>
     <IntegPeriod>ms1000</IntegPeriod>
     <IntegTime>10.0</IntegTime>
     <PKCParentID />
-    <BLReferences>1s8:H4S1</BLReferences>
+    <BLReferences>MASS</BLReferences>
     <MagnetSettleTime>2000</MagnetSettleTime>
-    <AxMassOffset>-0.5000</AxMassOffset>
+    <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
     <TraceColour>Black</TraceColour>
   </BASELINE>
@@ -60,20 +60,20 @@
     <Sequence>2</Sequence>
     <Enabled>True</Enabled>
     <MassID>BL2</MassID>
-    <AxMass>35.500</AxMass>
+    <AxMass>208.500</AxMass>
     <IntegPeriod>ms1000</IntegPeriod>
     <IntegTime>10.0</IntegTime>
     <PKCParentID />
-    <BLReferences>1s8:H4S1</BLReferences>
+    <BLReferences>MASS</BLReferences>
     <MagnetSettleTime>2000</MagnetSettleTime>
-    <AxMassOffset>0.5000</AxMassOffset>
+    <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
     <TraceColour>SeaGreen</TraceColour>
   </BASELINE>
   <ONPEAK>
     <Sequence>1</Sequence>
     <Enabled>True</Enabled>
-    <MassID>1s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>High4</MassIDCollector>
     <AxMass>204.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -83,7 +83,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>1s4:AxS1,1s6:H2S1,1s7:H3S1,1s8:H4S1</CollectorArray>
+    <CollectorArray>204Pb:AxS1,206Pb:H2S1,207Pb:H3S1,208Pb:H4S1</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
@@ -92,7 +92,7 @@
   <ONPEAK>
     <Sequence>2</Sequence>
     <Enabled>True</Enabled>
-    <MassID>2s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>High3</MassIDCollector>
     <AxMass>205.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -102,7 +102,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>2s4:L2S2,2s6:H1S2,2s7:H2S2,2s8:H3S2</CollectorArray>
+    <CollectorArray>204Pb:L2S2,206Pb:H1S2,207Pb:H2S2,208Pb:H3S2</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
@@ -111,7 +111,7 @@
   <ONPEAK>
     <Sequence>3</Sequence>
     <Enabled>True</Enabled>
-    <MassID>3s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>High2</MassIDCollector>
     <AxMass>206.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -121,7 +121,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>3s4:L3S3,3s6:AxS3,3s7:H1S3,3s8:H2S3</CollectorArray>
+    <CollectorArray>204Pb:L3S3,206Pb:AxS3,207Pb:H1S3,208Pb:H2S3</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
@@ -130,7 +130,7 @@
   <ONPEAK>
     <Sequence>4</Sequence>
     <Enabled>True</Enabled>
-    <MassID>4s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>High1</MassIDCollector>
     <AxMass>207.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -140,7 +140,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>4s4:L4S4,4s6:L2S4,4s7:AxS4,4s8:H1S4</CollectorArray>
+    <CollectorArray>204Pb:L4S4,206Pb:L2S4,207Pb:AxS4,208Pb:H1S4</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
@@ -149,7 +149,7 @@
   <ONPEAK>
     <Sequence>5</Sequence>
     <Enabled>True</Enabled>
-    <MassID>5s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>Axial</MassIDCollector>
     <AxMass>208.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -159,7 +159,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>5s6:L3S5,5s7:L2S5,5s8:AxS5</CollectorArray>
+    <CollectorArray>206Pb:L3S5,207Pb:L2S5,208Pb:AxS5</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
@@ -168,7 +168,7 @@
   <ONPEAK>
     <Sequence>6</Sequence>
     <Enabled>True</Enabled>
-    <MassID>6s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>Low2</MassIDCollector>
     <AxMass>209.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -178,7 +178,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>6s6:L4S6,6s7:L3S6,6s8:L2S6</CollectorArray>
+    <CollectorArray>206Pb:L4S6,207Pb:L3S6,208Pb:L2S6</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>
@@ -187,7 +187,7 @@
   <ONPEAK>
     <Sequence>7</Sequence>
     <Enabled>True</Enabled>
-    <MassID>7s8</MassID>
+    <MassID>208Pb</MassID>
     <MassIDCollector>Low3</MassIDCollector>
     <AxMass>210.000</AxMass>
     <IntegPeriod>ms500</IntegPeriod>
@@ -197,7 +197,7 @@
     <PKCMethod>PeakScanning</PKCMethod>
     <PKCParentID />
     <BLReferences>BL1, BL2</BLReferences>
-    <CollectorArray>s6s:L5S7,6s7:L4S7,7s8:L3S7</CollectorArray>
+    <CollectorArray>206Pb:L5S7,207Pb:L4S7,208Pb:L3S7</CollectorArray>
     <MagnetSettleTime>1500</MagnetSettleTime>
     <AxMassOffset>0.0000</AxMassOffset>
     <CurveFit>None</CurveFit>

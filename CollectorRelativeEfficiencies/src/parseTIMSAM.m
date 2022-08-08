@@ -33,6 +33,8 @@ method.header(3).Name = 'DateCreated';
 method.header(4).Name = 'CreatedBy';
 method.header(5).Name = 'ModifiedBy';
 
+method.methodName = extractBefore(filename, ".");
+
 for iField = 1:5
     method.header(iField).Value = header.Children(iField).Children.Data;
 end % for iField of header
