@@ -116,8 +116,8 @@ for iBlock = 1:nBlocks
 
     % smoothing spline
     ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
-%     plot(timeMonitor, exp(intMonitor), '.'); hold on
-%     plot(timeMonitor, exp(B*ysmooth), '-r', 'LineWidth', 2)
+     plot(timeMonitor, exp(intMonitor), '.'); hold on
+     plot(timeMonitor, exp(B*ysmooth), '-r', 'LineWidth', 2)
 
     m(m0.rangeInts(:,iBlock)) = ysmooth;    
 

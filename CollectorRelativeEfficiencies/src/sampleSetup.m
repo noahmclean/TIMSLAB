@@ -6,8 +6,7 @@ function setup = sampleSetup(data, method)
 
 %% spline parameters
 
-switch method.methodName
-    case "Sm147to150_S6_v2" || "Sm147to150_S6"
+if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
         setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
         setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
@@ -17,7 +16,7 @@ switch method.methodName
         setup.IntLambdaInit = 1e-8;
         setup.BetaLambdaInit = 1;
 
-    case "Pb_Faraday_MD_981"
+elseif method.methodName == "Pb_Faraday_MD_981"
 
         setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
         setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
@@ -26,6 +25,11 @@ switch method.methodName
 
         setup.IntLambdaInit = 1e-8;
         setup.BetaLambdaInit = 1;
+
+else % method name not yet set up
+
+    disp("Method not yet set up in sampleSetup.m")
+    return
 
 end
 
@@ -55,8 +59,7 @@ setup.blockStartEndTime = blockStartEndTime;
 %% internal normalization
 % assume denominator isotope is major isotope
 
-switch method.methodName
-    case "Sm147to150_S6_v2" || "Sm147to150_S6"
+if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
         setup.numeratorIsotopeIdx = 4; % for Sm, 150
         setup.denominatorIsotopeIdx = 1; % for Sm, 147
@@ -64,7 +67,7 @@ switch method.methodName
         % internalNormRatio = numeratorIsotopeIdx/denominatorIsotopeIdx
         setup.internalNormRatio = 1/2.031957;
 
-    case "Pb_Faraday_MD_981"
+elseif method.methodName == "Pb_Faraday_MD_981"
 
         setup.numeratorIsotopeIdx = 2; % for Pb, 206
         setup.denominatorIsotopeIdx = 4; % for Pb, 208
@@ -80,7 +83,17 @@ setup.relativeStepSize = 1e-7;
 
 
 %% plotting options
-setup.reductionFactorForPlottingBL = 100;
+
+if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
+
+    setup.reductionFactorForPlottingBL = 100;
+    
+elseif method.methodName == "Pb_Faraday_MD_981"
+
+    setup.reductionFactorForPlottingBL = 8;
+
+end % switch case methodName
+
 
 
 %% constants (other than isotopic mass)
@@ -89,8 +102,13 @@ setup.kB = 1.38064852e-23; % Boltzmann's constant, J/K
 setup.tempInK = 290; % temperature in K (decabin cooled to ~16 C)
 setup.coulomb = 6241509074460762607.776; % 1 coulomb in elementary charges
 
+% Ickert: "1/t * 1484 = amplifier noise, t in seconds, noise in cps"
 setup.noiseConstantATONAsCPS = 1484; % cps noise
-setup.noiseATONAs = 
+R = 10^11; % software reports volts consistent with 10^11 ohm resistor
+cpsPerVolt = 6.24150934*10^18/R; % 1 coulomb in 'atomic units'.
+% variance for atonas is 1/t * setup.noiseATONAs, where t is in seconds.
+setup.noiseATONAs = setup.noiseConstantATONAsCPS / cpsPerVolt;
+
 
 end % function
 

@@ -102,6 +102,3 @@ end % for iBlock (plot 2)
 
 
 end % function plotFit
-
-
-

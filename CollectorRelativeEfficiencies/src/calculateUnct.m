@@ -40,12 +40,24 @@ integPeriod(isBL)   = integPeriodBL(BLseqs(BLseqs>0)) * 0.001; % in seconds
 integPeriod(d.isOP) = integPeriodOP(OPseqs(OPseqs>0)) * 0.001; 
 
 
-%% calculate Johnson noise
+%% calculate amplifier noise (Johnson or equivalent for ATONAs)
 
-% Johnson noise variance = 4 * kB * T * R * frequency
+
 dResist = data.FaradayResist(d.det); % resistance, same size as d
-s2 = 4 * setup.kB * setup.tempInK * dResist ./ integPeriod;
+% note: ATONAs have an 'effective resistance' used for reporting
+% intensities in volts, always 10^11 ohms in cases I've seen.
 
+if data.header.BChannels == "No" % if Faradays
+
+    % Johnson noise variance = 4 * kB * T * R * frequency    
+    s2 = 4 * setup.kB * setup.tempInK * dResist ./ integPeriod;
+
+else % if ATONAs
+
+    % Ickert: "1/t * 1484 = amplifier noise, t in seconds, noise in cps"
+    s2 = (setup.noiseATONAs ./ integPeriod).^2;
+
+end
 
 %% calculate shot noise to On Peak 
 
