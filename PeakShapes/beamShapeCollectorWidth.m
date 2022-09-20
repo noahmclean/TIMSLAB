@@ -3,9 +3,9 @@
 addpath("exampleData/")
 massSpec = massSpecModel("PhoenixKansas_1e12");
 
-filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
+%filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-205Pb-PM-S2B7C1.txt";
-%filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
+filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
 %filename = "6NHCl dpblank-210204A-169-PKC-208Pb-PM-S5B2C1.txt";
 %filename = "NBS987 StaticAxH1H2 Bead1Run1-393-PKC-86Sr-Ax-S1B8C1.txt";
 %filename = "Ryan-PKC-270UO-PM-Peak.TXT";
@@ -16,21 +16,22 @@ data = dataModel(filename);
 % calculations about the setup, depend on data and mass spec
 
 data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
+%data.collectorWidthAMU = 0.139;
 data.theoreticalBeamWidthAMU = calcBeamWidthAMU(data, massSpec);
 peakMeas = peakMeasProperties(data, massSpec);
 
 % spline basis B
 
 bdeg = 3; % order of spline (= order of polynomial pieces)
-pord = 2; % order of differences 
+pord = 2; % order of differences for pSplines
 beamKnots = ceil(peakMeas.beamWindow/(peakMeas.deltaMagnetMass)) - 2*bdeg; % 3 xtra knots for cubic spline
 nInterp = 1000; % number of interpolated segments
 
 xl = data.peakCenterMass - peakMeas.beamWindow/2;
 xr = data.peakCenterMass + peakMeas.beamWindow/2;
-
 beamMassInterp = linspace(xl, xr, nInterp);
-B = bbase(beamMassInterp, xl, xr, beamKnots, bdeg);
+
+splineBasis = splineBasisModel(beamMassInterp,beamKnots,bdeg);
 deltabeamMassInterp = beamMassInterp(2)-beamMassInterp(1);
 
 % calculate integration matrix G, depends on B, data
@@ -53,17 +54,20 @@ end
 % trim data
 hasModelBeam = any(G,2); % magnet masses with beam model mass in collector
 G = G(hasModelBeam,:);
+data.baseline = data.measPeakIntensity(~hasModelBeam); % baseline when no beam in detector
+data.measPeakIntensityBLcorr = data.measPeakIntensity - ...
+                               mean(data.baseline(2:end)); % 1st measured intensity is dodgy
 data.magnetMasses = data.magnetMasses(hasModelBeam);
-data.measPeakIntensity = data.measPeakIntensity(hasModelBeam);
+data.measPeakIntensity = data.measPeakIntensityBLcorr(hasModelBeam);
 
 % WLS and NNLS
-GB = G*B;
+GB = G*splineBasis.B;
 Wdata = diag(1./max(data.measPeakIntensity,1));
 beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*data.measPeakIntensity);
 beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*data.measPeakIntensity);
 
 % smoothing spline
-lambda = 1e-11;
+lambda = 1e-6;
 D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
 
 %Wdata = eye(length(measPeakIntensity));
@@ -76,7 +80,10 @@ beamNNPspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugm
 
 %% determine peak width
 
-beamShape = B*beamWNNLS;
+% note: need a different fit with a negative baseline for Faraday.
+
+beamShape = splineBasis.B*beamNNPspl; % weighted non-negative least squares
+
 [maxBeam, maxBeamIndex] = max(beamShape);
 thesholdIntensity = 0.01 * maxBeam;
 

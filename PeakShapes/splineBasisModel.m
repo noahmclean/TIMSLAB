@@ -4,30 +4,30 @@ classdef splineBasisModel
     %   R authors: Paul Eilers and Brian Marx
     
     properties (Access = protected)
-        x    % vector of x values at which to evaluate spline
         bdeg % degree of basis function (1 is linear, 2 is quadratic, 3 is cubic)
         nseg % number of equally spaced segments on which to fit x variable
     end
 
     properties (SetAccess = protected)
-        B    % B-spline basis matrix, with length(x) rows, nseg+bdeg columns
+        beamMassInterp  % vector of x values at which to evaluate spline
+        B               % B-spline basis matrix, with length(x) rows, nseg+bdeg columns
     end
     
     methods
-        function splineBasis = splineBasisModel(x, nseg, bdeg)
+        function splineBasis = splineBasisModel(beamMassInterp, nseg, bdeg)
             %SPLINEBASISMODEL Construct an instance of this class
             %   Detailed explanation goes here
             
             arguments
-                x {mustBeVector}
-                nseg (1,1) double = 5000
+                beamMassInterp {mustBeVector}
+                nseg (1,1) double = 1000
                 bdeg (1,1) double = 3
             end
 
-            splineBasis.x = x;
+            splineBasis.beamMassInterp = beamMassInterp;
             splineBasis.nseg = nseg;
             splineBasis.bdeg = bdeg;
-            splineBasis.B = bbase(x, nseg, bdeg);
+            splineBasis.B = bbase(beamMassInterp, nseg, bdeg);
 
         end % constructor function
         
