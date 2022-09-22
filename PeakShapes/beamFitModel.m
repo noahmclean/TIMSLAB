@@ -79,7 +79,7 @@ classdef beamFitModel
         end % function fitLeastSquares
 
         function beamFit = fitSmoothSpline
-
+            
         end % function fitSmoothSpline
 
     end % methods
