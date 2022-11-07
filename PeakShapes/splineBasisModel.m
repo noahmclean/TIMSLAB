@@ -3,7 +3,7 @@ classdef splineBasisModel
     %   using bbase() from R Package from Joy of P-Splines
     %   R authors: Paul Eilers and Brian Marx
     
-    properties (Access = protected)
+    properties
         bdeg % degree of basis function (1 is linear, 2 is quadratic, 3 is cubic)
         nseg % number of equally spaced segments on which to fit x variable
     end

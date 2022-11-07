@@ -12,6 +12,7 @@ classdef fitModel
     end
     
     methods
+        
         function fit = fitModel(beamFitModel,inputArg2)
             %FITMODEL Construct an instance of this class
             %   Detailed explanation goes here
@@ -23,6 +24,8 @@ classdef fitModel
             %   Detailed explanation goes here
             outputArg = obj.Property1 + inputArg;
         end
-    end
-end
+
+    end % methods
+
+end % classdef
 

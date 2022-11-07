@@ -16,6 +16,8 @@ classdef beamFitModel
 
         beamWLS   (:,1) double    % weighted least squares fit for beam parameters
         beamWNNLS (:,1) double    % nonnegative WLS fit for beam parameters
+        beamPSpline (:,1) double  % penalized spline fit for beam parameters
+        beamNNPspl (:,1) double   % nonnegative penalized spline fit for beam parameters
     end
     
     methods
@@ -78,8 +80,25 @@ classdef beamFitModel
 
         end % function fitLeastSquares
 
-        function beamFit = fitSmoothSpline
+        function beamFit = fitSmoothSpline(beamFit, splineBasis, pord, lambda)
             
+            GB = beamFit.GB; %#ok<*PROP> 
+            Wdata = beamFit.Wdata;
+            meas = beamFit.measPeakIntensityWithBeam;
+
+            beamKnots = splineBasis.nseg;
+            bdeg = splineBasis.bdeg;
+
+            %lambda = 1e-6;
+            D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
+
+            %Wdata = eye(length(measPeakIntensity));
+            Gaugmented = [GB; sqrt(lambda)*D];
+            measAugmented = [meas; zeros(beamKnots+bdeg-pord,1)];
+            wtsAugmented = blkdiag(Wdata, eye(beamKnots+bdeg-pord));
+            beamFit.beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*measAugmented);
+            beamFit.beamNNPspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
+
         end % function fitSmoothSpline
 
     end % methods
