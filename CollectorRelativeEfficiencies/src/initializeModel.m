@@ -1,4 +1,4 @@
-function m0 = initializeModel(data, d, setup)
+function m0 = initializeModel(data, d, method, setup)
 %INITIALIZEMODEL Initialize model vector
 %   
 %   model vector is (for now):
@@ -29,9 +29,10 @@ function m0 = initializeModel(data, d, setup)
 
 %% establish ranges for parameters
 % count up sizes: global parameters
-nRatios   = 2;             % true ratios (hard-code 2 for Sm for now)
-nRefVolts = 9;             % reference voltages on Faradays (BL)
-nRelEffs  = nRefVolts - 1; % detector relative efficiencies (logged)
+nIsotopes = max(max(method.F_ind)); % number of isotopes in method
+nRatios   = nIsotopes - 2;          % number of ratios free to vary (not for norm)
+nRefVolts = width(method.OPTable);  % reference voltages on Faradays (BL)
+nRelEffs  = nRefVolts - 1;          % detector relative efficiencies (logged)
 
 % count up sizes: blockwise parameters
 nBlocks = max(data.OPserial(:,1));
@@ -60,7 +61,6 @@ m0.rangeBetas    = startBetaCoefs:totalModelPars;
 m0.rangeInts  = reshape(m0.rangeInts, [nCycles*setup.scaleInt, nBlocks]);
 
 
-
 %% initialize global parameters
 
 % temporary variable m will become m0.vec
@@ -71,6 +71,14 @@ m = zeros(totalModelPars,1);
 % taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
 % all ratios are log-ratios (alr transform)
 m(m0.rangeRatio) = log([1.523370/2.031957; 1.872696/2.031957]);
+
+freeNumeratorIdcs = 1:nIsotopes;
+freeNumeratorIdcs = freeNumeratorIdcs( ...
+                    freeNumeratorIdcs ~= setup.numeratorIsotopeIdx & ...
+                    freeNumeratorIdcs ~= setup.denominatorIsotopeIdx);
+
+m(m0.rangeRatio) = setup.referenceMaterialIC(freeNumeratorIdcs)/...
+                   setup.referenceMaterialIC(setup.denominatorIsotopeIdx);
 
 % reference volts from BL data, effs
 meanBL = mean(data.BLmatrix)';

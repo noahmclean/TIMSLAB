@@ -4,7 +4,7 @@ function setup = sampleSetup(data, method)
 %   one spline fit across all betas
 %   use method to figure out which parameters to use (generalize later?)
 
-%% spline parameters
+%% spline parameters, depend on method (not on reference material)
 
 if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
@@ -56,26 +56,27 @@ setup.blockStartEndIdx = blockStartEndIdx;
 setup.blockStartEndTime = blockStartEndTime;
 
 
-%% internal normalization
+%% internal normalization and reference material IC
 % assume denominator isotope is major isotope
 
 if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
         setup.numeratorIsotopeIdx = 4; % for Sm, 150
-        setup.denominatorIsotopeIdx = 1; % for Sm, 147
+        setup.denominatorIsotopeIdx = 1; % for Sm, 147, major isotope of 147-150
         % taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
         % internalNormRatio = numeratorIsotopeIdx/denominatorIsotopeIdx
-        setup.internalNormRatio = 1/2.031957;
+        setup.referenceMaterialIC = [2.031957 1.523370 1.872696 1];
 
 elseif method.methodName == "Pb_Faraday_MD_981"
 
         setup.numeratorIsotopeIdx = 2; % for Pb, 206
-        setup.denominatorIsotopeIdx = 4; % for Pb, 208
-        % taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
-        % internalNormRatio = numeratorIsotopeIdx/denominatorIsotopeIdx
-        setup.internalNormRatio = 2.1681;
+        setup.denominatorIsotopeIdx = 4; % for Pb, 208, major isotope
+        setup.referenceMaterialIC = [0.0590074 1 0.914683 2.1681];
 
 end % switch case methodName
+
+setup.internalNormRatio = setup.referenceMaterialIC(setup.numeratorIsotopeIdx)/...
+                                  setup.referenceMaterialIC(setup.denominatorIsotopeIdx);
 
 %% first finite difference options
 

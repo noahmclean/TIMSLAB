@@ -102,7 +102,8 @@ end % for iMass
 
 % interpolate sumTails at half masses
 tails.halfMass = zeros(2,nMassIDs+1);
-halfMasses = [tails.OP(1,:)-0.5 tails.OP(1,end)+0.5]; % all the half-masses currently used
+%halfMasses = [tails.OP(1,:)-0.5 tails.OP(1,end)+0.5]; % all the half-masses currently used
+halfMasses = unique(dstruct.mass(~dstruct.isOP))';
 tails.halfMass = [halfMasses; interp1(massRange, sumTails, halfMasses)];
 
 % save off indices to the half-mass peak tail sum for each integration in d

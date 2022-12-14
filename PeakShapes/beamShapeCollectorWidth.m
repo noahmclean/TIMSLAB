@@ -5,9 +5,9 @@ massSpec = massSpecModel("PhoenixKansas_1e12");
 
 %filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-205Pb-PM-S2B7C1.txt";
-filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
+%filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
 %filename = "6NHCl dpblank-210204A-169-PKC-208Pb-PM-S5B2C1.txt";
-%filename = "NBS987 StaticAxH1H2 Bead1Run1-393-PKC-86Sr-Ax-S1B8C1.txt";
+filename = "NBS987 StaticAxH1H2 Bead1Run1-393-PKC-86Sr-Ax-S1B8C1.txt";
 %filename = "Ryan-PKC-270UO-PM-Peak.TXT";
 data = dataModel(filename);
 
@@ -85,7 +85,7 @@ beamNNPspl = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugm
 beamShape = splineBasis.B*beamNNPspl; % weighted non-negative least squares
 
 [maxBeam, maxBeamIndex] = max(beamShape);
-thesholdIntensity = 0.01 * maxBeam;
+thesholdIntensity = 0.05 * maxBeam;
 
 peakLeft = beamShape(1:maxBeamIndex);
 leftAboveTheshold = peakLeft > thesholdIntensity;
@@ -99,6 +99,19 @@ rightBoundary = find(rightThesholdChange, 1, 'first') + maxBeamIndex - 1;
 
 measBeamWidthAMU = beamMassInterp(rightBoundary) - beamMassInterp(leftBoundary);
 measBeamWidthMM = measBeamWidthAMU * massSpec.effectiveRadiusMagnetMM/data.peakCenterMass;
+
+% with distance as the x-axis
+beamDistInterp = beamMassInterp*massSpec.effectiveRadiusMagnetMM/data.peakCenterMass - ...
+                 data.peakCenterMass*massSpec.effectiveRadiusMagnetMM/data.peakCenterMass;
+
+% some moments, in distance space (units = mm)
+beamShapeNorm = beamShape / trapz(beamDistInterp', beamShape); % normalized 
+beamMean = trapz(beamDistInterp', beamDistInterp' .* beamShapeNorm);
+beamVariance = trapz(beamDistInterp', (beamDistInterp'-beamMean).^2 .* beamShapeNorm);
+beamSkewness = trapz(beamDistInterp', (beamDistInterp'-beamMean).^3 .* beamShapeNorm)...
+               / beamVariance^(3/2);
+beamKurtosis = trapz(beamDistInterp', (beamDistInterp'-beamMean).^4 .* beamShapeNorm)...
+               / beamVariance^(4/2);
 
 
 %%
