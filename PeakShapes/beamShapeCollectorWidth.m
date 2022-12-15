@@ -67,7 +67,7 @@ beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*data.measPeakIntensity);
 beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*data.measPeakIntensity);
 
 % smoothing spline
-lambda = 1e-6;
+lambda = 5e-7;
 D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
 
 %Wdata = eye(length(measPeakIntensity));

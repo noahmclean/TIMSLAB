@@ -41,6 +41,7 @@ nCollectors = length(collectorWidths);
 %% reproduce a mass scan using this information
 
 % start simple with a beam shape from beamShape in TIMSLAB
+% required variables from beamShape code:
 % need: beamDistInterp: x-axis for beam profile, in mm distances
 % need: beamShape: fit by beamShape routine
 
@@ -55,10 +56,19 @@ for collectorIdx = 1:5
 end % for collectorIdx
 
 
+cmap = [50,  205, 50 ;      % lime green, L3
+        210, 105, 30 ;      % chocolate, L2
+        139, 0,   0  ;      % dark red, Ax
+        85,  107, 47 ;      % dark olive green, H1
+        139, 0,   139]/255; % dark magenta, H2
+colororder(cmap);
+
 nScans = 3;
 nMassesToScan = 700;
 
-scanLimits = [85.7, 86.12; 86.7, 87.12; 87.7, 88.12];
+scanLimits = [85.77, 86.05; 
+              86.77, 87.05; 
+              87.77, 88.05];
 
 for iScan = 1:nScans
 
