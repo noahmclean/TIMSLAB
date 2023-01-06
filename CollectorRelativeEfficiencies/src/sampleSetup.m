@@ -8,23 +8,33 @@ function setup = sampleSetup(data, method)
 
 if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
-        setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
-        setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
-        setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
-        setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
+    setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
+    setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
+    setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
+    setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
 
-        setup.IntLambdaInit = 1e-8;
-        setup.BetaLambdaInit = 1;
+    setup.IntLambdaInit = 1e-8;
+    setup.BetaLambdaInit = 1;
 
 elseif method.methodName == "Pb_Faraday_MD_981"
 
-        setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
-        setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
-        setup.scaleInt = 1; % use scaleInt as many spline coefficients as cycles
-        setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
+    setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
+    setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
+    setup.scaleInt = 1; % use scaleInt as many spline coefficients as cycles
+    setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
 
-        setup.IntLambdaInit = 1e-8;
-        setup.BetaLambdaInit = 1;
+    setup.IntLambdaInit = 1e-8;
+    setup.BetaLambdaInit = 1;
+
+elseif method.methodName == "PbFaraday_Pbc3Line"
+
+    setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
+    setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
+    setup.scaleInt = 3; % use scaleInt as many spline coefficients as cycles
+    setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
+
+    setup.IntLambdaInit = 1e-8;
+    setup.BetaLambdaInit = 1;
 
 else % method name not yet set up
 
@@ -63,20 +73,33 @@ if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
         setup.numeratorIsotopeIdx = 4; % for Sm, 150
         setup.denominatorIsotopeIdx = 1; % for Sm, 147, major isotope of 147-150
+        setup.numeratorMassID = "150Sm";
+        setup.denominatorMassID = "147Sm";
         % taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
         % internalNormRatio = numeratorIsotopeIdx/denominatorIsotopeIdx
         setup.referenceMaterialIC = [2.031957 1.523370 1.872696 1];
 
-elseif method.methodName == "Pb_Faraday_MD_981"
+
+elseif method.methodName == "Pb_Faraday_MD_981" || ... or
+       method.methodName == "PbFaraday_Pbc3Line"
 
         setup.numeratorIsotopeIdx = 2; % for Pb, 206
         setup.denominatorIsotopeIdx = 4; % for Pb, 208, major isotope
-        setup.referenceMaterialIC = [0.0590074 1 0.914683 2.1681];
+        setup.numeratorMassID = "206Pb";
+        setup.denominatorMassID = "208Pb";
+        setup.referenceMaterialIC = [0.0590074 1 0.914683 2.1681]; % Condon
 
 end % switch case methodName
 
 setup.internalNormRatio = setup.referenceMaterialIC(setup.numeratorIsotopeIdx)/...
                                   setup.referenceMaterialIC(setup.denominatorIsotopeIdx);
+
+% MassName = MassID with letters and numbers switched, to index into mass class
+setup.numeratorMassName   = extract(setup.numeratorMassID,  lettersPattern) + ...
+                            extract(setup.numeratorMassID,  digitsPattern); 
+setup.denominatorMassName = extract(setup.denominatorMassID,lettersPattern) + ...
+                            extract(setup.denominatorMassID,digitsPattern); 
+
 
 %% first finite difference options
 
@@ -89,7 +112,8 @@ if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
 
     setup.reductionFactorForPlottingBL = 100;
     
-elseif method.methodName == "Pb_Faraday_MD_981"
+elseif method.methodName == "Pb_Faraday_MD_981" || ...
+       method.methodName == "PbFaraday_Pbc3Line"
 
     setup.reductionFactorForPlottingBL = 8;
 

@@ -61,7 +61,7 @@ B = makeSplineBases(d, setup);
 tic
 opts = optimoptions("fminunc", 'Display', 'iter-detailed');
 opts.MaxFunctionEvaluations = 1e5;
-[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup, B), m0.vec, opts);
+[mhat, chi2] = fminunc(@(m) objfunc(d, m, s2, m0, tails, setup, B, method), m0.vec, opts);
 toc
 
 %% 9. estimate uncertainty in fit

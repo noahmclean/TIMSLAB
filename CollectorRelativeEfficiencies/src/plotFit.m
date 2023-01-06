@@ -13,7 +13,7 @@ f1 = figure('Position', [1 1 2000 1200], 'Units', 'pixels');
 isBL = ~d.isOP;
 refVoltsAll = mhat(m0.rangeRefVolts);
 
-for iDet = 1:9
+for iDet = 3:9
 
     subplot(3,3,iDet); hold on
     BLfromDet = isBL & d.det == iDet;

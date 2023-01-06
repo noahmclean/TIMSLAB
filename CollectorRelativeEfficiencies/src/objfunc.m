@@ -1,9 +1,9 @@
-function chi2 = objfunc(d, m, s2, m0, tails, setup, B)
+function chi2 = objfunc(d, m, s2, m0, tails, setup, B, method)
 %OBJFUNC Objective function for faraday efficiency fit
 %   return chi square statistic (not reduced)
 
 
-dhat = evaluateModel(d, m, m0, tails, setup, B);
+dhat = evaluateModel(d, m, m0, tails, setup, B, method);
 
 r = d.int - dhat;
 rejects = abs(r) > 0.5;

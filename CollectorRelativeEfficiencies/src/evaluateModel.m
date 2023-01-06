@@ -1,17 +1,18 @@
-function dhat = evaluateModel(d, m, m0, tails, setup, B)
+function dhat = evaluateModel(d, m, m0, tails, setup, B, method)
 %EVALUATEMODEL Calculate dhat based on model
 %   Detailed explanation goes here
 
 %   *******From initializeModel:********
 %   GLOBAL MODEL PARAMETERS:
-%   148/147 true
-%   149/147 true
+%   logratio_1 (true, "free")
+%   ...
+%   logratio_n (true, "free")
 %   L5ref reference voltage
 %   ...
 %   H4ref reference voltage
-%   eL5   detector efficiency
+%   eL5   detector log-efficiency
 %   ...
-%   eH4   detector efficiency
+%   eH4   detector log-efficiency
 %   
 %   BLOCKWISE MODEL PARAMETERS:
 %   147i(t) - intensity function for 147Sm
@@ -19,7 +20,7 @@ function dhat = evaluateModel(d, m, m0, tails, setup, B)
 %
 %   m0 is a structure that contains:
 %   m0.vec - initial estimate of model vector
-%   m0.rangeRatio = indices for 'true' unknown ratios
+%   m0.rangeRatio = indices for 'true' unknown logratios
 %   m0.rangeRefVolts = indices for reference voltages
 %   m0.rangeRelEffs = indices for relative efficiencies
 %   m0.rangeInts = matrix of spline coefficients for
@@ -31,9 +32,35 @@ function dhat = evaluateModel(d, m, m0, tails, setup, B)
 %% unpack model
 
 nBlocks = max(d.block);
+nMasses = length(setup.referenceMaterialIC);
+% "free" log-ratios at the top
+%lr148147true = m(1);
+%lr149ar7true = m(2);
+% assemble isotope logratio and isotope mass logratio vectors
+% for now, hard-code Sr: [147/147, 148/147, 149/147, 150/147];
+%logRatioVector = [0 lr148147true lr149ar7true log(setup.internalNormRatio)]';
 
-lr148147true = m(1);
-lr149ar7true = m(2);
+logRatioVector = zeros(1, nMasses);
+logRatioVector(setup.denominatorIsotopeIdx) = 1; % denom/denom = 1, logged below
+logRatioVector(setup.numeratorIsotopeIdx) = log(setup.internalNormRatio);
+logRatioVector(logRatioVector == 0) = m(m0.rangeRatio); % other log-ratios in m
+logRatioVector(setup.denominatorIsotopeIdx) = log(1); % denom/denom = 1
+
+% assemble isotope mass ratio vector needed for exponential mass
+% fractionation correction
+% logMassRatioVector = ...
+%               log([1 mass.Sm148/mass.Sm147 mass.Sm149/mass.Sm147 mass.Sm150/mass.Sm147])';
+% denomMass = mass.Sm147; % for exponential mass bias correction, in units /amu
+
+logMassRatioVector = zeros(1,nMasses);
+denomMass = mass.(setup.denominatorMassName);
+for iMass = 1:nMasses
+    massName = extract(method.MassIDs(iMass),  lettersPattern) + ...
+               extract(method.MassIDs(iMass),  digitsPattern); 
+    logMassRatioVector(iMass) = log(mass.(massName)/denomMass);
+end % for iMass
+
+% next up: implement active collectors only
 refVoltages = m(m0.rangeRefVolts);
 
 logRelEffs = m(m0.rangeRelEffs);
@@ -45,16 +72,8 @@ betas       = m(m0.rangeBetas); % in per amu units
 
 dhat = zeros(size(d.int));
 
-% assemble isotope ratio and isotope mass ratio vectors
-% for now, hard-code Sr: [147/147, 148/147, 149/147, 150/147];
-logRatioVector = [0 lr148147true lr149ar7true log(setup.internalNormRatio)]';
 
-% assemble isotope mass ratio vector needed for exponential mass
-% fractionation correction
-logMassRatioVector = ...
-              log([1 mass.Sm148/mass.Sm147 mass.Sm149/mass.Sm147 mass.Sm150/mass.Sm147])';
 
-denomMass = mass.Sm147; % for exponential mass bias correction, in units /amu
 
 
 %% baseline dhats

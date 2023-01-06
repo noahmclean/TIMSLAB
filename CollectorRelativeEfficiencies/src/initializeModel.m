@@ -70,15 +70,16 @@ m = zeros(totalModelPars,1);
 % Sm ratios are [148/147 149/147], 
 % taken from Brennecka et al 2013 PNAS Ames Sm data (Table S5)
 % all ratios are log-ratios (alr transform)
-m(m0.rangeRatio) = log([1.523370/2.031957; 1.872696/2.031957]);
+%m(m0.rangeRatio) = log([1.523370/2.031957; 1.872696/2.031957]);
 
 freeNumeratorIdcs = 1:nIsotopes;
 freeNumeratorIdcs = freeNumeratorIdcs( ...
                     freeNumeratorIdcs ~= setup.numeratorIsotopeIdx & ...
                     freeNumeratorIdcs ~= setup.denominatorIsotopeIdx);
 
-m(m0.rangeRatio) = setup.referenceMaterialIC(freeNumeratorIdcs)/...
-                   setup.referenceMaterialIC(setup.denominatorIsotopeIdx);
+% initialize log-ratios for "free" numerator isotopes
+m(m0.rangeRatio) = log( setup.referenceMaterialIC(freeNumeratorIdcs)/...
+                   setup.referenceMaterialIC(setup.denominatorIsotopeIdx) );
 
 % reference volts from BL data, effs
 meanBL = mean(data.BLmatrix)';
@@ -124,8 +125,8 @@ for iBlock = 1:nBlocks
 
     % smoothing spline
     ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
-     plot(timeMonitor, exp(intMonitor), '.'); hold on
-     plot(timeMonitor, exp(B*ysmooth), '-r', 'LineWidth', 2)
+     plot(timeMonitor, exp(intMonitor), '.b', 'MarkerSize', 15); hold on
+     plot(timeMonitor, exp(B*ysmooth), '-+r', 'LineWidth', 2)
 
     m(m0.rangeInts(:,iBlock)) = ysmooth;    
 
@@ -175,14 +176,15 @@ Baugmented = [BBeta; sqrt(lambda)*DBeta];
 % call the beta/m147 beta for simplicity
 
 beta = (log(numIntensity./denIntensity) - log(setup.internalNormRatio)) / ...
-       (log(mass.Sm150/mass.Sm147)*mass.Sm147);
+       (log(mass.(setup.numeratorMassName)/mass.(setup.denominatorMassName)) * ...
+                                                 mass.(setup.denominatorMassName));
 
 yaugmented = [beta; zeros(size(DBeta,1),1)];
 ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
 
-%hax = axes(); hold on
-%plot(timeRatio, beta, '.', 'MarkerSize', 5)
-%plot(timeRatio, BBeta*ysmooth, '-r')
+figure; hax = axes(); hold on
+plot(timeRatio, beta, '.', 'MarkerSize', 5)
+plot(timeRatio, BBeta*ysmooth, '-r')
 
 m(m0.rangeBetas) = ysmooth;
 
