@@ -53,20 +53,52 @@ end % for iOP
 
 OPMasses = convertvars(OPMasses, FaraNames, 'double'); % convert to double
 
+
 % calculate collector deltas (amu differences between collector positions)
-OPMassMatrix = table2array(OPMasses);
-OPMassDiffs = mean(OPMassMatrix(:,2:end)-OPMassMatrix(:,1:end-1), 'omitnan');
 AxialPositionDetectorIndex = find(FaraNames == method.axialPositionDetector.Code);
 
-collectorDeltas = zeros(size(FaraNames));
-if AxialPositionDetectorIndex > 1 % if Axial is not first detector
-    collectorDeltas(1:AxialPositionDetectorIndex-1) = ...
-        -cumsum(OPMassDiffs(1:AxialPositionDetectorIndex-1), 'reverse');
-end
-if AxialPositionDetectorIndex < nFara % if Axial is not last detector
-    collectorDeltas(AxialPositionDetectorIndex+1:end) = ...
-        cumsum(OPMassDiffs(AxialPositionDetectorIndex:end));
-end
+OPMassMatrix = table2array(OPMasses);
+nMassesPerSequence = sum(~isnan(OPMassMatrix),2);
+nMassPairs = sum(nMassesPerSequence.*(nMassesPerSequence-1)/2); % total pairs
+massDiffMatrix = zeros(nMassPairs, nFara-1);
+massDiffColumnIdcs = [1:AxialPositionDetectorIndex-1 0 AxialPositionDetectorIndex:nFara-1];
+massDiffVector = zeros(nMassPairs,1);
+
+massDiffRow = 0;
+for iSeq = 1:nSeq
+
+    OPMassColIdcs = find(~isnan(OPMassMatrix(iSeq,:)));
+    for iStartIndex = 1 : (nMassesPerSequence(iSeq)-1)
+        for jEndIndex = (iStartIndex+1) : nMassesPerSequence(iSeq)
+            
+            OPMassStartIndex = OPMassColIdcs(iStartIndex);
+            OPMassEndIndex   = OPMassColIdcs(jEndIndex);
+
+            massDiffRow = massDiffRow + 1;
+            
+            if OPMassStartIndex ~= AxialPositionDetectorIndex
+                massDiffMatrix(massDiffRow,massDiffColumnIdcs(OPMassStartIndex)) = -1;
+            end % if iStartIndex is not axial position
+            if OPMassEndIndex ~= AxialPositionDetectorIndex
+                massDiffMatrix(massDiffRow,massDiffColumnIdcs(OPMassEndIndex)) = 1;
+            end % if jStartIndex is not axial position
+
+            massDiff = OPMassMatrix(iSeq,OPMassEndIndex) - ...
+                       OPMassMatrix(iSeq,OPMassStartIndex);
+            massDiffVector(massDiffRow) = massDiff;
+
+        end % for end mass index            
+
+    end % for start mass index
+
+end % for each sequence
+
+warning('off', 'MATLAB:rankDeficientMatrix') % suppress warning
+collectorDeltasFromAxPos = (massDiffMatrix\massDiffVector)';
+warning('on', 'all'); % restore warning
+collectorDeltas = [collectorDeltasFromAxPos(1:AxialPositionDetectorIndex-1) ...
+                   0 collectorDeltasFromAxPos(AxialPositionDetectorIndex:end)];
+
 
 
 % create a F_ind matrix for further data reduction
@@ -113,6 +145,7 @@ method.OPMasses = OPMasses;
 method.F_ind = F_ind;
 method.BLTable = BLTable;
 method.MassIDs = MassIDs;
+method.collectorDeltas = collectorDeltas;
 
 end % function processMethod
 
