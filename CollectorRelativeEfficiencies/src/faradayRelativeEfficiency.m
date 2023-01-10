@@ -25,9 +25,7 @@ method = parseTIMSAM(data.header.methodName);
 %method = parseTIMSAM('PbFaraday_Pbc3Line.TIMSAM');
 
 FaraNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-collectorDeltas = [-4 -3 -2 -1 0 1 2 3 4]; 
-method = processMethod(method, FaraNames, collectorDeltas);
-% collector mass differences (derive from OPMatrix in future)
+method = processMethod(method, FaraNames);
 
 %% 4. assemble data vector and tags
 
