@@ -32,6 +32,7 @@ for iSeq = 1:nSeq
     seqString = string(method.onpeaks(iSeq).Info(13).Value);
     seqAssign = split(seqString, ",");
     seqAssign = split(seqAssign, ":");
+    if size(seqAssign,2) == 1, seqAssign = seqAssign'; end %if one mass 
 
     % detectors names are concatenated with sequence name, eg "H3S1"
     activeCollectors = extractBefore(seqAssign(:,2), seqName)';
@@ -96,9 +97,8 @@ end % for each sequence
 warning('off', 'MATLAB:rankDeficientMatrix') % suppress warning
 collectorDeltasFromAxPos = (massDiffMatrix\massDiffVector)';
 warning('on', 'all'); % restore warning
-collectorDeltas = [collectorDeltasFromAxPos(1:AxialPositionDetectorIndex-1) ...
+detectorDeltas = [collectorDeltasFromAxPos(1:AxialPositionDetectorIndex-1) ...
                    0 collectorDeltasFromAxPos(AxialPositionDetectorIndex:end)];
-
 
 
 % create a F_ind matrix for further data reduction
@@ -133,19 +133,19 @@ if isfield(method, 'baselines') % if baselines present
 
         AxMass = double(string(method.baselines(iBL).Info(4).Value)) + ...
                  double(string(method.baselines(iBL).Info(10).Value));
-        BLTable{iBL,FaraNames} = AxMass + collectorDeltas;
+        BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
 
     end % for iBL
 
 end
 
-
+% save 
 method.OPTable = OPTable;
 method.OPMasses = OPMasses;
 method.F_ind = F_ind;
 method.BLTable = BLTable;
 method.MassIDs = MassIDs;
-method.collectorDeltas = collectorDeltas;
+method.detectorDeltas = detectorDeltas;
 
 end % function processMethod
 

@@ -26,7 +26,7 @@ classdef massSpecModel
 
                 case "PhoenixKansas_1e12"
                 %massSpec.collectorWidthMM = 0.95135;
-                massSpec.collectorWidthMM = 0.87;
+                massSpec.collectorWidthMM = 0.855;
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];

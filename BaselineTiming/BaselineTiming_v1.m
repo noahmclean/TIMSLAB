@@ -6,7 +6,7 @@ T = 290; % Kelvin
 R = 1E11;  % resistor size
 amplifierNoiseVariance = 4*kB*T*R;  %Johnson-Nyquist noise
 
-cpsPerVolt = 6.24150934*10^18/R;  % elementary charge, Ohm's Law
+cpsPerVolt =  6.241509074460763e+18 / R;  % elementary charge, Ohm's Law
 
 ttotal = 100; % seconds
 tints = 1000; % total time integrations

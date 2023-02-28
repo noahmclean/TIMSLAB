@@ -5,10 +5,10 @@ addpath(genpath("../data"))
 
 %% 1. input a filename from data folder
 
-%dataFolder = "Sm/SmKU1A-A2.RAW";
+dataFolder = "Sm/SmKU1A-A2.RAW";
 %dataFolder = "Sm/SmEfficiency_Bead3Run3.RAW";
-%dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW"; not yet
-dataFolder = "Pb/A520_Pb.RAW";
+%dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW";
+%dataFolder = "Pb/A520_Pb.RAW";
 %dataFolder = "Pb/B195.RAW";
 
 %% 2. parse the data file
