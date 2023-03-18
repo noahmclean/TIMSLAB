@@ -5,9 +5,11 @@
 % S2      86  87  88
 % S3  86  87  88
 
+
+
 % parameterized as 
 % m1, m2, m3 axial masses during S1, S2, S3
-% d1, d2, d3, d4 distances between L2-L2, L2-Ax, Ax-H1, H1-H2
+% d1, d2, d3, d4 distances between L3-L2, L2-Ax, Ax-H1, H1-H2
 
 % constants to use: a,b,c are inverse of dispersion for S1, S2, S3
 % note adjusted by ~0.0001-2 for offsets m1, m2, m3
@@ -27,6 +29,7 @@ A = [1 0 0  0  0  0  0;
      0 0 1  0  0  0  0];
 x = A\y;
 r = y - A*x;
+yhat = A*x;
 
 % results in terms of peak top width
 WC = 1.0; % mm, width of collector slit
@@ -108,12 +111,20 @@ for iMass = 1:nMassesToScan
 
 end % for iMass
 
-subplot(nScans,1,iScan)
+subplot(nScans,1,iScan); hold on
 plot(massScanMass, massScanIntensity, 'LineWidth', 2)
 line([x(iScan) x(iScan)], [0 1.05], 'Color', 'k', 'LineWidth', 1, 'LineStyle', '--')
+
+% for iPeak = 1:3
+%     peakCenterMass = yhat(3*iScan-3 + iPeak);
+%     peakCenterColor = cmap(-iScan+3 + iPeak,:);
+%     plot(peakCenterMass, 1.1, '|', 'MarkerSize', 30, ...
+%         'MarkerEdgeColor', peakCenterColor);
+% end
+
 legend({'L3', 'L2', 'Ax', 'H1', 'H2'})
 set(gca, 'FontSize', 16)
-ylim([0 1.05])
+ylim([0 1.1])
 end % for iScan
 
 
