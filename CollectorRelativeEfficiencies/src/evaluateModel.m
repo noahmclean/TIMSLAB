@@ -1,4 +1,4 @@
-function dhat = evaluateModel(d, m, m0, tails, setup, B, method)
+function dhat = evaluateModel(d, m, s2, m0, tails, setup, B, method)
 %EVALUATEMODEL Calculate dhat based on model
 %   Detailed explanation goes here
 
