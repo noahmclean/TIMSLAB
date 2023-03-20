@@ -132,9 +132,9 @@ for iBlock = 1:nBlocks
     betaUnique = B.BbetaUnique(:,:,iBlock)*betas;
     betaForiBlock = betaUnique(B.uniqueIdx(:,iBlock));
 
-    logIsotopeRatio = logRatioVector(dIso);
+    logIsotopeRatio = logRatioVector(dIso)';
 
-    logMassRatio = logMassRatioVector(dIso);
+    logMassRatio = logMassRatioVector(dIso)';
 
     refVolts = refVoltages(dDet);
 

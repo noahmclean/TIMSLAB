@@ -1,4 +1,4 @@
-function G = makeG(d, mhat, m0, tails, setup, B, dhat)
+function G = makeG(d, mhat, s2, m0, tails, setup, B, method, dhat)
 %MAKEG Make the linear model matrix
 %   derivative of dhat with respect to mhat
 
@@ -14,7 +14,7 @@ for iVar = 1:nVars
     imPrime = mhat(iVar) + deltaim;
     mPrime(iVar) = imPrime;
 
-    dPrime = evaluateModel(d, mPrime, m0, tails, setup, B);
+    dPrime = evaluateModel(d, mPrime, s2, m0, tails, setup, B, method);
 
     G(:,iVar) = (dPrime - dhat)/deltaim;
 
