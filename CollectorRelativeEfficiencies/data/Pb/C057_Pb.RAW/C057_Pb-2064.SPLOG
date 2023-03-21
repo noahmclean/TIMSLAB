@@ -1,0 +1,77 @@
+
+2023-03-19 2:11:57 PM, 5, METHOD, ====== METHOD HAS STARTED - Bead: 5 ======, STARTED
+2023-03-19 2:11:57 PM, 5, SPM Method , PbFaraday_208_FocusOnly.TIMSPM, Info
+2023-03-19 2:11:57 PM, 5, Instrument, Ion energy readback is 7966v and LOS valve is reporting 'Open'., Info
+2023-03-19 2:11:57 PM, 5, FILAMENTS, Filaments are currently ON!., Info
+2023-03-19 2:11:57 PM, 5, TURRET, Turret reporting to be at BEAD 5 [1357 steps], Info
+2023-03-19 2:11:57 PM, 5, TURRET, BEAD 5 is already in position., Info
+2023-03-19 2:11:57 PM, 5, Analysis START, Requesting analysis is started..., Analysis
+2023-03-19 2:14:00 PM, 5, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+2023-03-19 2:14:01 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 2:14:22 PM, 5, AutoFocus, Auto Focusing at 207.993 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 2:16:06 PM, 5, AutoFocus, Focussing completed with an intensity of 7.337., Info
+2023-03-19 2:16:07 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 2:24:37 PM, 5, InterBlock, Analysis INTERBLOCK at Block 2, Cycle 1 ..., Info
+2023-03-19 2:24:38 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 2:24:58 PM, 5, AutoFocus, Auto Focusing at 208.001 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 2:26:28 PM, 5, AutoFocus, Focussing completed with an intensity of 8.340., Info
+2023-03-19 2:26:29 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 2:37:03 PM, 5, InterBlock, Analysis INTERBLOCK at Block 3, Cycle 1 ..., Info
+2023-03-19 2:37:04 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 2:37:24 PM, 5, AutoFocus, Auto Focusing at 208.010 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 2:38:58 PM, 5, AutoFocus, Focussing completed with an intensity of 12.779., Info
+2023-03-19 2:38:59 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 2:49:31 PM, 5, InterBlock, Analysis INTERBLOCK at Block 4, Cycle 1 ..., Info
+2023-03-19 2:49:32 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 2:49:53 PM, 5, AutoFocus, Auto Focusing at 208.007 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 2:51:31 PM, 5, AutoFocus, Focussing completed with an intensity of 16.955., Info
+2023-03-19 2:51:32 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 3:02:04 PM, 5, InterBlock, Analysis INTERBLOCK at Block 5, Cycle 1 ..., Info
+2023-03-19 3:02:05 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 3:02:26 PM, 5, AutoFocus, Auto Focusing at 208.007 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 3:04:03 PM, 5, AutoFocus, Focussing completed with an intensity of 20.167., Info
+2023-03-19 3:04:04 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 3:14:38 PM, 5, InterBlock, Analysis INTERBLOCK at Block 6, Cycle 1 ..., Info
+2023-03-19 3:14:39 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 3:14:59 PM, 5, AutoFocus, Auto Focusing at 208.008 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 3:16:33 PM, 5, AutoFocus, Focussing completed with an intensity of 25.310., Info
+2023-03-19 3:16:34 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 3:27:07 PM, 5, InterBlock, Analysis INTERBLOCK at Block 7, Cycle 1 ..., Info
+2023-03-19 3:27:08 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 3:27:29 PM, 5, AutoFocus, Auto Focusing at 208.012 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 3:28:59 PM, 5, AutoFocus, Focussing completed with an intensity of 29.276., Info
+2023-03-19 3:29:00 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 3:39:34 PM, 5, InterBlock, Analysis INTERBLOCK at Block 8, Cycle 1 ..., Info
+2023-03-19 3:39:35 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 3:39:55 PM, 5, AutoFocus, Auto Focusing at 208.014 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 3:41:29 PM, 5, AutoFocus, Focussing completed with an intensity of 31.475., Info
+2023-03-19 3:41:30 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 3:52:03 PM, 5, InterBlock, Analysis INTERBLOCK at Block 9, Cycle 1 ..., Info
+2023-03-19 3:52:04 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 3:52:25 PM, 5, AutoFocus, Auto Focusing at 208.023 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 3:54:03 PM, 5, AutoFocus, Focussing completed with an intensity of 24.050., Info
+2023-03-19 3:54:04 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 4:04:38 PM, 5, InterBlock, Analysis INTERBLOCK at Block 10, Cycle 1 ..., Info
+2023-03-19 4:04:39 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 4:05:00 PM, 5, AutoFocus, Auto Focusing at 208.024 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 4:06:46 PM, 5, AutoFocus, Focussing completed with an intensity of 16.213., Info
+2023-03-19 4:06:47 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 4:17:21 PM, 5, InterBlock, Analysis INTERBLOCK at Block 11, Cycle 1 ..., Info
+2023-03-19 4:17:22 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 4:17:42 PM, 5, AutoFocus, Auto Focusing at 208.008 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 4:19:10 PM, 5, AutoFocus, Focussing completed with an intensity of 6.955., Info
+2023-03-19 4:19:11 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 4:29:44 PM, 5, InterBlock, Analysis INTERBLOCK at Block 12, Cycle 1 ..., Info
+2023-03-19 4:29:45 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 4:30:06 PM, 5, AutoFocus, Auto Focusing at 208.013 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 4:31:39 PM, 5, AutoFocus, Focussing completed with an intensity of 2.908., Info
+2023-03-19 4:31:40 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 4:42:13 PM, 5, InterBlock, Analysis INTERBLOCK at Block 13, Cycle 1 ..., Info
+2023-03-19 4:42:14 PM, 5, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-19 4:42:35 PM, 5, AutoFocus, Auto Focusing at 208.010 on the Axial until a maximum of 95 is reached..., Info
+2023-03-19 4:43:33 PM, 5, AutoFocus, Auto Focus has completed, Info
+2023-03-19 4:43:33 PM, 5, Instrument, Ion energy readback is 7964v and LOS valve is reporting 'Open'., Info
+2023-03-19 4:43:33 PM, 5, Run ABORTED, Method has been ABORTED., ABORTED
+2023-03-19 4:43:35 PM, 5, AutoFocus, Focussing completed with an intensity of 0.278., Info
+2023-03-19 4:43:35 PM, 5, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 5, COMPLETED
+2023-03-19 4:43:41 PM, 5, Loaded SPM Method , AA_Cooldown.TIMSPM, Info

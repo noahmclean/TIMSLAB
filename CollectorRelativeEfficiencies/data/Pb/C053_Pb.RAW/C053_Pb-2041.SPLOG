@@ -1,0 +1,17 @@
+
+2023-03-17 5:30:36 PM, 1, METHOD, ====== METHOD HAS STARTED - Bead: 1 ======, STARTED
+2023-03-17 5:30:36 PM, 1, SPM Method , PbFaraday_208_FocusOnly.TIMSPM, Info
+2023-03-17 5:30:36 PM, 1, Instrument, Ion energy readback is 7964v and LOS valve is reporting 'Open'., Info
+2023-03-17 5:30:36 PM, 1, FILAMENTS, Filaments are currently ON!., Info
+2023-03-17 5:30:36 PM, 1, TURRET, Turret reporting to be at BEAD 1 [77 steps], Info
+2023-03-17 5:30:36 PM, 1, TURRET, BEAD 1 is already in position., Info
+2023-03-17 5:30:36 PM, 1, Analysis START, Requesting analysis is started..., Analysis
+2023-03-17 5:32:39 PM, 1, InterBlock, Analysis INTERBLOCK at Block 1, Cycle 1 ..., Info
+2023-03-17 5:32:40 PM, 1, AutoFocus, Peak centering at 208.000 on the Axial before Auto Focusing..., Info
+2023-03-17 5:33:01 PM, 1, AutoFocus, Auto Focusing at 207.993 on the Axial until a maximum of 95 is reached..., Info
+2023-03-17 5:34:27 PM, 1, AutoFocus, Focussing completed with an intensity of 35.211., Info
+2023-03-17 5:34:28 PM, 1, AutoFocus, Auto Focus has completed, Info
+2023-03-17 5:34:48 PM, 1, Instrument, Ion energy readback is 7964v and LOS valve is reporting 'Open'., Info
+2023-03-17 5:34:48 PM, 1, Run ABORTED, Method has been ABORTED., ABORTED
+2023-03-17 5:34:48 PM, 1, METHOD, ====== METHOD HAS COMPLETED ====== Bead: 1, COMPLETED
+2023-03-17 5:35:11 PM, 1, Loaded SPM Method , PbFaraday_208_FocusOnly.TIMSPM, Info
