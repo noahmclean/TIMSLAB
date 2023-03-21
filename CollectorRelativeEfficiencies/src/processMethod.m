@@ -131,9 +131,33 @@ if isfield(method, 'baselines') % if baselines present
 
     for iBL = 1:nBL
 
-        AxMass = double(string(method.baselines(iBL).Info(4).Value)) + ...
-                 double(string(method.baselines(iBL).Info(10).Value));
-        BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
+        % if baseline mass defined by user-entered axial mass "AxMass"
+        if method.baselines(iBL).Info(8).Value == "MASS"
+
+            AxMass = double(string(method.baselines(iBL).Info(4).Value)) + ...
+                double(string(method.baselines(iBL).Info(10).Value));
+            BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
+
+        else % if baseline mass defined by offset from a peak-centered mass
+
+            % user-generated reference to a peak ("Species:CollectorSequence")
+            BLRefString = string(method.baselines(iBL).Info(8).Value);
+            
+            % determine sequence table position (eg H2S3), collector, and sequence name
+            refSeqTablePosition = extractAfter(BLRefString,":");
+            refCollector = extractBefore(refSeqTablePosition,3);
+            refSequence = extractAfter(refSeqTablePosition,2);
+            
+            % find mass (in amu) referenced in OPMasses table, and its axial mass
+            refMassInRefColl = table2array(OPMasses(refSequence,refCollector));
+            refMassDistFromAxialAMU = detectorDeltas(FaraNames == refCollector);
+            AxMassOffset = double(string(method.baselines(iBL).Info(10).Value));
+            
+            % AxMass during BL is AxMass during refSequence + AxMassOffset
+            AxMass = refMassInRefColl - refMassDistFromAxialAMU + AxMassOffset;
+            BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
+
+        end % if baseline mass defined by "AxMass"
 
     end % for iBL
 
