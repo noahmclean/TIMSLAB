@@ -47,7 +47,8 @@ B = makeSplineBases(d, setup);
 
 %% 6. initialize model
 
-m0 = initializeModel(data, d, method, setup, B);
+m0 = initModel(data, d, tails, method, setup, B);
+%m0 = m0 = initializeModel(data, d, method, setup, B)
 
 %% 7. calculate uncertainty in data
 
