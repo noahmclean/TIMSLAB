@@ -8,8 +8,9 @@ addpath(genpath("../data"))
 %dataFolder = "Sm/SmKU1A-A2.RAW";
 %dataFolder = "Sm/SmEfficiency_Bead3Run3.RAW";
 %dataFolder = "Pb/21042022 NBS 982 cup efficiency.RAW";
-dataFolder = "Pb/A520_Pb.RAW";
+%dataFolder = "Pb/A520_Pb.RAW";
 %dataFolder = "Pb/B195.RAW";
+dataFolder = "Pb/C054_Pb.RAW";
 
 %% 2. parse the data file
 
@@ -39,18 +40,20 @@ tails = initializePeakTails(method, d);
 % contains block start/stop times, nSeg
 setup = sampleSetup(data, method);
 
+%% Make and store off some spline bases
+% slows down evaluateModel to make them on the fly
+
+B = makeSplineBases(d, setup);
+
 %% 6. initialize model
 
-m0 = initializeModel(data, d, method, setup);
+m0 = initializeModel(data, d, method, setup, B);
 
 %% 7. calculate uncertainty in data
 
 s2 = calculateUnct(data, d, method, setup);
 
-%% Make and store off some spline bases
-% slows down evaluateModel to make them on the fly
 
-B = makeSplineBases(d, setup);
 
 %% 8. calculate best fit
 

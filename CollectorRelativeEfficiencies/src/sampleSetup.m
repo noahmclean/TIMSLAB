@@ -36,6 +36,16 @@ elseif method.methodName == "PbFaraday_Pbc3Line"
     setup.IntLambdaInit = 1e-8;
     setup.BetaLambdaInit = 1;
 
+elseif method.methodName == "PbFaraday_981_6Seq"
+
+    setup.bdeg = 3; % 1 for linear, 2 for quadratic, 3 for cubic splines
+    setup.pord = 2; % order of differences (2nd order for min integral of 2nd derivative)
+    setup.scaleInt = 10; % use scaleInt as many spline coefficients as cycles
+    setup.scaleBeta = 1; % note different unit -- use scaleBeta betas *per block*
+
+    setup.IntLambdaInit = 1e-18;
+    setup.BetaLambdaInit = 1;
+
 else % method name not yet set up
 
     disp("Method not yet set up in sampleSetup.m")
@@ -80,8 +90,9 @@ if any(method.methodName == [ "Sm147to150_S6_v2" ,"Sm147to150_S6"])
         setup.referenceMaterialIC = [2.031957 1.523370 1.872696 1];
 
 
-elseif method.methodName == "Pb_Faraday_MD_981" || ... or
-       method.methodName == "PbFaraday_Pbc3Line"
+elseif method.methodName == "Pb_Faraday_MD_981"  || ... or
+       method.methodName == "PbFaraday_Pbc3Line" || ... or
+       method.methodName == "PbFaraday_981_6Seq"
 
         setup.numeratorIsotopeIdx = 2; % for Pb, 206
         setup.denominatorIsotopeIdx = 4; % for Pb, 208, major isotope
@@ -116,6 +127,10 @@ elseif method.methodName == "Pb_Faraday_MD_981" || ...
        method.methodName == "PbFaraday_Pbc3Line"
 
     setup.reductionFactorForPlottingBL = 8;
+
+elseif method.methodName == "PbFaraday_981_6Seq"
+    
+    setup.reductionFactorForPlottingBL = 1;
 
 end % switch case methodName
 

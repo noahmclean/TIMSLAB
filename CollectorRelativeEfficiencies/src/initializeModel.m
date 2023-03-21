@@ -1,4 +1,4 @@
-function m0 = initializeModel(data, d, method, setup)
+function m0 = initializeModel(data, d, method, setup, Bstruct)
 %INITIALIZEMODEL Initialize model vector
 %   
 %   model vector is (for now):
@@ -118,14 +118,20 @@ for iBlock = 1:nBlocks
     Baugmented = [B; sqrt(lambda)*DInt];
     yaugmented = [intMonitor; zeros(size(DInt,1),1)];
     
+    % NEW
+    B = Bstruct.BintUnique(:,:,iBlock);
+    lambda = setup.IntLambdaInit;
+    Baugmented = [B; sqrt(lambda)*DInt];
+    yaugmented = [intMonitor; zeros(size(DInt,1),1)];
+
     % least squares fit, no weights
-    %xls = (B'*B)\(B'*intMonitor);
-    %plot(timeMonitor, intMonitor, '.'); hold on
-    %plot(timeMonitor, B*xls, '-k')
+%     xls = (B'*B)\(B'*intMonitor);
+%     plot(timeMonitor, intMonitor, '.'); hold on
+%     plot(timeMonitor, B*xls, '-k')
 
     % smoothing spline
     ysmooth = (Baugmented'*Baugmented)\(Baugmented'*yaugmented);
-     plot(timeMonitor, exp(intMonitor), '.b', 'MarkerSize', 15); hold on
+     plot(timeMonitor, exp(intMonitor), '.b', 'MarkerSize', 15); %hold on
      plot(timeMonitor, exp(B*ysmooth), '-+r', 'LineWidth', 2)
 
     m(m0.rangeInts(:,iBlock)) = ysmooth;    
@@ -149,12 +155,17 @@ denIntensity = d.int(isDenominator) - meanBL(detDenom);
 
 % make sure times for numerator and denominator match
 % check this for squences without both isotopes?
-timeNumerator = d.time(isNumerator);
-timeDenominator = d.time(isDenominator);
-isMeasBoth = timeNumerator == timeDenominator;
+% timeNumerator = d.time(isNumerator);
+% timeDenominator = d.time(isDenominator);
+% isMeasBoth = timeNumerator == timeDenominator;
+% numIntensity = numIntensity(isMeasBoth);
+% denIntensity = denIntensity(isMeasBoth);
+% timeRatio = timeNumerator(isMeasBoth);
+
+isMeasBoth = isNumerator & isDenominator;
 numIntensity = numIntensity(isMeasBoth);
 denIntensity = denIntensity(isMeasBoth);
-timeRatio = timeNumerator(isMeasBoth);
+timeRatio = d.time(isMeasBoth);
 
 % sort by time (originally sorted by detector)
 [timeRatio, sortIdx] = sort(timeRatio);
