@@ -9,23 +9,28 @@
 
 %% 1. Setup 
 
-% name the data file
-synDataFileName = "myNewSyntheticData.txt";
+s.name    = "NBS981Measurement";
+s.element = "Pb";
+s.species =            ["204Pb",  "205Pb", "206Pb", "207Pb",  "208Pb"];
+s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
+spl = sample(s.name, s.element, s.species, s.relativeAbundances);
+
+% name the data file -- refactor?
+synDataFileName = s.name;
 
 % add TIMSLAB to path to use its functions/classes
 addpath(genpath("../../../TIMSLAB"));
 massSpec = massSpecModel("PhoenixKansas_1e12");
-
-refmat = referenceMaterial("NBS981");
 methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
 nBlocks = 10;
-intensityFunction = @(t) 1e6; % cps of major isotope
+
+intensityFunction = @(t) 1e6*ones(size(t)); % cps of major isotope
 %intensityFunction = @(ampl, freq, minInt, t)  ...
 %      ampl*(ceil(freq*t)-freq*t)+minInt; % sawtooth
 
 % isotopic fractionation for Faradays and Ion Counters
-betaFaraday = -0.2; % 0.10%/amu at Pb mass
-betaDaly    = -0.3; % 0.15%/amu at Pb mass
+betaFaraday = @(t) -0.2; % 0.10%/amu at Pb mass
+betaDaly    = @(t) -0.3; % 0.15%/amu at Pb mass
 % using (a/b)meas = (a/b)true*(Ma/Mb)^beta
 
 % collector relative efficiencies
@@ -56,7 +61,6 @@ tBetweenBlocks = 200;
                                                                = getMethodTiming(method);
 
 %% 3. Write the header
-
 
 header = ...
     ["#HEADER";
@@ -118,6 +122,8 @@ nSerialColumns = 7;
 nCollectors = nIonCounters + nFaradays;
 ionCounterColumnIndices = nSerialColumns+1:nSerialColumns+nIonCounters;
 faradayColumnIndices = nSerialColumns+nIonCounters+1:nSerialColumns+nCollectors;
+ionCounterMethodIndices = 1:nIonCounters; % indices of ion counters in method/F_ind
+faradayMethodIndices = nIonCounters + 1: nCollectors; % indices of faradays in F_ind
 %BL = strings(totalIntegrationsBL, nSerialColumns+nCollectors);
 %OP = strings(totalIntegrationsOP, nSerialColumns+nCollectors);
 BL = [];
@@ -191,8 +197,20 @@ for iBlock = 1:nBlocks
         tCurrent = tStop + integrationPeriod;
 
         % on peaks: ion counters
+        % 1. dark noise
+        lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
+        noisedata = random('poisson', lambda);
+        % 2. scaled intensities
+        speciesIntensities = intensityFunction(tvector) * spl.relativeAbundances;
+        % 3. sequence map
+        collectorRefsForSequence = method.F_ind(iOPseq,ionCounterMethodIndices);
+        % RESUME HERE
+        %collectorIdcsForSequence = intensityFunction(tvector) .* 
         
-        OPseq(:,8:end) = 0;
+        % x = [1 3 5 7 9]                 vector of scaled intensities
+        % y = [0 0 0 0 2 0 0 3 0 0 4 0 5] F_ind
+        % z = zeros(1,13)
+        % z(find(y>0)) = x(y(y>0)) % distribute elements of x to positions in y
 
         % update OP with this sequence
         OP = [OP; OPseq]; %#ok<AGROW>

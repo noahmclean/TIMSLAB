@@ -1,4 +1,4 @@
-classdef unknown < analyte
+classdef sample < analyte
     %UNKNOWN Information about an unknown sample
     %   Unknowns are analytes that that do not have known ICs.
     
@@ -9,7 +9,7 @@ classdef unknown < analyte
     end % properties
     
     methods
-        function unk = unknown(name, element, species, relativeAbundances)
+        function spl = sample(name, element, species, relativeAbundances)
             %UNKNOWN Construct an instance of this class
             %   Create new 'unknown' object for
 
@@ -18,14 +18,14 @@ classdef unknown < analyte
                 return
             end
 
-            unk.name = name;
-            unk.element = element;
-            unk.species = species;
-            unk.relativeAbundances = relativeAbundances;
+            spl.name = name;
+            spl.element = element;
+            spl.species = species;
+            spl.relativeAbundances = relativeAbundances;
 
             % calculate useful derived parameters - just use method?
-            unk.nIsotopes = countIsotopes(unk);
-            unk.normalizedAbundances = normalizeAbundances(unk);
+            spl.nSpecies = countSpecies(spl);
+            spl.normalizedAbundances = normalizeAbundances(spl);
 
         end % constructor function
         

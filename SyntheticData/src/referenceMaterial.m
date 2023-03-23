@@ -54,7 +54,7 @@ classdef referenceMaterial < analyte
         end % switch case name
 
         % calculate useful derived parameters - just use method?
-        refmat.nIsotopes = countIsotopes(refmat);
+        refmat.nSpecies = countSpecies(refmat);
         refmat.normalizedAbundances = normalizeAbundances(refmat);
 
         end % constructor function
