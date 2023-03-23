@@ -119,6 +119,15 @@ for iFara = 1:nFara
 
 end % for iMassID
 
+% get axial masses for OP, from user-entered axial masses or peak centers
+for iSeq = 1:nSeq
+
+    axialMasses.OP(iSeq) = double(string(method.onpeaks(iSeq).Info(5).Value)) + ...
+                           double(string(method.onpeaks(iSeq).Info(15).Value));
+                           % AxMass + AxMassOffset
+
+end % for iSeq
+
 % handle baselines if present
 if isfield(method, 'baselines') % if baselines present
 
@@ -137,6 +146,7 @@ if isfield(method, 'baselines') % if baselines present
             AxMass = double(string(method.baselines(iBL).Info(4).Value)) + ...
                 double(string(method.baselines(iBL).Info(10).Value));
             BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
+            axialMasses.BL(iBL) = AxMass;
 
         else % if baseline mass defined by offset from a peak-centered mass
 
@@ -156,6 +166,7 @@ if isfield(method, 'baselines') % if baselines present
             % AxMass during BL is AxMass during refSequence + AxMassOffset
             AxMass = refMassInRefColl - refMassDistFromAxialAMU + AxMassOffset;
             BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
+            axialMasses.BL(iBL) = AxMass;
 
         end % if baseline mass defined by "AxMass"
 
@@ -170,6 +181,7 @@ method.F_ind = F_ind;
 method.BLTable = BLTable;
 method.MassIDs = MassIDs;
 method.detectorDeltas = detectorDeltas;
+method.axialMasses = axialMasses;
 
 end % function processMethod
 

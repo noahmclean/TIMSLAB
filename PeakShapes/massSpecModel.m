@@ -9,7 +9,9 @@ classdef massSpecModel
         effectiveRadiusMagnetMM % effective radius of magnet (mm)
         faradayNames            % names of Faradays as string array
         ionCounterNames         % names of ion counters as string array
+        ionCounterTypes         % types of ion counters (eg, PM or EM)
         amplifierResistance     % resistance of Faraday amplifiers (ohms)
+        ionCounterDeadTimes     % dead time, ns
 
     end
     
@@ -30,7 +32,9 @@ classdef massSpecModel
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-                massSpec.ionCounterNames = ["PM", "SEM"];
+                massSpec.ionCounterNames = ["PM", "RS"];
+                massSpec.ionCounterTypes = ["PM", "EM"];
+                massSpec.ionCounterDeadTimes = [30.2, 0];
                 massSpec.amplifierResistance = 1e12*ones(1,9);
 
                 case "PhoenixKansas_1e11"
@@ -38,7 +42,9 @@ classdef massSpecModel
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-                massSpec.ionCounterNames = ["PM", "SEM"];
+                massSpec.ionCounterNames = ["PM", "RS"];
+                massSpec.ionCounterTypes = ["PM", "EM"];
+                massSpec.ionCounterDeadTimes = [30.2, 0];
                 massSpec.amplifierResistance = 1e11*ones(1,9);
 
                 case ""

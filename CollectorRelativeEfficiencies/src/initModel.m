@@ -1,4 +1,4 @@
-function m0 = initModel(data, d, method, setup, Bstruct)
+function m0 = initModel(data, d, tails, method, setup, B)
 %INITIALIZEMODEL Initialize model vector
 %   
 %   model vector is (for now):
