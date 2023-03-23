@@ -1,15 +1,9 @@
-classdef referenceMaterial
+classdef referenceMaterial < analyte
     %REFERENCEMATERIAL Relevant Reference Material Data
     %   Isotopic Composition Reference Materials
     
     properties
-        name                 string   % name
-        otherNames           string   % string array of alternate names
-        element              string   % abbreviation for element, eg "Pb"
-        nIsotopes            uint8    % number of relative isotopes
-        species              string   % string array of species names
-        relativeAbundances   double   % relative abundances, not normalized
-        normalizedAbundances double   % normalized abundances (of all isotopes)
+
         reference            string   % reference
 
     end
@@ -59,8 +53,9 @@ classdef referenceMaterial
 
         end % switch case name
 
-        refmat.nIsotopes = length(refmat.relativeAbundances);
-        refmat.normalizedAbundances = refmat.relativeAbundances/sum(refmat.relativeAbundances);
+        % calculate useful derived parameters - just use method?
+        refmat.nIsotopes = countIsotopes(refmat);
+        refmat.normalizedAbundances = normalizeAbundances(refmat);
 
         end % constructor function
         

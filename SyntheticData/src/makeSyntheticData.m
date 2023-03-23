@@ -190,7 +190,8 @@ for iBlock = 1:nBlocks
         OPseq(:,7) = num2str(tvector, '%1.7f');
         tCurrent = tStop + integrationPeriod;
 
-        % on peaks
+        % on peaks: ion counters
+        
         OPseq(:,8:end) = 0;
 
         % update OP with this sequence
@@ -201,6 +202,8 @@ for iBlock = 1:nBlocks
     tCurrent = tCurrent + settleTime.flyBack;
 
     end % for iCycle
+
+    tCurrent = tCurrent + tBetweenBlocks;
 
 
 end % for iBlock = 1:nBlocks
@@ -250,7 +253,9 @@ writematrix([" "; "#END,AnalysisCompleted"], "../syndata/"+synDataFileName, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 
+
 %% LOCAL FUNCTIONS
+%%%%%%%%%%%%%%%%%%
 
 function [nBaselines, nOnPeaks, nCyclesPerBlock, integrations, settleTime] = ...
                                                               getMethodTiming(method)
