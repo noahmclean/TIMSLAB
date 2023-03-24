@@ -20,7 +20,7 @@ classdef sample < analyte
 
             spl.name = name;
             spl.element = element;
-            spl.species = species;
+            spl.species = extract(species, lettersPattern) + extract(species, digitsPattern);
             spl.relativeAbundances = relativeAbundances;
 
             % calculate useful derived parameters - just use method?

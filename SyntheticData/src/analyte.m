@@ -27,6 +27,10 @@ classdef analyte
             normalizedAbundances = obj.relativeAbundances/sum(obj.relativeAbundances);
         end
 
+        function logRatios = logRatioAbundances(obj)
+            logRatios = log(obj.relativeAbundances);
+        end
+
         function denIsoIndex = denominatorIsotopeIndex(obj)
             %DENOMINATORISOTOPEINDEX determine index of denominator isotope
             % e.g. 206 in Pb IC [204/206 207/206 208/206] 
@@ -44,13 +48,19 @@ classdef analyte
             end
         end
 
-        function massVecNorm = normMassVector(obj)
-            %NORMMASSVECTOR vector of isotopic masses normalized by denominator species
+        function normMassVector = normMasses(obj)
+            %NORMMASSES vector of isotopic masses normalized by denominator species
             % uses mass class in collectorRelativeEfficiencies
             denIsoIndex = denominatorIsotopeIndex(obj);
             massVec = massVector(obj);
             denMass = massVec(denIsoIndex);
-            massVecNorm = massVec / denMass;
+            normMassVector = massVec / denMass;
+        end
+
+        function logNormMassVector = logNormMasses(obj)
+            %LOGNORMMASSES vector of log-ratios of masses
+            % with denominatorIsotope in denominator (=1 in relative abundance vector)
+            logNormMassVector = log(obj.normMasses);
         end
 
 

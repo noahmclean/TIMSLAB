@@ -11,7 +11,7 @@
 
 s.name    = "NBS981Measurement";
 s.element = "Pb";
-s.species =            ["204Pb",  "205Pb", "206Pb", "207Pb",  "208Pb"];
+s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
 s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
 spl = sample(s.name, s.element, s.species, s.relativeAbundances);
 
@@ -29,8 +29,8 @@ intensityFunction = @(t) 1e6*ones(size(t)); % cps of major isotope
 %      ampl*(ceil(freq*t)-freq*t)+minInt; % sawtooth
 
 % isotopic fractionation for Faradays and Ion Counters
-betaFaraday = @(t) -0.2; % 0.10%/amu at Pb mass
-betaDaly    = @(t) -0.3; % 0.15%/amu at Pb mass
+betaFaraday = @(t) -0.2*ones(size(t)); % 0.10%/amu at Pb mass
+betaDaly    = @(t) -0.3*ones(size(t)); % 0.15%/amu at Pb mass
 % using (a/b)meas = (a/b)true*(Ma/Mb)^beta
 
 % collector relative efficiencies
@@ -124,8 +124,12 @@ ionCounterColumnIndices = nSerialColumns+1:nSerialColumns+nIonCounters;
 faradayColumnIndices = nSerialColumns+nIonCounters+1:nSerialColumns+nCollectors;
 ionCounterMethodIndices = 1:nIonCounters; % indices of ion counters in method/F_ind
 faradayMethodIndices = nIonCounters + 1: nCollectors; % indices of faradays in F_ind
-%BL = strings(totalIntegrationsBL, nSerialColumns+nCollectors);
-%OP = strings(totalIntegrationsOP, nSerialColumns+nCollectors);
+
+logMassRatios = spl.logNormMasses;
+logAbunRatios = spl.logRatioAbundances;
+massVector = spl.massVector;
+denominatorMass = massVector(spl.denominatorIsotopeIndex);
+
 BL = [];
 OP = [];
 
@@ -157,15 +161,15 @@ for iBlock = 1:nBlocks
 
         % ion counter baselines (dark noise), units of cps
         lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
-        noisedata = random('poisson', lambda);
-        BLseq(:,ionCounterColumnIndices) = compose("%1.12e", noisedata);
+        darkNoise = random('poisson', lambda);
+        BLseq(:,ionCounterColumnIndices) = compose("%1.12e", darkNoise);
 
         % faraday baselines (Johnson noise), units of volts
         s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
         mu = repmat(refVolts, nIntegrations, 1);
         sigma = repmat(sqrt(s2), nIntegrations, 1);
-        noisedata = random('normal', mu, sigma);
-        BLseq(:,faradayColumnIndices) = compose("%1.12e", noisedata);
+        darkNoise = random('normal', mu, sigma);
+        BLseq(:,faradayColumnIndices) = compose("%1.12e", darkNoise);
 
         % update BL with this sequence
         BL = [BL; BLseq]; %#ok<AGROW>
@@ -196,21 +200,40 @@ for iBlock = 1:nBlocks
         OPseq(:,7) = num2str(tvector, '%1.7f');
         tCurrent = tStop + integrationPeriod;
 
-        % on peaks: ion counters
-        % 1. dark noise
+        % on peaks:
+        % 1a. dark noise
         lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
-        noisedata = random('poisson', lambda);
-        % 2. scaled intensities
-        speciesIntensities = intensityFunction(tvector) * spl.relativeAbundances;
-        % 3. sequence map
-        collectorRefsForSequence = method.F_ind(iOPseq,ionCounterMethodIndices);
-        % RESUME HERE
-        %collectorIdcsForSequence = intensityFunction(tvector) .* 
+        darkNoiseMatrix = random('poisson', lambda);
+        % 1b. Johnson noise
+        s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
+        mu = repmat(refVolts, nIntegrations, 1);
+        sigma = repmat(sqrt(s2), nIntegrations, 1);
+        johnsonNoiseMatrix = random('normal', mu, sigma);
+        % 1c. Concatenate zero-intensity noise sources
+        noiseMatrix = [darkNoiseMatrix johnsonNoiseMatrix];
+        % 2. mise en place: assemble mass spec model ingredients
+        betas = 
         
+
+
+        % 3. distribute intensities into a matrix with columns defined by collector array
+        collectorRefsForSequence = method.F_ind(iOPseq,ionCounterMethodIndices);
+        collectorRefsInMethod = find(collectorRefsForSequence) > 0;
+        collectorIndicesUsed = collectorRefsForSequence(collectorRefsForSequence>0);
+        trueIntensitiesIC = zeros(size(darkNoiseMatrix));
+        trueIntensitiesIC(collectorRefsInMethod) = speciesIntensities(collectorIndicesUsed) + ...
+                                               darkNoiseMatrix;
+        % simplified example of workflow above:
         % x = [1 3 5 7 9]                 vector of scaled intensities
-        % y = [0 0 0 0 2 0 0 3 0 0 4 0 5] F_ind
-        % z = zeros(1,13)
-        % z(find(y>0)) = x(y(y>0)) % distribute elements of x to positions in y
+        % y = [0 0 0 0 2 0 0 3 0 0 4 0 5] row of F_ind
+        % z = zeros(1,13)                 preallocate data matrix
+        % z(find(y>0)) = x(y(y>0))        distribute elements of x to positions in y
+
+        % on peaks: faradays
+        % 1. Johnson noise
+
+        % 2. 
+
 
         % update OP with this sequence
         OP = [OP; OPseq]; %#ok<AGROW>
