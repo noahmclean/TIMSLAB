@@ -57,6 +57,16 @@ classdef massSpecModel
         end % constructor function
         
 
+        % MORE METHODS
+
+        function cpsPerVoltOut = cpsPerVolt(obj) % elementary charge, Ohm's Law
+            cpsPerVoltOut =  6.241509074460763e+18 ./ ...
+                             obj.amplifierResistance;  
+        end % function cpsPerVoltOut
+        
+        function voltsPerCPSout = voltsPerCPS(obj) % elementary charge, Ohm's Law
+            voltsPerCPSout = 1.602176634e-19 * obj.amplifierResistance; 
+        end % function voltsPerCPSout
 
     end % methods
 

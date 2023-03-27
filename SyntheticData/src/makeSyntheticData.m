@@ -29,8 +29,8 @@ intensityFunction = @(t) 1e6*ones(size(t)); % cps of major isotope
 %      ampl*(ceil(freq*t)-freq*t)+minInt; % sawtooth
 
 % isotopic fractionation for Faradays and Ion Counters
-betaFaraday = @(t) -0.2*ones(size(t)); % 0.10%/amu at Pb mass
-betaDaly    = @(t) -0.3*ones(size(t)); % 0.15%/amu at Pb mass
+betaFaraday = @(t) -0.20*ones(size(t)); % 0.10%/amu at Pb mass
+betaDaly    = @(t) -0.32*ones(size(t)); % 0.15%/amu at Pb mass
 % using (a/b)meas = (a/b)true*(Ma/Mb)^beta
 
 % collector relative efficiencies
@@ -130,6 +130,7 @@ logAbunRatios = spl.logRatioAbundances;
 massVector = spl.massVector;
 denominatorMass = massVector(spl.denominatorIsotopeIndex);
 
+
 BL = [];
 OP = [];
 
@@ -161,15 +162,15 @@ for iBlock = 1:nBlocks
 
         % ion counter baselines (dark noise), units of cps
         lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
-        darkNoise = random('poisson', lambda);
-        BLseq(:,ionCounterColumnIndices) = compose("%1.12e", darkNoise);
+        darkNoiseIC = random('poisson', lambda);
+        BLseq(:,ionCounterColumnIndices) = compose("%1.12e", darkNoiseIC);
 
         % faraday baselines (Johnson noise), units of volts
         s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
         mu = repmat(refVolts, nIntegrations, 1);
         sigma = repmat(sqrt(s2), nIntegrations, 1);
-        darkNoise = random('normal', mu, sigma);
-        BLseq(:,faradayColumnIndices) = compose("%1.12e", darkNoise);
+        johnsonNoiseF = random('normal', mu, sigma);
+        BLseq(:,faradayColumnIndices) = compose("%1.12e", johnsonNoiseF);
 
         % update BL with this sequence
         BL = [BL; BLseq]; %#ok<AGROW>
@@ -210,30 +211,74 @@ for iBlock = 1:nBlocks
         sigma = repmat(sqrt(s2), nIntegrations, 1);
         johnsonNoiseMatrix = random('normal', mu, sigma);
         % 1c. Concatenate zero-intensity noise sources
-        noiseMatrix = [darkNoiseMatrix johnsonNoiseMatrix];
-        % 2. mise en place: assemble mass spec model ingredients
-        betas = 
+        noiseMatrixSeq = [darkNoiseMatrix johnsonNoiseMatrix];
         
-
-
-        % 3. distribute intensities into a matrix with columns defined by collector array
-        collectorRefsForSequence = method.F_ind(iOPseq,ionCounterMethodIndices);
-        collectorRefsInMethod = find(collectorRefsForSequence) > 0;
-        collectorIndicesUsed = collectorRefsForSequence(collectorRefsForSequence>0);
-        trueIntensitiesIC = zeros(size(darkNoiseMatrix));
-        trueIntensitiesIC(collectorRefsInMethod) = speciesIntensities(collectorIndicesUsed) + ...
-                                               darkNoiseMatrix;
-        % simplified example of workflow above:
+        % 2. distribute isotope parameters into matrices with columns defined by collector array
+        % syntax is collectorMatrix(collectorRefsInMethod) = isotopeMatrix(collectorIndicesUsed)
+        % simplified, illustrative example of syntax above:
         % x = [1 3 5 7 9]                 vector of scaled intensities
         % y = [0 0 0 0 2 0 0 3 0 0 4 0 5] row of F_ind
         % z = zeros(1,13)                 preallocate data matrix
         % z(find(y>0)) = x(y(y>0))        distribute elements of x to positions in y
+        collectorRefsForSequence = method.F_ind(iOPseq,:);
+        collectorRefsInMethod = find(collectorRefsForSequence > 0);
+        collectorIndicesUsed = collectorRefsForSequence(collectorRefsForSequence>0);
 
-        % on peaks: faradays
-        % 1. Johnson noise
+        % 3. betas for ion counters and faradays
+        betaMatrixSeq = ones(nIntegrations,nCollectors); % 1 * -Inf = -Inf, exp(-Inf) = 0
+        betaMatrixDaly    = repmat(betaDaly(tvector),    1, nIonCounters);
+        betaMatrixFaraday = repmat(betaFaraday(tvector), 1, nFaradays);
+        betaMatrixAll = [betaMatrixDaly betaMatrixFaraday];
+        betaMatrixSeq(:,collectorRefsInMethod) = betaMatrixAll(:,collectorIndicesUsed);
+        
+        % ion beam intensities (true, logged true)
+        speciesIntensities = intensityFunction(tvector)*spl.relativeAbundances;
+        trueIntSeq = zeros(nIntegrations, nCollectors);
+        trueIntSeq(:,collectorRefsInMethod) = speciesIntensities(:,collectorIndicesUsed);
+        logTrueIntSeq = log(trueIntSeq); 
+        
+        % isotope mass ratios (for fractionation correction)
+        logIsotopeMasses = repmat(spl.logNormMasses, nIntegrations, 1);
+        logIsoMassSeq = -inf(nIntegrations, nCollectors);
+        logIsoMassSeq(:,collectorRefsInMethod) = logIsotopeMasses(:,collectorIndicesUsed);
+        
+        % collector efficiencies
+        CREtrueSeq = repmat(CREtrue, nIntegrations, 1);
+        collectEffSeq = -inf(nIntegrations, nCollectors);
+        collectEffSeq(:,collectorRefsInMethod) = CREtrueSeq(:,collectorIndicesUsed);
 
-        % 2. 
+        % no tails yet
+        tailsSeq = zeros(nIntegrations, nCollectors);
 
+        % 4. put it all together, one step at a time
+        % 4a. intensities, isotopically fractionated
+        intFractSeq = exp(logTrueIntSeq + betaMatrixSeq .* logIsoMassSeq) + tailsSeq;
+        % 4b. apply gain to ion counters only (for use in shot noise calculation)
+        intICEffFractSeq = intFractSeq;
+        intICEffFractSeq(:,ionCounterMethodIndices) = ...
+            intFractSeq(:,ionCounterMethodIndices) .* CREtrue(:,ionCounterMethodIndices);
+
+
+        % 4d. use ion beam intensities for shot noise (variance)
+        shotNoiseIonCounters = intICEffFractSeq(:,ionCounterMethodIndices);
+        shotNoiseFaradays    = intICEffFractSeq(:,faradayMethodIndices) .* ...
+                                  repmat(massSpec.voltsPerCPS, nIntegrations, 1); % -> V
+        shotNoiseVarSeq = [shotNoiseIonCounters shotNoiseFaradays]; % variance
+
+        % 4d. Add up true intensity/voltage contributors. Mass spec model:
+        % i_a = ( exp( log(a/b) + log(i_b) + beta*log(Ma/Mb) ) + tail_a*i_b ) ...
+        %       * exp(log(ea/eAx) + refVolts 
+        % for i_a is intensity of isotope a, Ma mass of a, ea efficiency
+        % for cup with a, tail_a is peak tail contribution to a, beta is fractionation
+        
+        intPlusShotNoise = random('poisson', intICEffFractSeq);
+
+        % 4e. apply gain to faradays as well
+        intPlusShotNoise(:,faradayMethodIndices) = ...
+        intPlusShotNoise(:,faradayMethodIndices) .* CREtrue(:,faradayMethodIndices);
+
+        % 4f. add in Johnson and dark noise, plus refVolts for Faradays
+        OPseq(:,[ionCounterColumnIndices faradayColumnIndices]) = intPlusShotNoise + noiseMatrixSeq;
 
         % update OP with this sequence
         OP = [OP; OPseq]; %#ok<AGROW>

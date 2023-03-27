@@ -20,8 +20,18 @@ classdef sample < analyte
 
             spl.name = name;
             spl.element = element;
+            
+            % enforce letters before numbers, e.g. "Pb204" instead of "204Pb"
             spl.species = extract(species, lettersPattern) + extract(species, digitsPattern);
-            spl.relativeAbundances = relativeAbundances;
+            
+            % enforce assumption that one and only one relative abundance = 1
+            % (this is the denominator/monitor/key isotope)
+            if sum((relativeAbundances == 1) == 1)
+                spl.relativeAbundances = relativeAbundances;
+            else
+                error("sampleClass:mustSpecifyDenominatorIsotope", ...
+                    "One isotope in relative abundances vector must be 1.")
+            end
 
             % calculate useful derived parameters - just use method?
             spl.nSpecies = countSpecies(spl);
