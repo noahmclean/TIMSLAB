@@ -44,7 +44,6 @@ refVolts  = [-1e-2 -2e-2 -1e-2 -2e-2 -3e-2 -1e-2 -2e-2 -1e-2 -2e-2];
 kB = 1.38064852e-23;
 tempInK = 290;
 
-
 method = parseTIMSAM(methodName);
 % CollNames matches headers in data file for BL and OP
 CollNames = ["PM", "RS", "L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
@@ -253,17 +252,18 @@ for iBlock = 1:nBlocks
         % 4. put it all together, one step at a time
         % 4a. intensities, isotopically fractionated
         intFractSeq = exp(logTrueIntSeq + betaMatrixSeq .* logIsoMassSeq) + tailsSeq;
+
         % 4b. apply gain to ion counters only (for use in shot noise calculation)
         intICEffFractSeq = intFractSeq;
         intICEffFractSeq(:,ionCounterMethodIndices) = ...
             intFractSeq(:,ionCounterMethodIndices) .* CREtrue(:,ionCounterMethodIndices);
-
-
-        % 4d. use ion beam intensities for shot noise (variance)
-        shotNoiseIonCounters = intICEffFractSeq(:,ionCounterMethodIndices);
-        shotNoiseFaradays    = intICEffFractSeq(:,faradayMethodIndices) .* ...
-                                  repmat(massSpec.voltsPerCPS, nIntegrations, 1); % -> V
-        shotNoiseVarSeq = [shotNoiseIonCounters shotNoiseFaradays]; % variance
+        
+        % 4c. undo dead time correction to get measured counts on ion counter
+        dtUnCorrFactor = 1 ./ (1 + repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
+              intICEffFractSeq(:,ionCounterMethodIndices) ); % un-correction factor for dt
+        intIonArrivals = intICEffFractSeq;
+        intIonArrivals(:,ionCounterMethodIndices) = ...
+            intFractSeq(:,ionCounterMethodIndices) .* dtUnCorrFactor;
 
         % 4d. Add up true intensity/voltage contributors. Mass spec model:
         % i_a = ( exp( log(a/b) + log(i_b) + beta*log(Ma/Mb) ) + tail_a*i_b ) ...
@@ -271,14 +271,23 @@ for iBlock = 1:nBlocks
         % for i_a is intensity of isotope a, Ma mass of a, ea efficiency
         % for cup with a, tail_a is peak tail contribution to a, beta is fractionation
         
-        intPlusShotNoise = random('poisson', intICEffFractSeq);
+        intPlusShotNoise = random('poisson', intIonArrivals);
 
-        % 4e. apply gain to faradays as well
+        % 4d. redo dead time correction, as implemented in Isolynx software
+        dtCorrFactor = 1 ./ (1 - repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
+              intPlusShotNoise(:,ionCounterMethodIndices) ); % correction factor for dt
+        intPlusShotNoise(:,ionCounterMethodIndices) = ...
+            intPlusShotNoise(:,ionCounterMethodIndices) .* dtCorrFactor;
+
+        % 4e. apply gain to faradays as well, convert to volts
         intPlusShotNoise(:,faradayMethodIndices) = ...
         intPlusShotNoise(:,faradayMethodIndices) .* CREtrue(:,faradayMethodIndices);
+        intPlusShotNoise(:,faradayMethodIndices) = ...
+        intPlusShotNoise(:,faradayMethodIndices) .* repmat(massSpec.voltsPerCPS, nIntegrations, 1);
 
         % 4f. add in Johnson and dark noise, plus refVolts for Faradays
-        OPseq(:,[ionCounterColumnIndices faradayColumnIndices]) = intPlusShotNoise + noiseMatrixSeq;
+        outputOP = intPlusShotNoise + noiseMatrixSeq;
+        OPseq(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", outputOP);
 
         % update OP with this sequence
         OP = [OP; OPseq]; %#ok<AGROW>
