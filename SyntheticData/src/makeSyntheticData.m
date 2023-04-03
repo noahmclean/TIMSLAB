@@ -35,7 +35,7 @@ betaDaly    = @(t) -0.32*ones(size(t)); % 0.15%/amu at Pb mass
 
 % collector relative efficiencies
 %          PM  RS L5  L4  L3  L2  Ax  H1  H2  H3  H4
-CREtrue = [0.9 1  1   1   1   1   1   1   1   1   1];
+CREtrue = @(t) [0.9 1  1   1   1   1   1   1   1   1   1].*ones(size(t));
 
 % baselines
 darkNoise = [0.2 0]; % cps, [PM RS]
@@ -242,7 +242,7 @@ for iBlock = 1:nBlocks
         logIsoMassSeq(:,collectorRefsInMethod) = logIsotopeMasses(:,collectorIndicesUsed);
         
         % collector efficiencies
-        CREtrueSeq = repmat(CREtrue, nIntegrations, 1);
+        CREtrueSeq = CREtrue(tvector);
         collectEffSeq = -inf(nIntegrations, nCollectors);
         collectEffSeq(:,collectorRefsInMethod) = CREtrueSeq(:,collectorIndicesUsed);
 
@@ -256,7 +256,7 @@ for iBlock = 1:nBlocks
         % 4b. apply gain to ion counters only (for use in shot noise calculation)
         intICEffFractSeq = intFractSeq;
         intICEffFractSeq(:,ionCounterMethodIndices) = ...
-            intFractSeq(:,ionCounterMethodIndices) .* CREtrue(:,ionCounterMethodIndices);
+            intFractSeq(:,ionCounterMethodIndices) .* CREtrueSeq(:,ionCounterMethodIndices);
         
         % 4c. undo dead time correction to get measured counts on ion counter
         dtUnCorrFactor = 1 ./ (1 + repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
@@ -281,7 +281,7 @@ for iBlock = 1:nBlocks
 
         % 4e. apply gain to faradays as well, convert to volts
         intPlusShotNoise(:,faradayMethodIndices) = ...
-        intPlusShotNoise(:,faradayMethodIndices) .* CREtrue(:,faradayMethodIndices);
+        intPlusShotNoise(:,faradayMethodIndices) .* CREtrueSeq(:,faradayMethodIndices);
         intPlusShotNoise(:,faradayMethodIndices) = ...
         intPlusShotNoise(:,faradayMethodIndices) .* repmat(massSpec.voltsPerCPS, nIntegrations, 1);
 
