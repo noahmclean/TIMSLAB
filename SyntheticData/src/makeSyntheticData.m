@@ -9,11 +9,20 @@
 
 %% 1. Setup 
 
-s.name    = "NBS981Measurement";
+% % create a new sample (or use a reference material)
+% s.name    = "NBS981Measurement";
+% s.element = "Pb";
+% s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
+% s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
+% spl = sample(s.name, s.element, s.species, s.relativeAbundances);
+% methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
+
+s.name    = "PbTwoIsotopeTwoSequence_1Mcps";
 s.element = "Pb";
-s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
-s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
+s.species =            ["206Pb", "208Pb"];
+s.relativeAbundances = [1, 1+eps];
 spl = sample(s.name, s.element, s.species, s.relativeAbundances);
+methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
 
 % name the data file -- refactor?
 synDataFileName = s.name;
@@ -21,7 +30,6 @@ synDataFileName = s.name;
 % add TIMSLAB to path to use its functions/classes
 addpath(genpath("../../../TIMSLAB"));
 massSpec = massSpecModel("PhoenixKansas_1e12");
-methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
 nBlocks = 10;
 
 intensityFunction = @(t) 1e6*ones(size(t)); % cps of major isotope
@@ -40,7 +48,7 @@ CREtrue = @(t) [0.9 1  1   1   1   1   1   1   1   1   1].*ones(size(t));
 % baselines
 darkNoise = [0.2 0]; % cps, [PM RS]
 %refVolts:   L5    L4    L3    L2    Ax     H1    H2    H3    H4
-refVolts  = [-1e-2 -2e-2 -1e-2 -2e-2 -3e-2 -1e-2 -2e-2 -1e-2 -2e-2];
+refVolts  = @(t) [-1e-2 -2e-2 -1e-2 -2e-2 -3e-2 -1e-2 -2e-2 -1e-2 -2e-2].*ones(size(t));
 kB = 1.38064852e-23;
 tempInK = 290;
 
@@ -166,7 +174,7 @@ for iBlock = 1:nBlocks
 
         % faraday baselines (Johnson noise), units of volts
         s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
-        mu = repmat(refVolts, nIntegrations, 1);
+        mu = refVolts(tvector);
         sigma = repmat(sqrt(s2), nIntegrations, 1);
         johnsonNoiseF = random('normal', mu, sigma);
         BLseq(:,faradayColumnIndices) = compose("%1.12e", johnsonNoiseF);
@@ -206,7 +214,7 @@ for iBlock = 1:nBlocks
         darkNoiseMatrix = random('poisson', lambda);
         % 1b. Johnson noise
         s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
-        mu = repmat(refVolts, nIntegrations, 1);
+        mu = refVolts(tvector);
         sigma = repmat(sqrt(s2), nIntegrations, 1);
         johnsonNoiseMatrix = random('normal', mu, sigma);
         % 1c. Concatenate zero-intensity noise sources

@@ -8,10 +8,12 @@ OPnames = [method.onpeaks.Name]';
 nFara = size(FaraNames,2);
 
 % determine collector in axial position (Axial Faraday or Daly/Photomultiplier)
-if string(method.settings(11).Value) == "Axial"
+methodSettingsNames = string({method.settings.Name});
+AxCollIndex = find(methodSettingsNames == "AxialColl");
+if string(method.settings(AxCollIndex).Value) == "Axial"
     method.axialPositionDetector.Name = "Axial";
     method.axialPositionDetector.Code = "Ax";
-elseif string(method.settings(11).Value) == "PhotoMultiplier"
+elseif string(method.settings(AxCollIndex).Value) == "PhotoMultiplier"
     method.axialPositionDetector.Name = "PhotoMultiplier";
     method.axialPositionDetector.Code = "PM";
 else

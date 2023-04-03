@@ -1,0 +1,108 @@
+<?xml version="1.0" standalone="yes"?>
+<ANALYSIS_METHOD>
+  <HEADER>
+    <Filename>Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM</Filename>
+    <DateModified>03/04/2023 15:49:18</DateModified>
+    <DateCreated>03/04/2023 15:49:18</DateCreated>
+    <CreatedBy>User1</CreatedBy>
+    <ModifiedBy>User2</ModifiedBy>
+  </HEADER>
+  <SETTINGS>
+    <IntersperseBaselines>False</IntersperseBaselines>
+    <BaselineFrequency>EveryBlock</BaselineFrequency>
+    <PKCCycleInterval>0</PKCCycleInterval>
+    <TotalBlocks>10</TotalBlocks>
+    <TotalCycles>10</TotalCycles>
+    <CalculateRatios>True</CalculateRatios>
+    <InitialBLMagnetDelay>3000</InitialBLMagnetDelay>
+    <DeflectBeamProtection>False</DeflectBeamProtection>
+    <PerformBeamInterpCycles>True</PerformBeamInterpCycles>
+    <PerformInterBlocks>True</PerformInterBlocks>
+    <PerformPostAnalysisPeakCentering>False</PerformPostAnalysisPeakCentering>
+    <AxialColl>PhotoMultiplier</AxialColl>
+    <ActiveSEMCollectors />
+    <MagnetFlybackSettleTime>1000</MagnetFlybackSettleTime>
+    <CorrectForBaselines>True</CorrectForBaselines>
+    <CorrectForDeadtimes>True</CorrectForDeadtimes>
+    <IsoWorks_Method>Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1</IsoWorks_Method>
+    <Rejection_Sigma>100</Rejection_Sigma>
+    <Rejection_Percentage>0</Rejection_Percentage>
+    <ActiveSubChannel>PrimaryA</ActiveSubChannel>
+    <ProcessingUnits>Volts</ProcessingUnits>
+    <TFE_Enabled>False</TFE_Enabled>
+    <TFE_MonitorPeak />
+    <TFE_IntensityThreshold>0.1</TFE_IntensityThreshold>
+    <TFE_IntervalPeakCentring>False</TFE_IntervalPeakCentring>
+    <TFE_PeakCentringInterval>01:00</TFE_PeakCentringInterval>
+    <TFE_PeakCentringMonitorThreshold>0.5</TFE_PeakCentringMonitorThreshold>
+    <Export_EXCELWorkbook>XLSX</Export_EXCELWorkbook>
+    <Export_IsotopePoints>True</Export_IsotopePoints>
+    <Export_ASCFile>None</Export_ASCFile>
+    <Export_ASCOptions>SingleCollector</Export_ASCOptions>
+    <Export_ASCActiveColl>Axial</Export_ASCActiveColl>
+    <Export_TXTEveryCYCLE>True</Export_TXTEveryCYCLE>
+    <Export_TripoliLiveData>True</Export_TripoliLiveData>
+  </SETTINGS>
+  <BASELINE>
+    <Sequence>1</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>BL1</MassID>
+    <MassIDCollector>Axial</MassIDCollector>
+    <AxMass>204.500</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>30.0</IntegTime>
+    <PKCParentID />
+    <BLReferences>MASS</BLReferences>
+    <MagnetSettleTime>2000</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>Purple</TraceColour>
+  </BASELINE>
+  <ONPEAK>
+    <Sequence>1</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb206</MassID>
+    <MassIDCollector>PhotoMultiplier</MassIDCollector>
+    <AxMass>206.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>PhotoMultiplier</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL1</BLReferences>
+    <CollectorArray>Pb208:H1S1,Pb206:PMS1</CollectorArray>
+    <MagnetSettleTime>1500</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>RosyBrown</TraceColour>
+  </ONPEAK>
+  <ONPEAK>
+    <Sequence>2</Sequence>
+    <Enabled>True</Enabled>
+    <MassID>Pb208</MassID>
+    <MassIDCollector>PhotoMultiplier</MassIDCollector>
+    <AxMass>208.000</AxMass>
+    <IntegPeriod>ms100</IntegPeriod>
+    <IntegTime>10.0</IntegTime>
+    <PeakCentre>True</PeakCentre>
+    <PKCCollector>PhotoMultiplier</PKCCollector>
+    <PKCMethod>PeakScanning</PKCMethod>
+    <PKCParentID />
+    <BLReferences>BL1</BLReferences>
+    <CollectorArray>Pb206:AxS2,Pb208:PMS2</CollectorArray>
+    <MagnetSettleTime>1500</MagnetSettleTime>
+    <AxMassOffset>0.0000</AxMassOffset>
+    <CurveFit>None</CurveFit>
+    <TraceColour>RoyalBlue</TraceColour>
+  </ONPEAK>
+  <EQUILIBRATION>
+    <Enabled>False</Enabled>
+    <Collector>Axial</Collector>
+    <AxMass>40.000</AxMass>
+    <MassID>Ar40</MassID>
+    <Duration>30</Duration>
+    <IntegPeriod>ms1000</IntegPeriod>
+    <StoreToDB>True</StoreToDB>
+  </EQUILIBRATION>
+</ANALYSIS_METHOD>
