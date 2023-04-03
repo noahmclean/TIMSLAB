@@ -25,30 +25,67 @@ end
 % now collapse child nodes
 theStruct = theStruct.Children; % discard top level node
 
-% take care of header
-header = theStruct(1);
-method.header(1).Name = 'Filename';
-method.header(2).Name = 'DateModified';
-method.header(3).Name = 'DateCreated';
-method.header(4).Name = 'CreatedBy';
-method.header(5).Name = 'ModifiedBy';
-
+% method name
 method.methodName = extractBefore(filename, ".");
 
-for iField = 1:5
-    method.header(iField).Value = header.Children(iField).Children.Data;
+% parse names/specifiers for each xml block
+nodeNames = string({theStruct.Name});
+
+% create header
+thisNode = theStruct(nodeNames == "HEADER").Children;
+nFields = length(thisNode);
+for iField = 1:nFields
+    nameOfField = thisNode(iField).Name;
+    method.header.(nameOfField) = thisNode(iField).Children.Data;
 end % for iField of header
 
 % take care of settings
-setting = theStruct(2);
-for iField = 1:20
-    method.settings(iField).Name = setting.Children(iField).Name;
-    
-    if ~isempty(setting.Children(iField).Children)
-        method.settings(iField).Value = setting.Children(iField).Children.Data;
-    end % if ~isempty
+thisNode = theStruct(nodeNames == "SETTINGS").Children;
+nFields = length(thisNode);
+for iField = 1:nFields
+
+    nameOfField = thisNode(iField).Name;
+    if ~isempty(thisNode(iField).Children) % if data exists
+        method.settings.(nameOfField) = thisNode(iField).Children.Data;
+    else % no data
+        method.settings.(nameOfField) = [];
+    end
 
 end % for iField for settings
+
+% baselines
+BLindices = find(nodeNames == "BASELINE");
+nBLs = length(BLindices);
+
+for iBL = 1:nBLs
+    BLindex = BLindices(iBL);
+
+    thisNode = theStruct(BLindex).Children;
+    nFields = length(thisNode);
+    for iField = 1:nFields
+
+        nameOfField = thisNode(iField).Name;
+        if ~isempty(thisNode(iField).Children) % if data exists
+            method.baselines.(nameOfField) = thisNode(iField).Children.Data;
+        else % no data
+            method.baselines.(nameOfField) = [];
+        end
+
+    end % for iField in iBL
+
+    % use MassID as "Name" field, e.g. "BL1"
+    method.baselines(iBL).Name = method.baselines.MassID;
+
+end % for iBL
+
+
+
+
+
+
+
+
+
 
 BLcount = 0; OPcount = 0;
 % baselines and on-peaks
