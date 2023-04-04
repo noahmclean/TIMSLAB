@@ -27,7 +27,7 @@ BLdetIsRef = zeros(size(BLTable)); % true if baseline int is referenced
 for iOPseq = 1:nOPseq
     
     % which baselines are referenced by each sequence?
-    refString = string(method.onpeaks(iOPseq).Info(12).Value);    
+    refString = string(method.onpeaks(iOPseq).BLReferences);    
     %BLrefs is a vector with the BL squence indices referenced in iOPseq
     BLrefs = double(extractAfter(split(refString, ", "), "BL"));
     

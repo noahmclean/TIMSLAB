@@ -198,7 +198,7 @@ for iBlock = 1:nBlocks
         OPseq(:,2) = iBlock; % Block
         OPseq(:,3) = iCycle; % Cycle
         OPseq(:,4) = (1:nIntegrations)'; % Integ
-        OPseq(:,5) = string(method.onpeaks(iOPseq).Info(3).Value); % PeakID
+        OPseq(:,5) = string(method.onpeaks(iOPseq).MassID); % PeakID
         OPseq(:,6) =  num2str(method.axialMasses.OP(iOPseq), '%1.4f');
 
         % times for each integration; update tCurrent
@@ -370,14 +370,14 @@ integrations.BL.n = zeros(nBaselines,1);
 integrations.BL.integPeriods = zeros(nBaselines,1);
 for iBL = 1:nBaselines
     
-    integTime   = method.baselines(iBL).Info(6).Value; % integration time
+    integTime   = method.baselines(iBL).IntegTime; % integration time
     integTime   = str2double(integTime);               % integration time, s
-    integPeriod = method.baselines(iBL).Info(5).Value; % integ period (string)
+    integPeriod = method.baselines(iBL).IntegPeriod; % integ period (string)
     integPeriod = str2double(integPeriod(3:end));      % integ period, ms
     integrations.BL.n(iBL) = integTime/(integPeriod/1e3);
     integrations.BL.integPeriods(iBL) = integPeriod/1e3; % in seconds
 
-    settleTimeiBL = method.baselines(iBL).Info(9).Value;    % settle time
+    settleTimeiBL = method.baselines(iBL).MagnetSettleTime;    % settle time, ms
     settleTimeiBL = str2double(settleTimeiBL)/1e3;             % settle time, seconds
     settleTime.BL(iBL) = settleTimeiBL; 
 
@@ -388,21 +388,21 @@ integrations.OP.n = zeros(nOnPeaks,1);
 integrations.OP.integPeriods = zeros(nOnPeaks,1);
 for iOP = 1:nOnPeaks
 
-    integTime   = method.onpeaks(iOP).Info(7).Value; % integration time, s
+    integTime   = method.onpeaks(iOP).IntegTime; % integration time, s
     integTime   = str2double(integTime);               % integration time, s
-    integPeriod = method.onpeaks(iOP).Info(6).Value; % integ period (string)
+    integPeriod = method.onpeaks(iOP).IntegPeriod; % integ period (string)
     integPeriod = str2double(integPeriod(3:end));  % integ period, ms
     integrations.OP.n(iOP) = integTime/(integPeriod/1e3);
     integrations.OP.integPeriods(iOP) = integPeriod/1e3; % in seconds
 
-    settleTimeiOP = method.onpeaks(iOP).Info(14).Value;    % settle time
-    settleTimeiOP = str2double(settleTimeiOP)/1e3;             % settle time, seconds
+    settleTimeiOP = method.onpeaks(iOP).MagnetSettleTime;    % settle time, ms
+    settleTimeiOP = str2double(settleTimeiOP)/1e3;           % settle time, seconds
     settleTime.OP(iOP) = settleTimeiOP; 
 
 end
 
-nCyclesPerBlock = str2double(method.settings(5).Value);
-flyBack = method.settings(13).Value;
+nCyclesPerBlock = str2double(method.settings.TotalCycles);
+flyBack = method.settings.MagnetFlybackSettleTime; % + time to fly back, ms
 settleTime.flyBack = str2double(flyBack)/1e3;
 
 end % function getMethodTiming

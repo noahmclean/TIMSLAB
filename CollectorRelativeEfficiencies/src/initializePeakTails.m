@@ -9,7 +9,7 @@ function tails = initializePeakTails(method, dstruct)
 %   tails.halfMass is half-mass tails contributions at 0.5 amu above
 %   and below the tails.OP peaks.
 
-element = extract( string(method.onpeaks(1).Info(3).Value), lettersPattern);
+element = extract( string(method.onpeaks(1).MassID), lettersPattern);
 switch element
     case "Sm"
     isotopes = ["144Sm", "147Sm", "148Sm", "149Sm", "150Sm", "152Sm", "154Sm"];

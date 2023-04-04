@@ -13,7 +13,7 @@ nOPseq = size(method.onpeaks,2);
 integPeriodBL = zeros(nBLseq,1);
 for iBL = 1:nBLseq
 
-    integPeriodString = string(method.baselines(iBL).Info(5).Value); % e.g. "ms100"
+    integPeriodString = string(method.baselines(iBL).IntegPeriod); % e.g. "ms100"
     integPeriodms = extractAfter(integPeriodString, digitBoundary); % extract milliseconds as number
     integPeriodBL(iBL) = double(integPeriodms);
 
@@ -22,7 +22,7 @@ end % for iBL
 integPeriodOP = zeros(nOPseq,1);
 for iOP = 1:nOPseq
 
-    integPeriodString = string(method.onpeaks(iOP).Info(6).Value); % e.g. "ms100"
+    integPeriodString = string(method.onpeaks(iOP).IntegPeriod); % e.g. "ms100"
     integPeriodms = extractAfter(integPeriodString, digitBoundary); % extract milliseconds as number
     integPeriodOP(iOP) = double(integPeriodms);
 

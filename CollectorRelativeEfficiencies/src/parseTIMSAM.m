@@ -66,9 +66,9 @@ for iBL = 1:nBLs
 
         nameOfField = thisNode(iField).Name;
         if ~isempty(thisNode(iField).Children) % if data exists
-            method.baselines.(nameOfField) = thisNode(iField).Children.Data;
+            method.baselines(iBL).(nameOfField) = thisNode(iField).Children.Data;
         else % no data
-            method.baselines.(nameOfField) = [];
+            method.baselines(iBL).(nameOfField) = [];
         end
 
     end % for iField in iBL
@@ -78,54 +78,31 @@ for iBL = 1:nBLs
 
 end % for iBL
 
+% on peaks
+OPindices = find(nodeNames == "ONPEAK");
+nOPs = length(OPindices);
 
+for iOP = 1:nOPs
+    OPindex = OPindices(iOP);
 
+    thisNode = theStruct(OPindex).Children;
+    nFields = length(thisNode);
+    for iField = 1:nFields
 
+        nameOfField = thisNode(iField).Name;
+        if ~isempty(thisNode(iField).Children) % if data exists
+            method.onpeaks(iOP).(nameOfField) = thisNode(iField).Children.Data;
+        else % no data
+            method.onpeaks(iOP).(nameOfField) = [];
+        end
 
+    end % for iField in iBL
 
+    % use S + 'Sequence' as "Name" field, e.g. "S1"
+    method.onpeaks(iOP).Name = "S" + method.onpeaks(iOP).Sequence;
 
+end % for iBL
 
-
-
-BLcount = 0; OPcount = 0;
-% baselines and on-peaks
-for iField = 2 : size(theStruct,2)-1 % last is 'equilibration'
-    
-nodeType = string(theStruct(iField).Name);
-thisNode = theStruct(iField).Children;
-
-switch nodeType
-
-    case "BASELINE"
-    BLcount = BLcount + 1;
-    BLname = string(thisNode(3).Children.Data);
-    method.baselines(BLcount).Name = BLname;
-    BL = struct('Name', [], 'Value', []);
-    for iProperty = 1:12
-        BL(iProperty).Name = string(thisNode(iProperty).Name);
-        if ~isempty(thisNode(iProperty).Children)
-            BL(iProperty).Value = thisNode(iProperty).Children.Data;
-        end % if
-    end % for iProperty
-    method.baselines(BLcount).Info = BL;
-
-    case "ONPEAK"
-    OPcount = OPcount + 1;
-    OPname = "S" + string(thisNode(1).Children.Data);
-    method.onpeaks(OPcount).Name = OPname;
-    OP = struct('Name', [], 'Value', []);
-    for iProperty = 1:17
-        OP(iProperty).Name = string(thisNode(iProperty).Name);
-        if ~isempty(thisNode(iProperty).Children)
-            OP(iProperty).Value = thisNode(iProperty).Children.Data;
-        end % if
-    end % for iProperty
-    method.onpeaks(OPcount).Info = OP;
-
-end % switch nodeType 
-
-
-end % for iField
 
 % ----- Local function PARSECHILDNODES -----
 function children = parseChildNodes(theNode)

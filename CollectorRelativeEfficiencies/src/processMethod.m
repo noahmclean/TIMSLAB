@@ -8,12 +8,10 @@ OPnames = [method.onpeaks.Name]';
 nFara = size(FaraNames,2);
 
 % determine collector in axial position (Axial Faraday or Daly/Photomultiplier)
-methodSettingsNames = string({method.settings.Name});
-AxCollIndex = find(methodSettingsNames == "AxialColl");
-if string(method.settings(AxCollIndex).Value) == "Axial"
+if string(method.settings.AxialColl) == "Axial"
     method.axialPositionDetector.Name = "Axial";
     method.axialPositionDetector.Code = "Ax";
-elseif string(method.settings(AxCollIndex).Value) == "PhotoMultiplier"
+elseif string(method.settings.AxialColl) == "PhotoMultiplier"
     method.axialPositionDetector.Name = "PhotoMultiplier";
     method.axialPositionDetector.Code = "PM";
 else
@@ -31,8 +29,8 @@ OPMasses = fillmissing(OPT, 'constant', "NaN"); clear OPT
 for iSeq = 1:nSeq
 
     seqName = method.onpeaks(iSeq).Name;
-    seqString = string(method.onpeaks(iSeq).Info(13).Value);
-    seqAssign = split(seqString, ",");
+    colArrayString = string(method.onpeaks(iSeq).CollectorArray);
+    seqAssign = split(colArrayString, ",");
     seqAssign = split(seqAssign, ":");
     if size(seqAssign,2) == 1, seqAssign = seqAssign'; end %if one mass 
 
@@ -124,8 +122,8 @@ end % for iMassID
 % get axial masses for OP, from user-entered axial masses or peak centers
 for iSeq = 1:nSeq
 
-    axialMasses.OP(iSeq) = double(string(method.onpeaks(iSeq).Info(5).Value)) + ...
-                           double(string(method.onpeaks(iSeq).Info(15).Value));
+    axialMasses.OP(iSeq) = double(string(method.onpeaks(iSeq).AxMass)) + ...
+                           double(string(method.onpeaks(iSeq).AxMassOffset));
                            % AxMass + AxMassOffset
 
 end % for iSeq
@@ -134,7 +132,7 @@ end % for iSeq
 if isfield(method, 'baselines') % if baselines present
 
     nBL = size(method.baselines, 2);
-    BLnames = [method.baselines.Name]';
+    BLnames = string({method.baselines.Name})';
     BLTable = table('Size', [nBL, nFara], ...
         'VariableTypes', repelem("double", nFara), ...
         'VariableNames', FaraNames, ...
@@ -143,17 +141,17 @@ if isfield(method, 'baselines') % if baselines present
     for iBL = 1:nBL
 
         % if baseline mass defined by user-entered axial mass "AxMass"
-        if method.baselines(iBL).Info(8).Value == "MASS"
+        if method.baselines(iBL).BLReferences == "MASS"
 
-            AxMass = double(string(method.baselines(iBL).Info(4).Value)) + ...
-                double(string(method.baselines(iBL).Info(10).Value));
+            AxMass = double(string(method.baselines(iBL).AxMass)) + ...
+                double(string(method.baselines(iBL).AxMassOffset));
             BLTable{iBL,FaraNames} = AxMass + detectorDeltas;
             axialMasses.BL(iBL) = AxMass;
 
         else % if baseline mass defined by offset from a peak-centered mass
 
             % user-generated reference to a peak ("Species:CollectorSequence")
-            BLRefString = string(method.baselines(iBL).Info(8).Value);
+            BLRefString = string(method.baselines(iBL).BLReferences);
             
             % determine sequence table position (eg H2S3), collector, and sequence name
             refSeqTablePosition = extractAfter(BLRefString,":");
@@ -163,7 +161,7 @@ if isfield(method, 'baselines') % if baselines present
             % find mass (in amu) referenced in OPMasses table, and its axial mass
             refMassInRefColl = table2array(OPMasses(refSequence,refCollector));
             refMassDistFromAxialAMU = detectorDeltas(FaraNames == refCollector);
-            AxMassOffset = double(string(method.baselines(iBL).Info(10).Value));
+            AxMassOffset = double(string(method.baselines(iBL).AxMassOffset));
             
             % AxMass during BL is AxMass during refSequence + AxMassOffset
             AxMass = refMassInRefColl - refMassDistFromAxialAMU + AxMassOffset;
