@@ -1,6 +1,11 @@
 function method = parseTIMSAM(filename)
 % PARSEXML Convert XML file to a MATLAB structure.
 % Code from Mathworks website, xmlread documentation
+% 
+% NOTE 4/4/23 - can replace all with x = readstruct(methodName, 'FileType', 'xml')
+% and then change some field names for compatibility
+% e.g. use https://www.mathworks.com/matlabcentral/fileexchange/28516-renamefield
+
 try
    tree = xmlread(filename);
 catch
