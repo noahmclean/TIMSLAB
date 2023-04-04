@@ -9,20 +9,20 @@
 
 %% 1. Setup 
 
-% create a new sample (or use a reference material)
-s.name    = "NBS981Measurement";
-s.element = "Pb";
-s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
-s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
-spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
-
-% s.name    = "PbTwoIsotopeTwoSequence_1Mcps";
+% % create a new sample (or use a reference material)
+% s.name    = "NBS981Measurement";
 % s.element = "Pb";
-% s.species =            ["206Pb", "208Pb"];
-% s.relativeAbundances = [1, 1+eps];
+% s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
+% s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
 % spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-% methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
+% methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
+
+s.name    = "PbTwoIsotopeTwoSequence_100kcps";
+s.element = "Pb";
+s.species =            ["206Pb", "208Pb"];
+s.relativeAbundances = [1, 1+eps];
+spl = sample(s.name, s.element, s.species, s.relativeAbundances);
+methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
 
 % name the data file -- refactor?
 synDataFileName = s.name;
@@ -32,7 +32,7 @@ addpath(genpath("../../../TIMSLAB"));
 massSpec = massSpecModel("PhoenixKansas_1e12");
 nBlocks = 10;
 
-intensityFunction = @(t) 1e6*ones(size(t)); % cps of major isotope
+intensityFunction = @(t) 1e5*ones(size(t)); % cps of major isotope
 %intensityFunction = @(ampl, freq, minInt, t)  ...
 %      ampl*(ceil(freq*t)-freq*t)+minInt; % sawtooth
 
@@ -75,8 +75,8 @@ header = ...
      "Version,"        + "2.0.11,1.04" % consistent with v.2.0.11 of Isolynx, 2022
      "Filename,"       + synDataFileName;
      "MethodName,"     + methodName;
-     "MethodPath,"     + "/TIMSLAB/SyntheticData/methodFiles";
-     "IsoWorksMethod," + "This is synetic data from the TIMSLAB repository";
+     "MethodPath,"     + "/TIMSLAB/SyntheticData/Methods";
+     "IsoWorksMethod," + "This is synthetic data from the TIMSLAB repository";
      "FolderPath,"     + "/TIMSLAB/SyntheticData/syndata";
      "Corrected,"      + "Yes"; % Presumably corrected for collector gain and efficiency
      "BChannels,"      + "No"; % no ATONA BChannels yet
