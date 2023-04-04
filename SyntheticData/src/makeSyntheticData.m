@@ -9,20 +9,20 @@
 
 %% 1. Setup 
 
-% % create a new sample (or use a reference material)
-% s.name    = "NBS981Measurement";
-% s.element = "Pb";
-% s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
-% s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
-% spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-% methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
-
-s.name    = "PbTwoIsotopeTwoSequence_1Mcps";
+% create a new sample (or use a reference material)
+s.name    = "NBS981Measurement";
 s.element = "Pb";
-s.species =            ["206Pb", "208Pb"];
-s.relativeAbundances = [1, 1+eps];
+s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
+s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
 spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
+methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
+
+% s.name    = "PbTwoIsotopeTwoSequence_1Mcps";
+% s.element = "Pb";
+% s.species =            ["206Pb", "208Pb"];
+% s.relativeAbundances = [1, 1+eps];
+% spl = sample(s.name, s.element, s.species, s.relativeAbundances);
+% methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
 
 % name the data file -- refactor?
 synDataFileName = s.name;
@@ -258,7 +258,7 @@ for iBlock = 1:nBlocks
         tailsSeq = zeros(nIntegrations, nCollectors);
 
         % 4. put it all together, one step at a time
-        % 4a. intensities, isotopically fractionated
+        % 4a. intensities, isotopically fractionated, + tails
         intFractSeq = exp(logTrueIntSeq + betaMatrixSeq .* logIsoMassSeq) + tailsSeq;
 
         % 4b. apply gain to ion counters only (for use in shot noise calculation)
@@ -271,7 +271,7 @@ for iBlock = 1:nBlocks
               intICEffFractSeq(:,ionCounterMethodIndices) ); % un-correction factor for dt
         intIonArrivals = intICEffFractSeq;
         intIonArrivals(:,ionCounterMethodIndices) = ...
-            intFractSeq(:,ionCounterMethodIndices) .* dtUnCorrFactor;
+            intICEffFractSeq(:,ionCounterMethodIndices) .* dtUnCorrFactor;
 
         % 4d. Add up true intensity/voltage contributors. Mass spec model:
         % i_a = ( exp( log(a/b) + log(i_b) + beta*log(Ma/Mb) ) + tail_a*i_b ) ...
