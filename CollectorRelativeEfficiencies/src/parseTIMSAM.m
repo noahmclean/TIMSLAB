@@ -25,70 +25,84 @@ end
 % now collapse child nodes
 theStruct = theStruct.Children; % discard top level node
 
-% take care of header
-header = theStruct(1);
-method.header(1).Name = 'Filename';
-method.header(2).Name = 'DateModified';
-method.header(3).Name = 'DateCreated';
-method.header(4).Name = 'CreatedBy';
-method.header(5).Name = 'ModifiedBy';
-
+% method name
 method.methodName = extractBefore(filename, ".");
 
-for iField = 1:5
-    method.header(iField).Value = header.Children(iField).Children.Data;
+% parse names/specifiers for each xml block
+nodeNames = string({theStruct.Name});
+
+% create header
+thisNode = theStruct(nodeNames == "HEADER").Children;
+nFields = length(thisNode);
+for iField = 1:nFields
+    nameOfField = thisNode(iField).Name;
+    method.header.(nameOfField) = thisNode(iField).Children.Data;
 end % for iField of header
 
 % take care of settings
-setting = theStruct(2);
-for iField = 1:20
-    method.settings(iField).Name = setting.Children(iField).Name;
-    
-    if ~isempty(setting.Children(iField).Children)
-        method.settings(iField).Value = setting.Children(iField).Children.Data;
-    end % if ~isempty
+thisNode = theStruct(nodeNames == "SETTINGS").Children;
+nFields = length(thisNode);
+for iField = 1:nFields
+
+    nameOfField = thisNode(iField).Name;
+    if ~isempty(thisNode(iField).Children) % if data exists
+        method.settings.(nameOfField) = thisNode(iField).Children.Data;
+    else % no data
+        method.settings.(nameOfField) = [];
+    end
 
 end % for iField for settings
 
-BLcount = 0; OPcount = 0;
-% baselines and on-peaks
-for iField = 2 : size(theStruct,2)-1 % last is 'equilibration'
-    
-nodeType = string(theStruct(iField).Name);
-thisNode = theStruct(iField).Children;
+% baselines
+BLindices = find(nodeNames == "BASELINE");
+nBLs = length(BLindices);
 
-switch nodeType
+for iBL = 1:nBLs
+    BLindex = BLindices(iBL);
 
-    case "BASELINE"
-    BLcount = BLcount + 1;
-    BLname = string(thisNode(3).Children.Data);
-    method.baselines(BLcount).Name = BLname;
-    BL = struct('Name', [], 'Value', []);
-    for iProperty = 1:12
-        BL(iProperty).Name = string(thisNode(iProperty).Name);
-        if ~isempty(thisNode(iProperty).Children)
-            BL(iProperty).Value = thisNode(iProperty).Children.Data;
-        end % if
-    end % for iProperty
-    method.baselines(BLcount).Info = BL;
+    thisNode = theStruct(BLindex).Children;
+    nFields = length(thisNode);
+    for iField = 1:nFields
 
-    case "ONPEAK"
-    OPcount = OPcount + 1;
-    OPname = "S" + string(thisNode(1).Children.Data);
-    method.onpeaks(OPcount).Name = OPname;
-    OP = struct('Name', [], 'Value', []);
-    for iProperty = 1:17
-        OP(iProperty).Name = string(thisNode(iProperty).Name);
-        if ~isempty(thisNode(iProperty).Children)
-            OP(iProperty).Value = thisNode(iProperty).Children.Data;
-        end % if
-    end % for iProperty
-    method.onpeaks(OPcount).Info = OP;
+        nameOfField = thisNode(iField).Name;
+        if ~isempty(thisNode(iField).Children) % if data exists
+            method.baselines(iBL).(nameOfField) = thisNode(iField).Children.Data;
+        else % no data
+            method.baselines(iBL).(nameOfField) = [];
+        end
 
-end % switch nodeType 
+    end % for iField in iBL
 
+    % use MassID as "Name" field, e.g. "BL1"
+    method.baselines(iBL).Name = method.baselines.MassID;
 
-end % for iField
+end % for iBL
+
+% on peaks
+OPindices = find(nodeNames == "ONPEAK");
+nOPs = length(OPindices);
+
+for iOP = 1:nOPs
+    OPindex = OPindices(iOP);
+
+    thisNode = theStruct(OPindex).Children;
+    nFields = length(thisNode);
+    for iField = 1:nFields
+
+        nameOfField = thisNode(iField).Name;
+        if ~isempty(thisNode(iField).Children) % if data exists
+            method.onpeaks(iOP).(nameOfField) = thisNode(iField).Children.Data;
+        else % no data
+            method.onpeaks(iOP).(nameOfField) = [];
+        end
+
+    end % for iField in iBL
+
+    % use S + 'Sequence' as "Name" field, e.g. "S1"
+    method.onpeaks(iOP).Name = "S" + method.onpeaks(iOP).Sequence;
+
+end % for iBL
+
 
 % ----- Local function PARSECHILDNODES -----
 function children = parseChildNodes(theNode)
