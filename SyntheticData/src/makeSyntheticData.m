@@ -9,124 +9,26 @@
 
 %% 1. Setup 
 
-% create a new sample (or use a reference material)
-s.name    = "NBS981Measurement_100kcps206Pb";
-s.element = "Pb";
-s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
-s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
-spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
-
-% s.name    = "PbTwoIsotopeTwoSequence_100kcps";
-% s.element = "Pb";
-% s.species =            ["206Pb", "208Pb"];
-% s.relativeAbundances = [1, 1+eps];
-% spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-% methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
-
-% name the data file -- refactor?
-synDataFileName = s.name;
-
-% add TIMSLAB to path to use its functions/classes
-addpath(genpath("../../../TIMSLAB"));
-massSpec = massSpecModel("PhoenixKansas_1e12");
-nBlocks = 10;
-
-intensityFunction = @(t) 1e5*ones(size(t)); % cps of major isotope
-%intensityFunction = @(ampl, freq, minInt, t)  ...
-%      ampl*(ceil(freq*t)-freq*t)+minInt; % sawtooth
-
-% isotopic fractionation for Faradays and Ion Counters
-betaFaraday = @(t) -0.20*ones(size(t)); % 0.10%/amu at Pb mass
-betaDaly    = @(t) -0.32*ones(size(t)); % 0.16%/amu at Pb mass
-% using (a/b)meas = (a/b)true*(Ma/Mb)^beta
-
-% collector relative efficiencies
-%          PM  RS L5  L4  L3  L2  Ax  H1  H2  H3  H4
-CREtrue = @(t) [0.9 1  1   1   1   1   1   1   1   1   1].*ones(size(t));
-
-% baselines
-darkNoise = [0.2 0]; % cps, [PM RS]
-%refVolts:   L5    L4    L3    L2    Ax     H1    H2    H3    H4
-refVolts  = @(t) [-1e-2 -2e-2 -1e-2 -2e-2 -3e-2 -1e-2 -2e-2 -1e-2 -2e-2].*ones(size(t));
-kB = 1.38064852e-23;
-tempInK = 290;
-
-method = parseTIMSAM(methodName);
-% CollNames matches headers in data file for BL and OP
-CollNames = ["PM", "RS", "L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-method = processMethod(method, CollNames);
-
-% timing
-tStart = 150; % seconds, time of first baseline measurement
-tBetweenBlocks = 200;
-
+setup = setupSynDataParams();
 
 %% 2. Piece out timing from method
 
-[nBaselines, nOnPeaks, nCyclesPerBlock, integrations, settleTime] ...
-                                                               = getMethodTiming(method);
+[integrations, settleTime] = getMethodTiming(setup.method);
 
 %% 3. Write the header
 
-header = ...
-    ["#HEADER";
-     "Analysis";
-     "Version,"        + "2.0.11,1.04" % consistent with v.2.0.11 of Isolynx, 2022
-     "Filename,"       + synDataFileName;
-     "MethodName,"     + methodName;
-     "MethodPath,"     + "/TIMSLAB/SyntheticData/Methods";
-     "IsoWorksMethod," + "This is synthetic data from the TIMSLAB repository";
-     "FolderPath,"     + "/TIMSLAB/SyntheticData/syndata";
-     "Corrected,"      + "Yes"; % Presumably corrected for collector gain and efficiency
-     "BChannels,"      + "No"; % no ATONA BChannels yet
-     "TimeZero,"       + string(datetime("now", "format", "d MMMM yyyy HH:mm:ss.SSS"));
-     "";
-     "#COLLECTORS";
-     "Name,Type,Resistor,Gain,Efficiency,DT"];
-
-writematrix(header, "../syndata/"+synDataFileName, "QuoteStrings", "none")
-
+setup = writeSynDataHeader(setup);
 
 %% 4. Write the collector block
 
-%fid = fopen("../syndata/" + synDataFileName, 'wt+');
-nIonCounters = size(massSpec.ionCounterNames,2);
-nFaradays = size(massSpec.faradayNames,2);
-nCollectors = nIonCounters + nFaradays;
-collBlock = strings(nCollectors, 6);
-
-% ion counters
-collBlock(1:nIonCounters,1)     = massSpec.ionCounterNames';
-collBlock(1:nIonCounters,2)     = massSpec.ionCounterTypes';
-collBlock(1:nIonCounters,3)     = compose("%1.0e", 1e11);
-collBlock(1:nIonCounters,4:5)   = compose("%1.9f", 1); % gains & efficiences = 1
-collBlock(1:nIonCounters,6)     = compose("%1.4f", massSpec.ionCounterDeadTimes');
-
-% faradays
-fStart = nIonCounters + 1; % start index for faradays
-collBlock(fStart:end,1)   = massSpec.faradayNames';
-collBlock(fStart:end,2)   = "F";
-collBlock(fStart:end,3)   = compose("%1.0e", massSpec.amplifierResistance');
-collBlock(fStart:end,4:5) = compose("%1.9f", 1);
-collBlock(fStart:end,6)   = compose("%1.4f", 0);
-
-collBlock = strtrim(collBlock); % remove leading and trailing whitespace
-writematrix(collBlock, "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-% blank line the lazy way
-writematrix("", "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-
-%% Create output file with 'true' and 'measured' 
-
+writeSynDataCollector(setup)
 
 
 %% 5. Simulate block data, save off in matrices
 
+
 % make a string array for BL and OP data (serial columns and intensities)
+nCyclesPerBlock = str2double(method.settings.TotalCycles);
 totalIntegrationsBL = sum(integrations.BL.n)*nCyclesPerBlock*nBlocks;
 totalIntegrationsOP = sum(integrations.OP.n)*nCyclesPerBlock*nBlocks;
 nSerialColumns = 7;
@@ -364,8 +266,8 @@ writematrix([" "; "#END,AnalysisCompleted"], "../syndata/"+synDataFileName, ...
 %% LOCAL FUNCTIONS
 %%%%%%%%%%%%%%%%%%
 
-function [nBaselines, nOnPeaks, nCyclesPerBlock, integrations, settleTime] = ...
-                                                              getMethodTiming(method)
+function [integrations, settleTime] = getMethodTiming(method)
+
 nBaselines = size(method.baselines,2);
 nOnPeaks   = size(method.onpeaks,2);
 
@@ -405,7 +307,7 @@ for iOP = 1:nOnPeaks
 
 end
 
-nCyclesPerBlock = str2double(method.settings.TotalCycles);
+
 flyBack = method.settings.MagnetFlybackSettleTime; % + time to fly back, ms
 settleTime.flyBack = str2double(flyBack)/1e3;
 
