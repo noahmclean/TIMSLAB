@@ -63,6 +63,11 @@ tBetweenBlocks = 200;
 % write data to file?
 writeData = true;
 
+%% Save off timestamp
+
+% log the time the synthetic data is sampled
+timeCreated = string(datetime("now", "format", "d MMMM yyyy HH:mm:ss.SSS"));
+
 
 %% save into struct
 
@@ -86,6 +91,6 @@ setup.method = method;
 setup.tStart = tStart;
 setup.tBetweenBlocks = tBetweenBlocks;
 setup.writeData = writeData;
+setup.timeCreated = timeCreated;
 
-end
-
+end % function setupSynDataParams

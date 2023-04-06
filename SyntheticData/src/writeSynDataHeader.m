@@ -1,14 +1,11 @@
-function setup = writeSynDataHeader(setup)
+function writeSynDataHeader(setup)
 %WRITEHEADER Write the header for a synthetic data file
 %   Copy header format from Version 2.0.11 of Isolynx, 2022
 %
 % Written for Tripoli and CollectorRelativeEfficiencies on 5-Apr-2023
 % by Noah McLean
 
-% log the time the synthetic data is sampled
-timeCreated = string(datetime("now", "format", "d MMMM yyyy HH:mm:ss.SSS"));
-% save off time, to place in matching "True Value" file
-setup.timeCreated = timeCreated;
+
 
 % if  writeData is false, return to makeSyntheticData
 if ~setup.writeData
@@ -30,7 +27,7 @@ header = ...
      "FolderPath,"     + "/TIMSLAB/SyntheticData/syndata";
      "Corrected,"      + "Yes"; % Presumably corrected for collector gain and efficiency
      "BChannels,"      + "No"; % no ATONA BChannels yet
-     "TimeZero,"       + timeCreated;
+     "TimeZero,"       + setup.timeCreated;
      "";
      "#COLLECTORS";
      "Name,Type,Resistor,Gain,Efficiency,DT"];

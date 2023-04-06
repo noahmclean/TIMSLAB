@@ -17,7 +17,8 @@ setup = setupSynDataParams();
 
 %% 3. Write the header
 
-setup = writeSynDataHeader(setup);
+writeSynDataHeader(setup);
+
 
 %% 4. Write the collector block
 
@@ -26,240 +27,34 @@ writeSynDataCollector(setup)
 
 %% 5. Simulate block data, save off in matrices
 
-
+idx = makeIndices(setup, integrations, setup.method);
 % make a string array for BL and OP data (serial columns and intensities)
-nCyclesPerBlock = str2double(method.settings.TotalCycles);
-totalIntegrationsBL = sum(integrations.BL.n)*nCyclesPerBlock*nBlocks;
-totalIntegrationsOP = sum(integrations.OP.n)*nCyclesPerBlock*nBlocks;
-nSerialColumns = 7;
-nCollectors = nIonCounters + nFaradays;
-ionCounterColumnIndices = nSerialColumns+1:nSerialColumns+nIonCounters;
-faradayColumnIndices = nSerialColumns+nIonCounters+1:nSerialColumns+nCollectors;
-ionCounterMethodIndices = 1:nIonCounters; % indices of ion counters in method/F_ind
-faradayMethodIndices = nIonCounters + 1: nCollectors; % indices of faradays in F_ind
 
-logMassRatios = spl.logNormMasses;
-logAbunRatios = spl.logRatioAbundances;
-massVector = spl.massVector;
-denominatorMass = massVector(spl.denominatorIsotopeIndex);
+BLmeas = [];
+BLtrue = [];
+OPmeas = [];
+OPtrue = [];
 
-
-BL = [];
-OP = [];
-
-tCurrent = tStart;
-for iBlock = 1:nBlocks
+tCurrent = setup.tStart;
+for iBlock = 1:setup.nBlocks
 
     % baselines first
-    for iBLseq = 1:length(integrations.BL.n)
+    [BLmeas, BLtrue, tCurrent] = makeSyntheticBLData(setup, integrations, ...
+                                          settleTime, idx, iBlock, BLmeas, BLtrue, tCurrent);
 
-        % make a string array BLseq to contain data from this BL sequence
-        nIntegrations = integrations.BL.n(iBLseq);
-        integrationPeriod = integrations.BL.integPeriods(iBLseq);
-        BLseq = strings(nIntegrations, nSerialColumns + nCollectors);
-        
-        % populate serial columns
-        BLseq(:,1) = "BL" + iBLseq; % ID
-        BLseq(:,2) = iBlock; % Block
-        BLseq(:,3) = 0; % Cycle
-        BLseq(:,4) = (1:nIntegrations)'; % Integ
-        BLseq(:,5) = "BL" + iBLseq; % PeakID
-        BLseq(:,6) =  num2str(method.axialMasses.BL(iBLseq), '%1.4f');
-        
-        % times for each integration; update tCurrent
-        tCurrent = tCurrent + settleTime.BL(iBLseq);
-        tStop = tCurrent + (nIntegrations-1)*integrationPeriod;
-        tvector = linspace(tCurrent, tStop, nIntegrations)';
-        BLseq(:,7) = num2str(tvector, '%1.7f');
-        tCurrent = tStop + integrationPeriod;
-
-        % ion counter baselines (dark noise), units of cps
-        lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
-        darkNoiseIC = random('poisson', lambda);
-        BLseq(:,ionCounterColumnIndices) = compose("%1.12e", darkNoiseIC);
-
-        % faraday baselines (Johnson noise), units of volts
-        s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
-        mu = refVolts(tvector);
-        sigma = repmat(sqrt(s2), nIntegrations, 1);
-        johnsonNoiseF = random('normal', mu, sigma);
-        BLseq(:,faradayColumnIndices) = compose("%1.12e", johnsonNoiseF);
-
-        % update BL with this sequence
-        BL = [BL; BLseq]; %#ok<AGROW>
-
-    end % for iBLseq
-    
-    for iCycle = 1:nCyclesPerBlock
     % onpeaks next
-    for iOPseq = 1:length(integrations.OP.n)
+    [OPmeas, OPtrue, tCurrent] = makeSyntheticOPData(setup, integrations, ...
+                                          settleTime, idx, iBlock, OPmeas, OPtrue, tCurrent);
 
-        % make a string array OPseq to contain data from this OP sequence
-        nIntegrations = integrations.OP.n(iOPseq);
-        integrationPeriod = integrations.OP.integPeriods(iOPseq);
-        OPseq = strings(nIntegrations, nSerialColumns + nCollectors);
-
-        % populate serial columns
-        OPseq(:,1) = "OP" + iOPseq; % ID
-        OPseq(:,2) = iBlock; % Block
-        OPseq(:,3) = iCycle; % Cycle
-        OPseq(:,4) = (1:nIntegrations)'; % Integ
-        OPseq(:,5) = string(method.onpeaks(iOPseq).MassID); % PeakID
-        OPseq(:,6) =  num2str(method.axialMasses.OP(iOPseq), '%1.4f');
-
-        % times for each integration; update tCurrent
-        tCurrent = tCurrent + settleTime.OP(iOPseq); % settle before 1st integration
-        tStop = tCurrent + (nIntegrations-1)*integrationPeriod;
-        tvector = linspace(tCurrent, tStop, nIntegrations)';
-        OPseq(:,7) = num2str(tvector, '%1.7f');
-        tCurrent = tStop + integrationPeriod;
-
-        % on peaks:
-        % 1a. dark noise
-        lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
-        darkNoiseMatrix = random('poisson', lambda);
-        % 1b. Johnson noise
-        s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
-        mu = refVolts(tvector);
-        sigma = repmat(sqrt(s2), nIntegrations, 1);
-        johnsonNoiseMatrix = random('normal', mu, sigma);
-        % 1c. Concatenate zero-intensity noise sources
-        noiseMatrixSeq = [darkNoiseMatrix johnsonNoiseMatrix];
-        
-        % 2. distribute isotope parameters into matrices with columns defined by collector array
-        % syntax is collectorMatrix(collectorRefsInMethod) = isotopeMatrix(collectorIndicesUsed)
-        % simplified, illustrative example of syntax above:
-        % x = [1 3 5 7 9]                 vector of scaled intensities
-        % y = [0 0 0 0 2 0 0 3 0 0 4 0 5] row of F_ind
-        % z = zeros(1,13)                 preallocate data matrix
-        % z(find(y>0)) = x(y(y>0))        distribute elements of x to positions in y
-        collectorRefsForSequence = method.F_ind(iOPseq,:);
-        collectorRefsInMethod = find(collectorRefsForSequence > 0);
-        collectorIndicesUsed = collectorRefsForSequence(collectorRefsForSequence>0);
-
-        % 3. betas for ion counters and faradays
-        betaMatrixSeq = ones(nIntegrations,nCollectors); % 1 * -Inf = -Inf, exp(-Inf) = 0
-        betaMatrixDaly    = repmat(betaDaly(tvector),    1, nIonCounters);
-        betaMatrixFaraday = repmat(betaFaraday(tvector), 1, nFaradays);
-        betaMatrixAll = [betaMatrixDaly betaMatrixFaraday];
-        betaMatrixSeq(:,collectorRefsInMethod) = betaMatrixAll(:,collectorIndicesUsed);
-        
-        % ion beam intensities (true, logged true)
-        speciesIntensities = intensityFunction(tvector)*spl.relativeAbundances;
-        trueIntSeq = zeros(nIntegrations, nCollectors);
-        trueIntSeq(:,collectorRefsInMethod) = speciesIntensities(:,collectorIndicesUsed);
-        logTrueIntSeq = log(trueIntSeq); 
-        
-        % isotope mass ratios (for fractionation correction)
-        logIsotopeMasses = repmat(spl.logNormMasses, nIntegrations, 1);
-        logIsoMassSeq = -inf(nIntegrations, nCollectors);
-        logIsoMassSeq(:,collectorRefsInMethod) = logIsotopeMasses(:,collectorIndicesUsed);
-        
-        % collector efficiencies
-        CREtrueSeq = CREtrue(tvector);
-        collectEffSeq = -inf(nIntegrations, nCollectors);
-        collectEffSeq(:,collectorRefsInMethod) = CREtrueSeq(:,collectorIndicesUsed);
-
-        % no tails yet
-        tailsSeq = zeros(nIntegrations, nCollectors);
-
-        % 4. put it all together, one step at a time
-        % 4a. intensities, isotopically fractionated, + tails
-        intFractSeq = exp(logTrueIntSeq + betaMatrixSeq .* logIsoMassSeq) + tailsSeq;
-
-        % 4b. apply gain to ion counters only (for use in shot noise calculation)
-        intICEffFractSeq = intFractSeq;
-        intICEffFractSeq(:,ionCounterMethodIndices) = ...
-            intFractSeq(:,ionCounterMethodIndices) .* CREtrueSeq(:,ionCounterMethodIndices);
-        
-        % 4c. undo dead time correction to get measured counts on ion counter
-        dtUnCorrFactor = 1 ./ (1 + repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
-              intICEffFractSeq(:,ionCounterMethodIndices) ); % un-correction factor for dt
-        intIonArrivals = intICEffFractSeq;
-        intIonArrivals(:,ionCounterMethodIndices) = ...
-            intICEffFractSeq(:,ionCounterMethodIndices) .* dtUnCorrFactor;
-
-        % 4d. Add up true intensity/voltage contributors. Mass spec model:
-        % i_a = ( exp( log(a/b) + log(i_b) + beta*log(Ma/Mb) ) + tail_a*i_b ) ...
-        %       * exp(log(ea/eAx) + refVolts 
-        % for i_a is intensity of isotope a, Ma mass of a, ea efficiency
-        % for cup with a, tail_a is peak tail contribution to a, beta is fractionation
-        
-        intPlusShotNoise = random('poisson', intIonArrivals);
-
-        % 4d. redo dead time correction, as implemented in Isolynx software
-        dtCorrFactor = 1 ./ (1 - repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
-              intPlusShotNoise(:,ionCounterMethodIndices) ); % correction factor for dt
-        intPlusShotNoise(:,ionCounterMethodIndices) = ...
-            intPlusShotNoise(:,ionCounterMethodIndices) .* dtCorrFactor;
-
-        % 4e. apply gain to faradays as well, convert to volts
-        intPlusShotNoise(:,faradayMethodIndices) = ...
-        intPlusShotNoise(:,faradayMethodIndices) .* CREtrueSeq(:,faradayMethodIndices);
-        intPlusShotNoise(:,faradayMethodIndices) = ...
-        intPlusShotNoise(:,faradayMethodIndices) .* repmat(massSpec.voltsPerCPS, nIntegrations, 1);
-
-        % 4f. add in Johnson and dark noise, plus refVolts for Faradays
-        outputOP = intPlusShotNoise + noiseMatrixSeq;
-        OPseq(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", outputOP);
-
-        % update OP with this sequence
-        OP = [OP; OPseq]; %#ok<AGROW>
-
-    end % for iOPseq
-
-    tCurrent = tCurrent + settleTime.flyBack;
-
-    end % for iCycle
-
-    tCurrent = tCurrent + tBetweenBlocks;
-
+    % allow time for inter-block operations
+    tCurrent = tCurrent + setup.tBetweenBlocks;
 
 end % for iBlock = 1:nBlocks
 
 
-%% 6. Write baselines to file
+%% 6. Write baselines and onpeaks to file
 
-writematrix("#BASELINES", "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-writematrix(["ID","Block","Cycle","Integ","PeakID","AxMass","Time",  ...
-            massSpec.ionCounterNames, ...
-            massSpec.faradayNames], "../syndata/"+synDataFileName, ...
-            "QuoteStrings", "none", "WriteMode", "append")
-
-% add some spaces after commas in BL
-spaceArray = strings(size(BL));
-spaceArray(:,2:end) = " ";
-BL = spaceArray + BL;
-
-writematrix(BL, "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-writematrix(" ", "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-
-%% 7. Write onPeaks to file
-
-writematrix("#ONPEAK", "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-writematrix(["ID","Block","Cycle","Integ","PeakID","AxMass","Time",  ...
-            massSpec.ionCounterNames, ...
-            massSpec.faradayNames], "../syndata/"+synDataFileName, ...
-            "QuoteStrings", "none", "WriteMode", "append")
-
-% add some spaces after commas in BL
-spaceArray = strings(size(OP));
-spaceArray(:,2:end) = " ";
-OP = spaceArray + OP;
-
-writematrix(OP, "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
-
-writematrix([" "; "#END,AnalysisCompleted"], "../syndata/"+synDataFileName, ...
-    "QuoteStrings", "none", "WriteMode", "append")
+writeSynDataBLOP(setup, BLmeas, OPmeas);
 
 
 
@@ -314,4 +109,294 @@ settleTime.flyBack = str2double(flyBack)/1e3;
 end % function getMethodTiming
 
 
+%% MakeIndices
 
+function idx = makeIndices(setup, integrations, method)
+
+nIonCounters = size(setup.massSpec.ionCounterNames,2);
+nFaradays = size(setup.massSpec.faradayNames,2);
+nCollectors = nIonCounters + nFaradays;
+nSerialColumns = 7;
+nCyclesPerBlock = str2double(method.settings.TotalCycles);
+
+idx.totalIntegrationsBL = sum(integrations.BL.n)*nCyclesPerBlock*setup.nBlocks;
+idx.totalIntegrationsOP = sum(integrations.OP.n)*nCyclesPerBlock*setup.nBlocks;
+idx.nCollectors = nIonCounters + nFaradays;
+idx.ionCounterColumnIndices = nSerialColumns+1:nSerialColumns+nIonCounters;
+idx.faradayColumnIndices = nSerialColumns+nIonCounters+1:nSerialColumns+nCollectors;
+idx.ionCounterMethodIndices = 1:nIonCounters; % indices of ion counters in method/F_ind
+idx.faradayMethodIndices = nIonCounters + 1: nCollectors; % indices of faradays in F_ind
+
+idx.nIonCounters = nIonCounters;
+idx.nFaradays = nFaradays;
+idx.nCollectors = nCollectors;
+idx.nSerialColumns = nSerialColumns;
+idx.nCyclesPerBlock = nCyclesPerBlock;
+
+end % function makeIndices
+
+
+%% Synthetic Data for Baseline
+
+function [BLmeas, BLtrue, tCurrent] = makeSyntheticBLData(setup, integrations, ...
+                                          settleTime, idx, iBlock, BLmeas, BLtrue, tCurrent)
+
+% unpack setup and idx terms
+nSerialColumns          = idx.nSerialColumns;
+nCollectors             = idx.nCollectors;
+ionCounterColumnIndices = idx.ionCounterColumnIndices;
+faradayColumnIndices    = idx.faradayColumnIndices;
+darkNoise               = setup.darkNoise;
+
+method   = setup.method;
+kB       = setup.kB;
+tempInK  = setup.tempInK;
+refVolts = setup.refVolts;
+massSpec = setup.massSpec;
+
+% for each baseline sequence in iBlock
+for iBLseq = 1:length(integrations.BL.n)
+
+    % make a string array BLseq to contain data from this BL sequence
+    nIntegrations = integrations.BL.n(iBLseq);
+    integrationPeriod = integrations.BL.integPeriods(iBLseq);
+    BLseq = strings(nIntegrations, nSerialColumns + nCollectors);
+
+    % populate serial columns
+    BLseq(:,1) = "BL" + iBLseq; % ID
+    BLseq(:,2) = iBlock; % Block
+    BLseq(:,3) = 0; % Cycle
+    BLseq(:,4) = (1:nIntegrations)'; % Integ
+    BLseq(:,5) = "BL" + iBLseq; % PeakID
+    BLseq(:,6) =  num2str(method.axialMasses.BL(iBLseq), '%1.4f');
+
+    % times for each integration; update tCurrent
+    tCurrent = tCurrent + settleTime.BL(iBLseq);
+    tStop = tCurrent + (nIntegrations-1)*integrationPeriod;
+    tvector = linspace(tCurrent, tStop, nIntegrations)';
+    BLseq(:,7) = num2str(tvector, '%1.7f');
+    tCurrent = tStop + integrationPeriod;
+
+    % ion counter baselines (dark noise), units of cps
+    lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
+    darkNoiseIC = random('poisson', lambda);
+    BLseq(:,ionCounterColumnIndices) = compose("%1.12e", darkNoiseIC);
+
+    % faraday baselines (Johnson noise), units of volts
+    s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
+    mu = refVolts(tvector);
+    sigma = repmat(sqrt(s2), nIntegrations, 1);
+    johnsonNoiseF = random('normal', mu, sigma);
+    BLseq(:,faradayColumnIndices) = compose("%1.12e", johnsonNoiseF);
+
+    % update BL with this sequence
+    BLmeas = [BLmeas; BLseq]; %#ok<AGROW>
+
+    % calculate true baseline
+
+
+end % for iBLseq
+
+end % function makeSyntheticBLData
+
+
+%% Synthetic Data for OnPeaks
+function [OPmeas, OPtrue, tCurrent] = makeSyntheticOPData(setup, integrations, ...
+    settleTime, idx, iBlock, OPmeas, OPtrue, tCurrent)
+
+% unpack setup and idx terms
+nSerialColumns          = idx.nSerialColumns;
+nCollectors             = idx.nCollectors;
+ionCounterColumnIndices = idx.ionCounterColumnIndices;
+faradayColumnIndices    = idx.faradayColumnIndices;
+ionCounterMethodIndices = idx.ionCounterMethodIndices;
+faradayMethodIndices    = idx.faradayMethodIndices;
+
+spl               = setup.spl;
+massSpec          = setup.massSpec;
+method            = setup.method;
+kB                = setup.kB;
+tempInK           = setup.tempInK;
+intensityFunction = setup.intensityFunction;
+betaFaraday       = setup.betaFaraday;
+betaDaly          = setup.betaDaly;
+CREtrue           = setup.CREtrue;
+darkNoise         = setup.darkNoise;
+refVolts          = setup.refVolts;
+
+% for each OP cycle in iBlock
+for iCycle = 1:idx.nCyclesPerBlock
+    
+    % for each sequence in iCycle
+    for iOPseq = 1:length(integrations.OP.n)
+
+        % make a string array OPseq to contain data from this OP sequence
+        nIntegrations = integrations.OP.n(iOPseq);
+        integrationPeriod = integrations.OP.integPeriods(iOPseq);
+        OPseq = strings(nIntegrations, nSerialColumns + nCollectors);
+
+        % populate serial columns
+        OPseq(:,1) = "OP" + iOPseq; % ID
+        OPseq(:,2) = iBlock; % Block
+        OPseq(:,3) = iCycle; % Cycle
+        OPseq(:,4) = (1:nIntegrations)'; % Integ
+        OPseq(:,5) = string(method.onpeaks(iOPseq).MassID); % PeakID
+        OPseq(:,6) =  num2str(method.axialMasses.OP(iOPseq), '%1.4f');
+
+        % times for each integration; update tCurrent
+        tCurrent = tCurrent + settleTime.OP(iOPseq); % settle before 1st integration
+        tStop = tCurrent + (nIntegrations-1)*integrationPeriod;
+        tvector = linspace(tCurrent, tStop, nIntegrations)';
+        OPseq(:,7) = num2str(tvector, '%1.7f');
+        tCurrent = tStop + integrationPeriod;
+
+        % on peaks:
+        % 1a. dark noise
+        lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
+        darkNoiseMatrix = random('poisson', lambda);
+        % 1b. Johnson noise
+        s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
+        mu = refVolts(tvector);
+        sigma = repmat(sqrt(s2), nIntegrations, 1);
+        johnsonNoiseMatrix = random('normal', mu, sigma);
+        % 1c. Concatenate zero-intensity noise sources
+        noiseMatrixSeq = [darkNoiseMatrix johnsonNoiseMatrix];
+
+        % 2. distribute isotope parameters into matrices with columns defined by collector array
+        % syntax is collectorMatrix(collectorRefsInMethod) = isotopeMatrix(collectorIndicesUsed)
+        % simplified, illustrative example of syntax above:
+        % x = [1 3 5 7 9]                 vector of scaled intensities
+        % y = [0 0 0 0 2 0 0 3 0 0 4 0 5] row of F_ind
+        % z = zeros(1,13)                 preallocate data matrix
+        % z(find(y>0)) = x(y(y>0))        distribute elements of x to positions in y
+        collectorRefsForSequence = method.F_ind(iOPseq,:);
+        collectorRefsInMethod = find(collectorRefsForSequence > 0);
+        collectorIndicesUsed = collectorRefsForSequence(collectorRefsForSequence>0);
+
+        % 3. betas for ion counters and faradays
+        betaMatrixSeq = ones(nIntegrations,nCollectors); % 1 * -Inf = -Inf, exp(-Inf) = 0
+        betaMatrixDaly    = repmat(betaDaly(tvector),    1, idx.nIonCounters);
+        betaMatrixFaraday = repmat(betaFaraday(tvector), 1, idx.nFaradays);
+        betaMatrixAll = [betaMatrixDaly betaMatrixFaraday];
+        betaMatrixSeq(:,collectorRefsInMethod) = betaMatrixAll(:,collectorIndicesUsed);
+
+        % ion beam intensities (true, logged true)
+        speciesIntensities = intensityFunction(tvector)*spl.relativeAbundances;
+        trueIntSeq = zeros(nIntegrations, nCollectors);
+        trueIntSeq(:,collectorRefsInMethod) = speciesIntensities(:,collectorIndicesUsed);
+        logTrueIntSeq = log(trueIntSeq);
+
+        % isotope mass ratios (for fractionation correction)
+        logIsotopeMasses = repmat(spl.logNormMasses, nIntegrations, 1);
+        logIsoMassSeq = -inf(nIntegrations, nCollectors);
+        logIsoMassSeq(:,collectorRefsInMethod) = logIsotopeMasses(:,collectorIndicesUsed);
+
+        % collector efficiencies
+        CREtrueSeq = CREtrue(tvector);
+        collectEffSeq = -inf(nIntegrations, nCollectors);
+        collectEffSeq(:,collectorRefsInMethod) = CREtrueSeq(:,collectorIndicesUsed);
+
+        % no tails yet
+        tailsSeq = zeros(nIntegrations, nCollectors);
+
+        % 4. put it all together, one step at a time
+        % 4a. intensities, isotopically fractionated, + tails
+        intFractSeq = exp(logTrueIntSeq + betaMatrixSeq .* logIsoMassSeq) + tailsSeq;
+
+        % 4b. apply gain to ion counters only (for use in shot noise calculation)
+        intICEffFractSeq = intFractSeq;
+        intICEffFractSeq(:,ionCounterMethodIndices) = ...
+            intFractSeq(:,ionCounterMethodIndices) .* CREtrueSeq(:,ionCounterMethodIndices);
+
+        % 4c. undo dead time correction to get measured counts on ion counter
+        dtUnCorrFactor = 1 ./ (1 + repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
+            intICEffFractSeq(:,ionCounterMethodIndices) ); % un-correction factor for dt
+        intIonArrivals = intICEffFractSeq;
+        intIonArrivals(:,ionCounterMethodIndices) = ...
+            intICEffFractSeq(:,ionCounterMethodIndices) .* dtUnCorrFactor;
+
+        % 4d. Add up true intensity/voltage contributors. Mass spec model:
+        % i_a = ( exp( log(a/b) + log(i_b) + beta*log(Ma/Mb) ) + tail_a*i_b ) ...
+        %       * exp(log(ea/eAx) + refVolts
+        % for i_a is intensity of isotope a, Ma mass of a, ea efficiency
+        % for cup with a, tail_a is peak tail contribution to a, beta is fractionation
+
+        intPlusShotNoise = random('poisson', intIonArrivals);
+
+        % 4d. redo dead time correction, as implemented in Isolynx software
+        dtCorrFactor = 1 ./ (1 - repmat(massSpec.ionCounterDeadTimes*1e-9, nIntegrations,1) .* ...
+            intPlusShotNoise(:,ionCounterMethodIndices) ); % correction factor for dt
+        intPlusShotNoise(:,ionCounterMethodIndices) = ...
+            intPlusShotNoise(:,ionCounterMethodIndices) .* dtCorrFactor;
+
+        % 4e. apply gain to faradays as well, convert to volts
+        intPlusShotNoise(:,faradayMethodIndices) = ...
+            intPlusShotNoise(:,faradayMethodIndices) .* CREtrueSeq(:,faradayMethodIndices);
+        intPlusShotNoise(:,faradayMethodIndices) = ...
+            intPlusShotNoise(:,faradayMethodIndices) .* repmat(massSpec.voltsPerCPS, nIntegrations, 1);
+
+        % 4f. add in Johnson and dark noise, plus refVolts for Faradays
+        outputOP = intPlusShotNoise + noiseMatrixSeq;
+        OPseq(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", outputOP);
+
+        % update OP with this sequence
+        OPmeas = [OPmeas; OPseq]; %#ok<AGROW>
+
+    end % for iOPseq
+
+    tCurrent = tCurrent + settleTime.flyBack;
+
+end % for iCycle
+
+end % function makeSyntheticOPData
+
+
+%% Write synethetic BL and OP to file
+
+function writeSynDataBLOP(setup, BLmeas, OPmeas)
+
+massSpec = setup.massSpec;
+
+%% Write baselines to file
+
+writematrix("#BASELINES", "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+writematrix(["ID","Block","Cycle","Integ","PeakID","AxMass","Time",  ...
+    massSpec.ionCounterNames, ...
+    massSpec.faradayNames], "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+% add some spaces after commas in BL
+spaceArray = strings(size(BLmeas));
+spaceArray(:,2:end) = " ";
+BLmeas = spaceArray + BLmeas;
+
+writematrix(BLmeas, "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+writematrix(" ", "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+%% Write onPeaks to file
+
+writematrix("#ONPEAK", "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+writematrix(["ID","Block","Cycle","Integ","PeakID","AxMass","Time",  ...
+    massSpec.ionCounterNames, ...
+    massSpec.faradayNames], "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+% add some spaces after commas in BL
+spaceArray = strings(size(OPmeas));
+spaceArray(:,2:end) = " ";
+OPmeas = spaceArray + OPmeas;
+
+writematrix(OPmeas, "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+writematrix([" "; "#END,AnalysisCompleted"], "../syndata/"+setup.synDataFileName, ...
+    "QuoteStrings", "none", "WriteMode", "append")
+
+end % function writeSynDataOPBL
