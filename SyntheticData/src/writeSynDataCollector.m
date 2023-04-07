@@ -1,4 +1,4 @@
-function writeSynDataCollector(setup)
+function writeSynDataCollector(setup, filename)
 %WRITESYNDATACOLLECTOR Write collector block for synthetic data file
 %   Copy collector block format from Version 2.0.11 of Isolynx, 2022
 %
@@ -10,7 +10,6 @@ if ~setup.writeData
 end
 
 massSpec = setup.massSpec;
-synDataFileName = setup.synDataFileName;
 
 nIonCounters = size(massSpec.ionCounterNames,2);
 nFaradays = size(massSpec.faradayNames,2);
@@ -33,11 +32,11 @@ collBlock(fStart:end,4:5) = compose("%1.9f", 1);
 collBlock(fStart:end,6)   = compose("%1.4f", 0);
 
 collBlock = strtrim(collBlock); % remove leading and trailing whitespace
-writematrix(collBlock, "../syndata/"+synDataFileName, ...
+writematrix(collBlock, "../syndata/"+filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 % blank line the lazy way
-writematrix("", "../syndata/"+synDataFileName, ...
+writematrix("", "../syndata/"+filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 

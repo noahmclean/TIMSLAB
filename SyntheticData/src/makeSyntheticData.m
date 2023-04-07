@@ -10,6 +10,9 @@
 %% 1. Setup 
 
 setup = setupSynDataParams();
+synDataFileName = setup.synDataFileName;
+trueDataFileName = synDataFileName + "_TV";
+modelParamFileName = synDataFileName + "_MP";
 
 %% 2. Piece out timing from method
 
@@ -17,13 +20,13 @@ setup = setupSynDataParams();
 
 %% 3. Write the header
 
-writeSynDataHeader(setup);
-
+writeSynDataHeader(setup, synDataFileName)
+writeSynDataHeader(setup, trueDataFileName)
 
 %% 4. Write the collector block
 
-writeSynDataCollector(setup)
-
+writeSynDataCollector(setup, synDataFileName)
+writeSynDataCollector(setup, trueDataFileName)
 
 %% 5. Simulate block data, save off in matrices
 
@@ -54,7 +57,10 @@ end % for iBlock = 1:nBlocks
 
 %% 6. Write baselines and onpeaks to file
 
-writeSynDataBLOP(setup, BLmeas, OPmeas);
+writeSynDataBLOP(setup, BLmeas, OPmeas, synDataFileName);
+writeSynDataBLOP(setup, BLtrue, OPtrue, trueDataFileName);
+
+%% 7. Write true model parameters to file
 
 
 
@@ -177,20 +183,27 @@ for iBLseq = 1:length(integrations.BL.n)
     BLseq(:,7) = num2str(tvector, '%1.7f');
     tCurrent = tStop + integrationPeriod;
 
+    % make separate string arrays for measured and true intensities
+    BLseqMeas = BLseq;
+    BLseqTrue = BLseq;
+
     % ion counter baselines (dark noise), units of cps
     lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
     darkNoiseIC = random('poisson', lambda);
-    BLseq(:,ionCounterColumnIndices) = compose("%1.12e", darkNoiseIC);
+    BLseqTrue(:,ionCounterColumnIndices) = compose("%1.12e", lambda);
+    BLseqMeas(:,ionCounterColumnIndices) = compose("%1.12e", darkNoiseIC);
 
     % faraday baselines (Johnson noise), units of volts
     s2 = 4 * kB * tempInK * massSpec.amplifierResistance / integrationPeriod;
     mu = refVolts(tvector);
     sigma = repmat(sqrt(s2), nIntegrations, 1);
     johnsonNoiseF = random('normal', mu, sigma);
-    BLseq(:,faradayColumnIndices) = compose("%1.12e", johnsonNoiseF);
+    BLseqTrue(:,faradayColumnIndices) = compose("%1.12e", mu);
+    BLseqMeas(:,faradayColumnIndices) = compose("%1.12e", johnsonNoiseF);
 
     % update BL with this sequence
-    BLmeas = [BLmeas; BLseq]; %#ok<AGROW>
+    BLmeas = [BLmeas; BLseqMeas]; %#ok<AGROW>
+    BLtrue = [BLtrue; BLseqTrue]; %#ok<AGROW>
 
     % calculate true baseline
 
@@ -250,6 +263,10 @@ for iCycle = 1:idx.nCyclesPerBlock
         OPseq(:,7) = num2str(tvector, '%1.7f');
         tCurrent = tStop + integrationPeriod;
 
+        % create OPseq for measured and true values
+        OPseqMeas = OPseq;
+        OPseqTrue = OPseq;
+
         % on peaks:
         % 1a. dark noise
         lambda = repmat(darkNoise*integrationPeriod, nIntegrations,1);
@@ -293,10 +310,10 @@ for iCycle = 1:idx.nCyclesPerBlock
 
         % collector efficiencies
         CREtrueSeq = CREtrue(tvector);
-        collectEffSeq = -inf(nIntegrations, nCollectors);
-        collectEffSeq(:,collectorRefsInMethod) = CREtrueSeq(:,collectorIndicesUsed);
+        %collectEffSeq = -inf(nIntegrations, nCollectors);
+        %collectEffSeq(:,collectorRefsInMethod) = CREtrueSeq(:,collectorIndicesUsed);
 
-        % no tails yet
+        % no tails yet, will be a fucntion of 
         tailsSeq = zeros(nIntegrations, nCollectors);
 
         % 4. put it all together, one step at a time
@@ -337,10 +354,16 @@ for iCycle = 1:idx.nCyclesPerBlock
 
         % 4f. add in Johnson and dark noise, plus refVolts for Faradays
         outputOP = intPlusShotNoise + noiseMatrixSeq;
-        OPseq(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", outputOP);
+        OPseqMeas(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", outputOP);
+
+        % d = G(m), calculate 'true' values of measured data
+        OPseqTrue = intFractSeq .* CREtrueSeq + [lambda refVolts(tvector)];
+        OPseqTrue(:,faradayMethodIndices) = OPseqTrue(:,faradayMethodIndices) .* ...
+                                                       repmat(massSpec.voltsPerCPS, nIntegrations, 1);
 
         % update OP with this sequence
-        OPmeas = [OPmeas; OPseq]; %#ok<AGROW>
+        OPmeas = [OPmeas; OPseqMeas]; %#ok<AGROW>
+        OPtrue = [OPtrue; OPseqTrue]; %#ok<AGROW>
 
     end % for iOPseq
 
@@ -353,18 +376,18 @@ end % function makeSyntheticOPData
 
 %% Write synethetic BL and OP to file
 
-function writeSynDataBLOP(setup, BLmeas, OPmeas)
+function writeSynDataBLOP(setup, BLmeas, OPmeas, filename)
 
 massSpec = setup.massSpec;
 
 %% Write baselines to file
 
-writematrix("#BASELINES", "../syndata/"+setup.synDataFileName, ...
+writematrix("#BASELINES", "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 writematrix(["ID","Block","Cycle","Integ","PeakID","AxMass","Time",  ...
     massSpec.ionCounterNames, ...
-    massSpec.faradayNames], "../syndata/"+setup.synDataFileName, ...
+    massSpec.faradayNames], "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 % add some spaces after commas in BL
@@ -372,20 +395,21 @@ spaceArray = strings(size(BLmeas));
 spaceArray(:,2:end) = " ";
 BLmeas = spaceArray + BLmeas;
 
-writematrix(BLmeas, "../syndata/"+setup.synDataFileName, ...
+writematrix(BLmeas, "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
-writematrix(" ", "../syndata/"+setup.synDataFileName, ...
+writematrix(" ", "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
+
 
 %% Write onPeaks to file
 
-writematrix("#ONPEAK", "../syndata/"+setup.synDataFileName, ...
+writematrix("#ONPEAK", "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 writematrix(["ID","Block","Cycle","Integ","PeakID","AxMass","Time",  ...
     massSpec.ionCounterNames, ...
-    massSpec.faradayNames], "../syndata/"+setup.synDataFileName, ...
+    massSpec.faradayNames], "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 % add some spaces after commas in BL
@@ -393,10 +417,10 @@ spaceArray = strings(size(OPmeas));
 spaceArray(:,2:end) = " ";
 OPmeas = spaceArray + OPmeas;
 
-writematrix(OPmeas, "../syndata/"+setup.synDataFileName, ...
+writematrix(OPmeas, "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
-writematrix([" "; "#END,AnalysisCompleted"], "../syndata/"+setup.synDataFileName, ...
+writematrix([" "; "#END,AnalysisCompleted"], "../syndata/" + filename, ...
     "QuoteStrings", "none", "WriteMode", "append")
 
 end % function writeSynDataOPBL

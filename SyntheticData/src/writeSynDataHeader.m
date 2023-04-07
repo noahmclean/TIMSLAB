@@ -1,4 +1,4 @@
-function writeSynDataHeader(setup)
+function writeSynDataHeader(setup, filename)
 %WRITEHEADER Write the header for a synthetic data file
 %   Copy header format from Version 2.0.11 of Isolynx, 2022
 %
@@ -13,14 +13,13 @@ if ~setup.writeData
 end
 
 % create header block
-synDataFileName = setup.synDataFileName;
 methodName = setup.synDataFileName;
 
 header = ...
     ["#HEADER";
      "Analysis";
      "Version,"        + "2.0.11,1.04"; 
-     "Filename,"       + synDataFileName;
+     "Filename,"       + filename;
      "MethodName,"     + methodName;
      "MethodPath,"     + "/TIMSLAB/SyntheticData/Methods";
      "IsoWorksMethod," + "This is synthetic data from the TIMSLAB repository";
@@ -32,7 +31,7 @@ header = ...
      "#COLLECTORS";
      "Name,Type,Resistor,Gain,Efficiency,DT"];
 
-writematrix(header, "../syndata/"+synDataFileName, "QuoteStrings", "none")
+writematrix(header, "../syndata/"+filename, "QuoteStrings", "none")
 
 
 end % function
