@@ -13,13 +13,13 @@ if ~setup.writeData
 end
 
 % create header block
-methodName = setup.synDataFileName;
+methodName = setup.method.methodName + ".TIMSAM";
 
 header = ...
     ["#HEADER";
      "Analysis";
      "Version,"        + "2.0.11,1.04"; 
-     "Filename,"       + filename;
+     "Filename,"       + filename + ".TXT";
      "MethodName,"     + methodName;
      "MethodPath,"     + "/TIMSLAB/SyntheticData/Methods";
      "IsoWorksMethod," + "This is synthetic data from the TIMSLAB repository";

@@ -9,7 +9,7 @@ function setup = setupSynDataParams()
 %% Specify synthetic data parameters
 
 % create a new sample (or use a reference material)
-s.name    = "NBS981Measurement_100kcps206Pb";
+s.name    = "NBS981Measurement_1Mcps206Pb";
 s.element = "Pb";
 s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
 s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
@@ -31,7 +31,7 @@ addpath(genpath("../../../TIMSLAB"));
 massSpec = massSpecModel("PhoenixKansas_1e12");
 nBlocks = 10;
 
-intensityFunction = @(t) 1e5*ones(size(t)); % cps of major isotope
+intensityFunction = @(t) 1e6*ones(size(t)); % cps of major isotope
 %intensityFunction = @(ampl, freq, minInt, t)  ...
 %      ampl*(ceil(freq*t)-freq*t)+minInt; % sawtooth
 
