@@ -157,8 +157,8 @@ darkNoise               = setup.darkNoise;
 method   = setup.method;
 kB       = setup.kB;
 tempInK  = setup.tempInK;
-refVolts = setup.refVolts;
 massSpec = setup.massSpec;
+refVolts = setup.refVolts;
 
 % for each baseline sequence in iBlock
 for iBLseq = 1:length(integrations.BL.n)
@@ -357,9 +357,13 @@ for iCycle = 1:idx.nCyclesPerBlock
         OPseqMeas(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", outputOP);
 
         % d = G(m), calculate 'true' values of measured data
-        OPseqTrue = intFractSeq .* CREtrueSeq + [lambda refVolts(tvector)];
-        OPseqTrue(:,faradayMethodIndices) = OPseqTrue(:,faradayMethodIndices) .* ...
+        refCounts = refVolts(tvector) ./ repmat(massSpec.voltsPerCPS, nIntegrations, 1); % cps on Faradays
+        OPseqTrueArray = intFractSeq .* CREtrueSeq + [lambda refCounts];  % int * CRE + refs on IC and Faradays
+        % convert cps on Faradays to Volts
+        OPseqTrueArray(:,faradayMethodIndices) = OPseqTrueArray(:,faradayMethodIndices) .* ...
                                                        repmat(massSpec.voltsPerCPS, nIntegrations, 1);
+        % append strings to string array with serial columns
+        OPseqTrue(:,[ionCounterColumnIndices faradayColumnIndices]) = compose("%1.12e", OPseqTrueArray);
 
         % update OP with this sequence
         OPmeas = [OPmeas; OPseqMeas]; %#ok<AGROW>
