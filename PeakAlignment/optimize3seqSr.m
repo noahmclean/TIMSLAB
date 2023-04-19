@@ -127,4 +127,34 @@ set(gca, 'FontSize', 16)
 ylim([0 1.1])
 end % for iScan
 
+%% Create peak center 'PKC' table
+% masses when you peak center isotopes in cups
+
+%     L3  L2  Ax  H1  H2
+% S1          86  87  88
+% S2      86  87  88
+% S3  86  87  88
+
+seqTableMass = ...
+    [0          0          mass.Sr86  mass.Sr87  mass.Sr88;
+     0          mass.Sr86  mass.Sr87  mass.Sr88  0;
+     mass.Sr86  mass.Sr87  mass.Sr88  0          0];
+
+PKC = zeros(size(seqTableMass));
+offset = zeros(size(seqTableMass));
+offsetIndex = 0;
+for iSeq = 1:3
+    for jColl = 1:5
+
+        if seqTableMass(iSeq,jColl) > 0 % if peak present
+        PKC(iSeq,jColl) = seqTableMass(iSeq,jColl) / ...
+                          (1 + collectorPositions(jColl)/540);
+        
+        offsetIndex = offsetIndex + 1;
+        offset(iSeq,jColl) = -r(offsetIndex);
+
+        end % if peak present
+
+    end % for jColl
+end % for iSeq
 

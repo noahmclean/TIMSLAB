@@ -96,13 +96,13 @@ for collectorIdx = 1:5
 end % for collectorIdx
 
 
-% cmap = [50,  205, 50 ;      % lime green, L3
-%         210, 105, 30 ;      % chocolate, L2
-%         139, 0,   0  ;      % dark red, Ax
-%         85,  107, 47 ;      % dark olive green, H1
-%         139, 0,   139]/255; % dark magenta, H2
+cmap = [139, 0,   0  ;      % dark red, Ax
+        85,  107, 47 ;      % dark olive green, H1
+        139, 0,   139;      % dark magenta, H2
+        0,   0,   139;      % dark blue, H3
+        0,   139, 139]/255; % dark cyan, H4
 
-cmap = lines(5);
+%cmap = lines(5);
 
 colororder(cmap);
 
