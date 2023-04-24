@@ -4,7 +4,7 @@ classdef massSpecModel
     
     properties 
 
-        collectorWidthMM        % collector aperture width (mm)
+        collectorWidthMM = 0.85    % collector aperture width (mm)
         theoreticalBeamWidthMM  % a priori estimate of beam width (mm)
         effectiveRadiusMagnetMM % effective radius of magnet (mm)
         faradayNames            % names of Faradays as string array
@@ -12,6 +12,13 @@ classdef massSpecModel
         ionCounterTypes         % types of ion counters (eg, PM or EM)
         amplifierResistance     % resistance of Faraday amplifiers (ohms)
         ionCounterDeadTimes     % dead time, ns
+
+    end
+
+    properties (Constant)
+
+        kB = 1.38064852e-23;   % Boltzmann constant (m^2 kg s^-2 K^-1)
+        tempInK = 290;         % temperature of amplifiers (Kelvin)
 
     end
     
@@ -27,8 +34,6 @@ classdef massSpecModel
             switch massSpecName % define properties per mass spec
 
                 case "PhoenixKansas_1e12"
-                %massSpec.collectorWidthMM = 0.95135;
-                massSpec.collectorWidthMM = 0.855;
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
@@ -38,7 +43,6 @@ classdef massSpecModel
                 massSpec.amplifierResistance = 1e12*ones(1,9);
 
                 case "PhoenixKansas_1e11"
-                massSpec.collectorWidthMM = 0.95135;
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
                 massSpec.faradayNames = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];

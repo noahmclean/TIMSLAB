@@ -15,14 +15,12 @@ data = dataModel(filename);
 %% 
 
 % calculations about the setup, depend on data and mass spec
-
 data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
 %data.collectorWidthAMU = 0.139;
 data.theoreticalBeamWidthAMU = calcBeamWidthAMU(data, massSpec);
 peakMeas = peakMeasProperties(data, massSpec);
 
 % spline basis B
-
 bdeg = 3; % order of spline (= order of polynomial pieces)
 pord = 2; % order of differences for pSplines
 beamKnots = ceil(peakMeas.beamWindow/(peakMeas.deltaMagnetMass)) - 2*bdeg; % 3 xtra knots for cubic spline
@@ -36,7 +34,6 @@ splineBasis = splineBasisModel(beamMassInterp,beamKnots,bdeg);
 deltabeamMassInterp = beamMassInterp(2)-beamMassInterp(1);
 
 % calculate integration matrix G, depends on B, data
-
 nMagnetMasses = length(data.magnetMasses);
 G = zeros(nMagnetMasses, nInterp);
 for iMass = 1:nMagnetMasses % a row for each manget mass
