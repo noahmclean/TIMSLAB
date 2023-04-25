@@ -49,11 +49,15 @@ data.measPeakIntensityBLcorr = data.measPeakIntensity - ...
 data.magnetMasses = data.magnetMasses(hasModelBeam);
 data.measPeakIntensity = data.measPeakIntensityBLcorr(hasModelBeam);
 
+% covariance matrix for data
+varInt = intensityVariance(data.measPeakIntensity, data.detectorName, massSpec, data.integPeriodMS);
+
 % WLS and NNLS
 GB = G*splineBasis.B;
-Wdata = diag(1./max(data.measPeakIntensity,1));
-beamWLS = (GB'*Wdata*GB)\(GB'*Wdata*data.measPeakIntensity);
-beamWNNLS = lsqnonneg(chol(Wdata)*GB,chol(Wdata)*data.measPeakIntensity);
+
+%Wdata = diag(ones(size(data.measPeakIntensity,1),1));
+beamWLS = (GB'*varInt*GB)\(GB'*varInt*data.measPeakIntensity);
+beamWNNLS = lsqnonneg(chol(varInt)*GB,chol(varInt)*data.measPeakIntensity);
 
 % smoothing spline
 lambda = 5e-7;
@@ -62,7 +66,7 @@ D = diff(eye(beamKnots+bdeg), pord); % 2nd order smoothing, cubic spline;
 %Wdata = eye(length(measPeakIntensity));
 Gaugmented = [GB; sqrt(lambda)*D];
 measAugmented = [data.measPeakIntensity; zeros(beamKnots+bdeg-pord,1)];
-wtsAugmented = blkdiag(Wdata, eye(beamKnots+bdeg-pord));
+wtsAugmented = blkdiag(varInt, eye(beamKnots+bdeg-pord));
 beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*measAugmented);
 [beamNNPspl, resnorm, residual] = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
 

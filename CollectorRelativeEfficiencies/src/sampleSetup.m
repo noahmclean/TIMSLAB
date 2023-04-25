@@ -145,7 +145,7 @@ setup.coulomb = 6241509074460762607.776; % 1 coulomb in elementary charges
 % Ickert: "1/t * 1484 = amplifier noise, t in seconds, noise in cps"
 setup.noiseConstantATONAsCPS = 1484; % cps noise
 R = 10^11; % software reports volts consistent with 10^11 ohm resistor
-cpsPerVolt = 6.24150934*10^18/R; % 1 coulomb in 'atomic units'.
+cpsPerVolt = setup.coulomb/R; % 1 coulomb in 'atomic units'.
 % variance for atonas is 1/t * setup.noiseATONAs, where t is in seconds.
 setup.noiseATONAs = setup.noiseConstantATONAsCPS / cpsPerVolt;
 

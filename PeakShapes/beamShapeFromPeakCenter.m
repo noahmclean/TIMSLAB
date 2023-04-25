@@ -14,7 +14,7 @@
 %% Setup
 
 addpath("exampleData/")
-massSpec = massSpecModel("PhoenixKansas_1e12");
+massSpec = massSpecModel("PhoenixPurdue_ATONA");
 %filename = "DVCC18-9 z9 Pb-570-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-205Pb-PM-S2B7C1.txt";
 %filename = "HY30ZK z10 Pb-1004-PKC-207Pb-PM-S4B8C1.TXT";
@@ -27,6 +27,16 @@ data = dataModel(filename);
 
 %% This goes sideways for unclear reasons.
 
-[resnorm, bestCollectorWidthMM] = fminbnd(@(collectorWidthMM) ...
-                                  fitPKCData(massSpec, data, collectorWidthMM), 0, 2);
+%[bestCollectorWidthMM, resnorm] = fminbnd(@(collectorWidthMM) ...
+%                                  fitPKCData(massSpec, data, collectorWidthMM), 0, 2);
+
+nWidths = 5000;
+resnormVector = zeros(nWidths,1);
+widthVector = linspace(0.01, 2, nWidths)';
+for iWidth = 1:nWidths
+    
+    resnormVector(iWidth) = fitPKCData(massSpec, data, widthVector(iWidth));
+
+end
+plot(widthVector, resnormVector)
 
