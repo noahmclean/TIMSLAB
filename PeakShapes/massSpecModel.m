@@ -4,7 +4,7 @@ classdef massSpecModel
     
     properties 
 
-        collectorWidthMM = 1    % collector aperture width (mm)
+        nominalCollectorWidthMM = 1 % collector aperture width (mm)
         theoreticalBeamWidthMM  % a priori estimate of beam width (mm)
         effectiveRadiusMagnetMM % effective radius of magnet (mm)
         faradayNames            % names of Faradays as string array, eg "High2"
