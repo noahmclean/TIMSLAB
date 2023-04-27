@@ -10,11 +10,13 @@ classdef massSpecModel
         faradayNames            % names of Faradays as string array, eg "High2"
         faradayCodes            % codes for Faradays, eg "H2"
         faradayTypes            % "resistance" or "ATONA"
+        faradayApertureWidthMM  % aperture widths for Faraday collectors (~1 mm)
         amplifierResistance     % resistance of Faraday amplifiers (ohms)
         ionCounterNames         % names of ion counters as string array
         ionCounterTypes         % types of ion counters (eg, PM or EM)
         ionCounterDeadTimes     % dead time, ns
         ionCounterDarkNoise     % dark noise, cps
+        ionCounterAperturewidthMM % aperture widths for ion counters (~1 mm)
 
     end
 

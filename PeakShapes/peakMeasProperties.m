@@ -11,14 +11,14 @@ classdef peakMeasProperties
     end
     
     methods
-        function peakMeas = peakMeasProperties(data,massSpec)
+        function peakMeas = peakMeasProperties(data, massSpec, collectorWidthMM)
 
             %PEAKMEASPROPERTIES Construct an instance of this class
             %   Calculations about the peak measurement on this mass spec
             
             if nargin > 0 % if called with arguments
 
-            peakMeas.collectorWidthAMU       = calcWidthInAMU(data, massSpec, massSpec.collectorWidthMM);
+            peakMeas.collectorWidthAMU       = calcWidthInAMU(data, massSpec, collectorWidthMM);
             peakMeas.theoreticalBeamWidthAMU = calcWidthInAMU(data, massSpec, massSpec.theoreticalBeamWidthMM);
             
             % collectorLimits is a matrix with two columns and the same

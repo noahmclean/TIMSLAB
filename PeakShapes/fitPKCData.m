@@ -1,15 +1,20 @@
-function resnorm = fitPKCData(massSpec, data, collectorWidthMM)
+function varargout = fitPKCData(massSpec, data, collectorWidthMM)
+%function resnorm = fitPKCData(massSpec, data, collectorWidthMM)
 % FITPKCDATA fit a beam shape to a peakcenter file 
 % output the misfit for a given collector width
 % use this function to solve for optimum collectorWidthMM
 
-% to optimize: collector width (mm)
-massSpec.collectorWidthMM = collectorWidthMM;
+% add multiple outputs?
+nOutputs = nargout;
 
-data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
-%data.collectorWidthAMU = 0.139;
+data.collectorWidthAMU = data.peakCenterMass / ...
+                massSpec.effectiveRadiusMagnetMM * collectorWidthMM;
+
+% to optimize: collector width (mm)
+%massSpec.collectorWidthMM = collectorWidthMM;
+
 data.theoreticalBeamWidthAMU = calcBeamWidthAMU(data, massSpec);
-peakMeas = peakMeasProperties(data, massSpec);
+peakMeas = peakMeasProperties(data, massSpec, collectorWidthMM);
 
 % spline basis B
 bdeg = 3; % order of spline (= order of polynomial pieces)
@@ -71,7 +76,15 @@ beamPSpline = (Gaugmented'*wtsAugmented*Gaugmented)\(Gaugmented'*wtsAugmented*me
 [beamNNPspl, resnorm, residual] = lsqnonneg(chol(wtsAugmented)*Gaugmented,chol(wtsAugmented)*measAugmented);
 
 
-
+% multiple output arguments?
+if nOutputs == 1  % for optimization?
+    varargout{1} = resnorm; 
+elseif nOutputs == 4
+    varargout{1} = beamNNPspl;
+    varargout{2} = resnorm;
+    varargout{3} = residual;
+    varargout{4} = splineBasis;
+end % 
 
 
 end % function fitPCKData
