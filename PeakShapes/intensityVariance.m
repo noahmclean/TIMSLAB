@@ -42,7 +42,7 @@ integrationTimeSeconds = integrationTimeMS/1000;
 
 %% 2. shot noise
 
-if collectorType == "Faraday" % then convert to cps
+if massSpec.collectorArray{collectorName, "collectors"}.isFaraday % then convert to cps
     cpsFactorsAll = cpsPerVolt(massSpec);
     cpsFactorThisCup = cpsFactorsAll(collectorIndex);
     voltFactorsAll = voltsPerCPS(massSpec);

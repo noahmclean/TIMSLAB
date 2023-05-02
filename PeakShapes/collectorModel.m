@@ -13,7 +13,26 @@ classdef collectorModel < matlab.mixin.Heterogeneous
             obj.code = code;
             obj.name = name;
         end
+    end
+
+    methods(Sealed) % can't be overridden by a subclass
+
+        function tf = isFaraday(coll)
+            nCollectors = length(coll);
+            tf = false(nCollectors,1);
+            for iColl = 1:nCollectors
+                tf(iColl) = isa(coll(iColl), 'faradayModel');
+            end %for
+        end % isFaraday
+
+        function tf = isIonCounter(coll)
+            nCollectors = length(coll);
+            tf = false(nCollectors,1);
+            for iColl = 1:nCollectors
+                tf(iColl) = isa(coll(iColl), 'ionCounterModel');
+            end %for
+        end % isIonCounter
         
-    end % methods
+    end % methods(Sealed)
 
 end % classdef

@@ -4,19 +4,9 @@ classdef massSpecModel
     
     properties 
 
-        nominalCollectorWidthMM = 1 % collector aperture width (mm)
-        theoreticalBeamWidthMM  % a priori estimate of beam width (mm)
-        effectiveRadiusMagnetMM % effective radius of magnet (mm)
-        faradayNames            % names of Faradays as string array, eg "High2"
-        faradayCodes            % codes for Faradays, eg "H2"
-        faradayTypes            % "resistance" or "ATONA"
-        faradayApertureWidthMM  % aperture widths for Faraday collectors (~1 mm)
-        amplifierResistance     % resistance of Faraday amplifiers (ohms)
-        ionCounterNames         % names of ion counters as string array
-        ionCounterTypes         % types of ion counters (eg, PM or EM)
-        ionCounterDeadTimes     % dead time, ns
-        ionCounterDarkNoise     % dark noise, cps
-        ionCounterAperturewidthMM % aperture widths for ion counters (~1 mm)
+        collectorArray          table   % table with collector info        
+        theoreticalBeamWidthMM  double  % a priori estimate of beam width (mm)
+        effectiveRadiusMagnetMM double  % effective radius of magnet (mm)
 
     end
 
@@ -31,6 +21,7 @@ classdef massSpecModel
     end
     
     methods
+
         function massSpec = massSpecModel(massSpecName)
             %MASSSPEC Construct an instance of this class
             %   Properties depend on input string massSpecName
@@ -42,47 +33,76 @@ classdef massSpecModel
             switch massSpecName % define properties per mass spec
 
                 case "PhoenixKansas_1e12"
+                PM  = ionCounterModel("PM", "Photomultiplier", "Daly", 30.1, 0.1);
+                SEM = ionCounterModel("SEM", "Rear SEM", "SEM", NaN, NaN);
+                L5  = faradayModel("L5", "Low5" , "resistance", 10^12);
+                L4  = faradayModel("L4", "Low4" , "resistance", 10^12);
+                L3  = faradayModel("L3", "Low3" , "resistance", 10^12);
+                L2  = faradayModel("L2", "Low2" , "resistance", 10^12);
+                Ax  = faradayModel("Ax", "Axial", "resistance", 10^12);
+                H1  = faradayModel("H1", "High1", "resistance", 10^12);
+                H2  = faradayModel("H2", "High2", "resistance", 10^12);
+                H3  = faradayModel("H3", "High3", "resistance", 10^12);
+                H4  = faradayModel("H4", "High4", "resistance", 10^12);
+                collectors = [PM; SEM; L5; L4; L3; L2; Ax; H1; H2; H3; H4];
+                apertureWidthMMnominal = ones(11,1);
+                apertureWidthMMmeas    = nan(11,1);
+                massSpec.collectorArray = table(collectors, ...
+                               apertureWidthMMnominal, apertureWidthMMmeas, ...
+                               'RowNames', ["PM"; "SEM"; "L5"; "L4"; "L3"; ...
+                                            "L2"; "Ax"; "H1"; "H2"; "H3"; "H4"]);
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
-                massSpec.faradayNames = ["Low5", "Low4", "Low3", "Low2", "Axial", "High1", "High2", "High3", "High4"];
-                massSpec.faradayCodes = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-                massSpec.faradayTypes = repmat("resistance", 1, 9);
-                massSpec.amplifierResistance = 1e12*ones(1,9);
-                massSpec.ionCounterNames = ["PM", "RS"];
-                massSpec.ionCounterTypes = ["PM", "EM"];
-                massSpec.ionCounterDeadTimes = [30.2, 0];
-                massSpec.ionCounterDarkNoise = 0.1;
-                
 
                 case "PhoenixKansas_1e11"
+                PM  = ionCounterModel("PM", "Photomultiplier", "Daly", 30.1, 0.1);
+                SEM = ionCounterModel("SEM", "Rear SEM", "SEM", NaN, NaN);
+                L5  = faradayModel("L5", "Low5" , "resistance", 10^11);
+                L4  = faradayModel("L4", "Low4" , "resistance", 10^11);
+                L3  = faradayModel("L3", "Low3" , "resistance", 10^11);
+                L2  = faradayModel("L2", "Low2" , "resistance", 10^11);
+                Ax  = faradayModel("Ax", "Axial", "resistance", 10^11);
+                H1  = faradayModel("H1", "High1", "resistance", 10^11);
+                H2  = faradayModel("H2", "High2", "resistance", 10^11);
+                H3  = faradayModel("H3", "High3", "resistance", 10^11);
+                H4  = faradayModel("H4", "High4", "resistance", 10^11);
+                collectors = [PM; SEM; L5; L4; L3; L2; Ax; H1; H2; H3; H4];
+                apertureWidthMMnominal = ones(11,1);
+                apertureWidthMMmeas    = nan(11,1);
+                massSpec.collectorArray = table(collectors, ...
+                               apertureWidthMMnominal, apertureWidthMMmeas, ...
+                               'RowNames', ["PM"; "SEM"; "L5"; "L4"; "L3"; ...
+                                            "L2"; "Ax"; "H1"; "H2"; "H3"; "H4"]);
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
-                massSpec.faradayNames = ["Low5", "Low4", "Low3", "Low2", "Axial", "High1", "High2", "High3", "High4"];
-                massSpec.faradayCodes = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-                massSpec.faradayTypes = repmat("resistance", 1, 9);
-                massSpec.amplifierResistance = 1e11*ones(1,9);
-                massSpec.ionCounterNames = ["PM", "RS"];
-                massSpec.ionCounterTypes = ["PM", "EM"];
-                massSpec.ionCounterDeadTimes = [30.2, 0];
-                massSpec.ionCounterDarkNoise = 0.1;
                 
 
                 case "PhoenixPurdue_ATONA"
+                PM  = ionCounterModel("PM", "Photomultiplier", "Daly", 30.1, 0.1);
+                L5  = faradayModel("L5", "Low5" , "ATONA", 10^11);
+                L4  = faradayModel("L4", "Low4" , "ATONA", 10^11);
+                L3  = faradayModel("L3", "Low3" , "ATONA", 10^11);
+                L2  = faradayModel("L2", "Low2" , "ATONA", 10^11);
+                Ax  = faradayModel("Ax", "Axial", "ATONA", 10^11);
+                H1  = faradayModel("H1", "High1", "ATONA", 10^11);
+                H2  = faradayModel("H2", "High2", "ATONA", 10^11);
+                H3  = faradayModel("H3", "High3", "ATONA", 10^11);
+                H4  = faradayModel("H4", "High4", "ATONA", 10^11);
+                collectors = [PM; L5; L4; L3; L2; Ax; H1; H2; H3; H4];
+                nCollectors = length(collectors);
+                apertureWidthMMnominal = ones(nCollectors,1);
+                apertureWidthMMmeas    = nan(nCollectors,1);
+                massSpec.collectorArray = table(collectors, ...
+                               apertureWidthMMnominal, apertureWidthMMmeas, ...
+                               'RowNames', ["PM"; "L5"; "L4"; "L3"; ...
+                                            "L2"; "Ax"; "H1"; "H2"; "H3"; "H4"]);
                 massSpec.theoreticalBeamWidthMM = 0.35;
                 massSpec.effectiveRadiusMagnetMM = 540;
-                massSpec.faradayNames = ["Low5", "Low4", "Low3", "Low2", "Axial", "High1", "High2", "High3", "High4"];
-                massSpec.faradayCodes = ["L5", "L4", "L3", "L2", "Ax", "H1", "H2", "H3", "H4"];
-                massSpec.faradayTypes = repmat("ATONA", 1, 9);
-                massSpec.amplifierResistance = 1e11*ones(1,9); % results given in volts of 10^11-equivalent
-                massSpec.ionCounterNames = "PM";
-                massSpec.ionCounterTypes = "PM";
-                massSpec.ionCounterDeadTimes = [31.3, 0];
-                massSpec.ionCounterDarkNoise = 0.1;
 
-                case ""
-                disp(" ")
-                disp("Mass spectrometer not recognized")
-                return
+                otherwise
+                errID = "MassSpecModel:MassSpecNameNotRecognized";
+                msg = "Mass Spectrometer model name not recognized.";
+                throw(MException(errID, msg))
 
             end % switch massSpecName
         
@@ -91,16 +111,40 @@ classdef massSpecModel
 
         % MORE METHODS
 
-        function cpsPerVoltOut = cpsPerVolt(obj) % elementary charge, Ohm's Law
-            cpsPerVoltOut =  obj.coulomb ./ ...
-                             obj.amplifierResistance;  
+        % cpsPerVolt and voltsPerCPS use elementary charge, Ohm's Law
+
+        function cpsPerVolt = cpsPerVolt(obj, collectorCode) % elementary charge, Ohm's Law
+            
+            idx = getCollectorIndex(obj, collectorCode);
+            % get the amplifier resistance (real or voltage-equivalent)
+            amplifierResistance = obj.collectorArray.collectors(idx).amplifierResistance;
+            cpsPerVolt =  obj.coulomb ./ ...
+                             amplifierResistance;  
         end % function cpsPerVoltOut
         
-        function voltsPerCPSout = voltsPerCPS(obj) % elementary charge, Ohm's Law
-            voltsPerCPSout =  obj.amplifierResistance ./ ...
+        function voltsPerCPS = voltsPerCPS(obj, collectorCode) 
+            
+            idx = getCollectorIndex(obj, collectorCode);
+            % get the amplifier resistance (real or voltage-equivalent)
+            amplifierResistance = obj.collectorArray.collectors(idx).amplifierResistance;
+
+            voltsPerCPS =  amplifierResistance ./ ...
                               obj.coulomb; 
         end % function voltsPerCPSout
 
-    end % methods
+    end % public methods
+
+    methods (Access = private)
+        
+        % return collector index given collector code or name
+        function idx = getCollectorIndex(obj, codename)
+
+            idx = [find([obj.collectorArray.collectors.code] == codename);
+                   find([obj.collectorArray.collectors.name] == codename)];
+            
+        end
+
+
+    end % private methods
 
 end % classdef
