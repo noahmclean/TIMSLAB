@@ -8,20 +8,20 @@ function setup = setupSynDataParams()
 
 %% Specify synthetic data parameters
 
-% % create a new sample (or use a reference material)
-% s.name    = "NBS981Measurement_100kcps206Pb_ZeroFrac";
-% s.element = "Pb";
-% s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
-% s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
-% spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-% methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
-
-s.name    = "PbTwoIsotopeTwoSequence_1Mcps_ZeroFrac";
+% create a new sample (or use a reference material)
+s.name    = "NBS981Measurement_1Mcps206Pb_ZeroFrac";
 s.element = "Pb";
-s.species =            ["206Pb", "208Pb"];
-s.relativeAbundances = [1, 1+eps];
+s.species =            ["204Pb", "205Pb", "206Pb", "207Pb", "208Pb"];
+s.relativeAbundances = [0.0590074, 1e-6,   1,       0.914683, 2.1681];
 spl = sample(s.name, s.element, s.species, s.relativeAbundances);
-methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
+methodName = "Pb 4-5-6-7-8 Daly 10-5-5-5-2 sec.TIMSAM";
+
+% s.name    = "PbTwoIsotopeTwoSequence_100kcps_ZeroFrac";
+% s.element = "Pb";
+% s.species =            ["206Pb", "208Pb"];
+% s.relativeAbundances = [1, 1+eps];
+% spl = sample(s.name, s.element, s.species, s.relativeAbundances);
+% methodName = "Pb TwoIsotopeTwoSeq 206-8 Ax-PM-H1.TIMSAM";
 
 % name the data file -- refactor?
 synDataFileName = s.name;

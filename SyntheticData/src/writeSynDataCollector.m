@@ -25,7 +25,7 @@ collBlock(1:nIonCounters,6)     = compose("%1.4f", massSpec.ionCounterDeadTimes'
 
 % faradays
 fStart = nIonCounters + 1; % start index for faradays
-collBlock(fStart:end,1)   = massSpec.faradayNames';
+collBlock(fStart:end,1)   = massSpec.faradayCodes';
 collBlock(fStart:end,2)   = "F";
 collBlock(fStart:end,3)   = compose("%1.0e", massSpec.amplifierResistance');
 collBlock(fStart:end,4:5) = compose("%1.9f", 1);
