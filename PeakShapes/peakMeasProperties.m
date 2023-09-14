@@ -3,7 +3,7 @@ classdef peakMeasProperties
     %   Detailed explanation goes here
     
     properties
-        collectorWidthAMU       % collector width in AMU
+        collectorApertureAMU    % collector width in AMU
         theoreticalBeamWidthAMU % theoretical beam width in AMU
         collectorLimits         % mass range in collector at each magnet mass 
         deltaMagnetMass         % change in magnet mass between measurements
@@ -11,14 +11,22 @@ classdef peakMeasProperties
     end
     
     methods
-        function peakMeas = peakMeasProperties(data, massSpec, collectorWidthMM)
+        function peakMeas = peakMeasProperties(data, massSpec)
 
             %PEAKMEASPROPERTIES Construct an instance of this class
             %   Calculations about the peak measurement on this mass spec
+
+            % getApertureWidthMM is a method of massSpec, gives measured or
+            % theoretical collector aperture
+            
             
             if nargin > 0 % if called with arguments
+            
+            % getApertureWidthMM is a method of massSpec, gives measured or
+            % theoretical collector aperture
+            collectorApertureMM = getApertureWidthMM(massSpec, data.detectorName);
 
-            peakMeas.collectorWidthAMU       = calcWidthInAMU(data, massSpec, collectorWidthMM);
+            peakMeas.collectorApertureAMU    = calcWidthInAMU(data, massSpec, collectorApertureMM);
             peakMeas.theoreticalBeamWidthAMU = calcWidthInAMU(data, massSpec, massSpec.theoreticalBeamWidthMM);
             
             % collectorLimits is a matrix with two columns and the same
@@ -26,7 +34,7 @@ classdef peakMeasProperties
             % range of the beam that is entering the collector (defined by
             % collectorWidthAMU)
             peakMeas.collectorLimits = data.magnetMasses + ...
-                      [-data.collectorWidthAMU, data.collectorWidthAMU]/2;
+                      [-data.collectorApertureAMU, data.collectorApertureAMU]/2;
             
             
             peakMeas.deltaMagnetMass = data.magnetMasses(2)-data.magnetMasses(1);
@@ -42,10 +50,10 @@ classdef peakMeasProperties
 end % classdef
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function widthAMU = calcWidthInAMU(data, massSpec, widthMM)
+function widthAMU = calcWidthInAMU(data, massSpec, apertureMM)
 
 widthAMU = data.peakCenterMass / ...
           massSpec.effectiveRadiusMagnetMM * ...
-          widthMM;
+          apertureMM;
 
 end % function

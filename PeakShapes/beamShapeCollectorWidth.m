@@ -15,7 +15,7 @@ data = dataModel(filename);
 %% 
 
 % calculations about the setup, depend on data and mass spec
-data.collectorWidthAMU = calcCollectorWidthAMU(data, massSpec);
+data.collectorApertureAMU = calcCollectorApertureAMU(data, massSpec);
 %data.collectorWidthAMU = 0.139;
 data.theoreticalBeamWidthAMU = calcBeamWidthAMU(data, massSpec);
 peakMeas = peakMeasProperties(data, massSpec);

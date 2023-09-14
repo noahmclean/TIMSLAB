@@ -11,7 +11,7 @@ classdef dataModel
         integPeriodMS           % integration period of measurements in ms
         MassID                  % name of peak getting centered e.g. "205Pb"
         detectorName            % name of detector as string e.g. "L2"
-        collectorWidthAMU       % width of collector aperture in AMU at center mass
+        collectorApertureAMU       % width of collector aperture in AMU at center mass
         theoreticalBeamWidthAMU % width of beam in AMU at center mass
         baseline                % baseline intensity (Faraday, no beam in collector)
         measPeakIntensityBLcorr % baseline-corrected measPeakIntensity
@@ -42,13 +42,15 @@ classdef dataModel
 
         end % constructor function
 
-        function collectorWidthAMU = calcCollectorWidthAMU(data, massSpec)
+        function collectorApertureAMU = calcCollectorApertureAMU(data, massSpec)
             %CALCCOLLECTORWIDTHAMU Collector width in AMU
             %   Calculate collector aperture width in AMU at measured mass
             %   massAtCenterAMU is average/peak mass of the scan, in amu
             
-            collectorWidthAMU = data.peakCenterMass / ...
-                massSpec.effectiveRadiusMagnetMM * massSpec.collectorWidthMM;
+            apertureWidthMM = getApertureWidthMM(massSpec, data.detectorName);
+            
+            collectorApertureAMU = data.peakCenterMass / ...
+                massSpec.effectiveRadiusMagnetMM * apertureWidthMM;
 
         end % calcCollectorWidthAMU
 

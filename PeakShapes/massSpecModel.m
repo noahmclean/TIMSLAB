@@ -132,6 +132,21 @@ classdef massSpecModel
                               obj.coulomb; 
         end % function voltsPerCPSout
 
+        function awMM = getApertureWidthMM(obj, codename)
+            
+            % convert collector code or name to table index
+            idx = getCollectorIndex(obj, codename);
+
+            % if there is no measured aperture width, use the nominal width
+            if isnan(obj.collectorArray{idx, "apertureWidthMMmeas"})
+                awMM = obj.collectorArray{idx, "apertureWidthMMnominal"};
+            % else, use the measured aperture width
+            else 
+                awMM = obj.collectorArray{idx, "apertureWidthMMmeas"};
+            end % if
+            
+        end % function get.apertureWidthMM
+
     end % public methods
 
     methods (Access = private)
@@ -143,7 +158,6 @@ classdef massSpecModel
                    find([obj.collectorArray.collectors.name] == codename)];
             
         end
-
 
     end % private methods
 
