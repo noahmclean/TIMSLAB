@@ -11,8 +11,8 @@ end
 
 massSpec = setup.massSpec;
 
-nIonCounters = size(massSpec.ionCounterNames,2);
-nFaradays = size(massSpec.faradayNames,2);
+nIonCounters = sum(isIonCounter(massSpec.collectorArray.collectors));
+nFaradays    = sum(   isFaraday(massSpec.collectorArray.collectors));
 nCollectors = nIonCounters + nFaradays;
 collBlock = strings(nCollectors, 6);
 
